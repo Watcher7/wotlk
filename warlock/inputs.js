@@ -1,233 +1,86 @@
-import { Warlock_Rotation_Type as RotationType, Warlock_Rotation_Preset as RotationPreset, Warlock_Rotation_PrimarySpell as PrimarySpell, Warlock_Rotation_SecondaryDot as SecondaryDot, Warlock_Rotation_SpecSpell as SpecSpell, Warlock_Rotation_Curse as Curse, Warlock_Options_WeaponImbue as WarlockWeaponImbue, Warlock_Options_Armor as Armor, Warlock_Options_Summon as Summon, } from '/wotlk/core/proto/warlock.js';
+import { Warlock_Rotation_Type as RotationType, Warlock_Rotation_Preset as RotationPreset, Warlock_Rotation_PrimarySpell as PrimarySpell, Warlock_Rotation_SecondaryDot as SecondaryDot, Warlock_Rotation_SpecSpell as SpecSpell, Warlock_Rotation_Curse as Curse, Warlock_Options_WeaponImbue as WeaponImbue, Warlock_Options_Armor as Armor, Warlock_Options_Summon as Summon, } from '/wotlk/core/proto/warlock.js';
 import { Glyphs } from '/wotlk/core/proto/common.js';
 import { ActionId } from '/wotlk/core/proto_utils/action_id.js';
 import { TypedEvent } from '/wotlk/core/typed_event.js';
 import * as Presets from './presets.js';
+import * as InputHelpers from '/wotlk/core/components/input_helpers.js';
 // Configuration for spec-specific UI elements on the settings tab.
 // These don't need to be in a separate file but it keeps things cleaner.
-export const FelArmor = {
-    id: ActionId.fromSpellId(47893),
-    states: 2,
-    extraCssClasses: [
-        'fel-armor-picker',
+export const ArmorInput = InputHelpers.makeSpecOptionsEnumIconInput({
+    fieldName: 'armor',
+    values: [
+        { color: 'grey', value: Armor.NoArmor },
+        { actionId: ActionId.fromSpellId(47893), value: Armor.FelArmor },
+        { actionId: ActionId.fromSpellId(47889), value: Armor.DemonArmor },
     ],
-    changedEvent: (player) => player.specOptionsChangeEmitter,
-    getValue: (player) => player.getSpecOptions().armor == Armor.FelArmor,
-    setValue: (eventID, player, newValue) => {
-        const newOptions = player.getSpecOptions();
-        newOptions.armor = newValue ? Armor.FelArmor : Armor.NoArmor;
-        player.setSpecOptions(eventID, newOptions);
-    },
-};
-export const DemonArmor = {
-    id: ActionId.fromSpellId(47889),
-    states: 2,
-    extraCssClasses: [
-        'demon-armor-picker',
+});
+export const WeaponImbueInput = InputHelpers.makeSpecOptionsEnumIconInput({
+    fieldName: 'weaponImbue',
+    values: [
+        { color: 'grey', value: WeaponImbue.NoWeaponImbue },
+        { actionId: ActionId.fromItemId(41174), value: WeaponImbue.GrandFirestone },
+        { actionId: ActionId.fromItemId(41196), value: WeaponImbue.GrandSpellstone },
     ],
-    changedEvent: (player) => player.specOptionsChangeEmitter,
-    getValue: (player) => player.getSpecOptions().armor == Armor.DemonArmor,
-    setValue: (eventID, player, newValue) => {
-        const newOptions = player.getSpecOptions();
-        newOptions.armor = newValue ? Armor.DemonArmor : Armor.NoArmor;
-        player.setSpecOptions(eventID, newOptions);
-    },
-};
-export const GrandFirestone = {
-    id: ActionId.fromItemId(41174),
-    states: 2,
-    extraCssClasses: [
-        'GrandFirestone-picker',
+});
+export const PetInput = InputHelpers.makeSpecOptionsEnumIconInput({
+    fieldName: 'summon',
+    values: [
+        { color: 'grey', value: Summon.NoSummon },
+        { actionId: ActionId.fromSpellId(688), value: Summon.Imp },
+        { actionId: ActionId.fromSpellId(712), value: Summon.Succubus },
+        { actionId: ActionId.fromSpellId(691), value: Summon.Felhunter },
+        {
+            actionId: ActionId.fromSpellId(30146), value: Summon.Felguard,
+            showWhen: (player) => player.getTalents().summonFelguard,
+        },
     ],
-    changedEvent: (player) => player.specOptionsChangeEmitter,
-    getValue: (player) => player.getSpecOptions().weaponImbue == WarlockWeaponImbue.GrandFirestone,
-    setValue: (eventID, player, newValue) => {
-        const newOptions = player.getSpecOptions();
-        newOptions.weaponImbue = newValue ? WarlockWeaponImbue.GrandFirestone : WarlockWeaponImbue.NoWeaponImbue;
-        player.setSpecOptions(eventID, newOptions);
-    },
-};
-export const GrandSpellstone = {
-    id: ActionId.fromItemId(41196),
-    states: 2,
-    extraCssClasses: [
-        'GrandSpellstone-picker',
+    changeEmitter: (player) => player.changeEmitter,
+});
+export const PrimarySpellInput = InputHelpers.makeRotationEnumIconInput({
+    fieldName: 'primarySpell',
+    values: [
+        { actionId: ActionId.fromSpellId(47809), value: PrimarySpell.ShadowBolt },
+        { actionId: ActionId.fromSpellId(47838), value: PrimarySpell.Incinerate },
+        { actionId: ActionId.fromSpellId(47836), value: PrimarySpell.Seed },
     ],
-    changedEvent: (player) => player.specOptionsChangeEmitter,
-    getValue: (player) => player.getSpecOptions().weaponImbue == WarlockWeaponImbue.GrandSpellstone,
-    setValue: (eventID, player, newValue) => {
-        const newOptions = player.getSpecOptions();
-        newOptions.weaponImbue = newValue ? WarlockWeaponImbue.GrandSpellstone : WarlockWeaponImbue.NoWeaponImbue;
-        player.setSpecOptions(eventID, newOptions);
-    },
-};
-export const SummonImp = {
-    id: ActionId.fromSpellId(688),
-    states: 2,
-    extraCssClasses: [
-        'SummonImp-picker',
-    ],
-    changedEvent: (player) => player.specOptionsChangeEmitter,
-    getValue: (player) => player.getSpecOptions().summon == Summon.Imp,
-    setValue: (eventID, player, newValue) => {
-        const newOptions = player.getSpecOptions();
-        newOptions.summon = newValue ? Summon.Imp : Summon.NoSummon;
-        player.setSpecOptions(eventID, newOptions);
-    },
-};
-export const SummonSuccubus = {
-    id: ActionId.fromSpellId(712),
-    states: 2,
-    extraCssClasses: [
-        'SummonSuccubus-picker',
-    ],
-    changedEvent: (player) => player.specOptionsChangeEmitter,
-    getValue: (player) => player.getSpecOptions().summon == Summon.Succubus,
-    setValue: (eventID, player, newValue) => {
-        const newOptions = player.getSpecOptions();
-        newOptions.summon = newValue ? Summon.Succubus : Summon.NoSummon;
-        player.setSpecOptions(eventID, newOptions);
-    },
-};
-export const SummonFelhunter = {
-    id: ActionId.fromSpellId(691),
-    states: 2,
-    extraCssClasses: [
-        'SummonFelhunter-picker',
-    ],
-    changedEvent: (player) => player.specOptionsChangeEmitter,
-    getValue: (player) => player.getSpecOptions().summon == Summon.Felhunter,
-    setValue: (eventID, player, newValue) => {
-        const newOptions = player.getSpecOptions();
-        newOptions.summon = newValue ? Summon.Felhunter : Summon.NoSummon;
-        player.setSpecOptions(eventID, newOptions);
-    },
-};
-export const SummonFelguard = {
-    id: ActionId.fromSpellId(30146),
-    states: 2,
-    extraCssClasses: [
-        'SummonFelguard-picker',
-    ],
-    changedEvent: (player) => player.specOptionsChangeEmitter,
-    getValue: (player) => player.getSpecOptions().summon == Summon.Felguard,
-    setValue: (eventID, player, newValue) => {
-        const newOptions = player.getSpecOptions();
-        newOptions.summon = newValue ? Summon.Felguard : Summon.NoSummon;
-        player.setSpecOptions(eventID, newOptions);
-    },
-    showWhen: (player) => player.getTalents().summonFelguard,
-};
-export const PrimarySpellShadowBolt = {
-    id: ActionId.fromSpellId(47809),
-    states: 2,
-    extraCssClasses: [
-        'ShadowBolt-picker',
-    ],
-    changedEvent: (player) => player.rotationChangeEmitter,
-    getValue: (player) => player.getRotation().primarySpell == PrimarySpell.ShadowBolt,
     setValue: (eventID, player, newValue) => {
         const newRotation = player.getRotation();
-        newRotation.primarySpell = newValue ? PrimarySpell.ShadowBolt : PrimarySpell.ShadowBolt;
-        newRotation.preset = RotationPreset.Manual;
+        if (newValue == PrimarySpell.Seed && newRotation.corruption == true) {
+            newRotation.corruption = false;
+        }
+        newRotation.primarySpell = newValue;
         player.setRotation(eventID, newRotation);
     },
-};
-export const PrimarySpellIncinerate = {
-    id: ActionId.fromSpellId(47838),
-    states: 2,
-    extraCssClasses: [
-        'Incinerate-picker',
+});
+export const SecondaryDotInput = InputHelpers.makeRotationEnumIconInput({
+    fieldName: 'secondaryDot',
+    values: [
+        { color: 'grey', value: SecondaryDot.NoSecondaryDot },
+        { actionId: ActionId.fromSpellId(47811), value: SecondaryDot.Immolate },
+        {
+            actionId: ActionId.fromSpellId(47843), value: SecondaryDot.UnstableAffliction,
+            showWhen: (player) => player.getTalents().unstableAffliction,
+        },
     ],
-    changedEvent: (player) => player.rotationChangeEmitter,
-    getValue: (player) => player.getRotation().primarySpell == PrimarySpell.Incinerate,
-    setValue: (eventID, player, newValue) => {
-        const newRotation = player.getRotation();
-        newRotation.primarySpell = newValue ? PrimarySpell.Incinerate : PrimarySpell.ShadowBolt;
-        newRotation.preset = RotationPreset.Manual;
-        player.setRotation(eventID, newRotation);
-    },
-};
-export const PrimarySpellSeed = {
-    id: ActionId.fromSpellId(47836),
-    states: 2,
-    extraCssClasses: [
-        'Seed-picker',
+    changeEmitter: (player) => player.changeEmitter,
+});
+export const SpecSpellInput = InputHelpers.makeRotationEnumIconInput({
+    fieldName: 'specSpell',
+    values: [
+        { color: 'grey', value: SpecSpell.NoSpecSpell },
+        {
+            actionId: ActionId.fromSpellId(59164), value: SpecSpell.Haunt,
+            showWhen: (player) => player.getTalents().haunt,
+        },
+        {
+            actionId: ActionId.fromSpellId(59172), value: SpecSpell.ChaosBolt,
+            showWhen: (player) => player.getTalents().chaosBolt,
+        },
     ],
-    changedEvent: (player) => player.rotationChangeEmitter,
-    getValue: (player) => player.getRotation().primarySpell == PrimarySpell.Seed,
-    setValue: (eventID, player, newValue) => {
-        const newRotation = player.getRotation();
-        newRotation.primarySpell = newValue ? PrimarySpell.Seed : PrimarySpell.ShadowBolt;
-        newRotation.preset = RotationPreset.Manual;
-        newRotation.corruption = false;
-        player.setRotation(eventID, newRotation);
-    },
-};
-export const SecondaryDotImmolate = {
-    id: ActionId.fromSpellId(47811),
-    states: 2,
-    extraCssClasses: [
-        'Immolate-picker',
-    ],
-    changedEvent: (player) => player.rotationChangeEmitter,
-    getValue: (player) => player.getRotation().secondaryDot == SecondaryDot.Immolate,
-    setValue: (eventID, player, newValue) => {
-        const newRotation = player.getRotation();
-        newRotation.secondaryDot = newValue ? SecondaryDot.Immolate : SecondaryDot.NoSecondaryDot;
-        newRotation.preset = RotationPreset.Manual;
-        player.setRotation(eventID, newRotation);
-    },
-};
-export const SecondaryDotUnstableAffliction = {
-    id: ActionId.fromSpellId(47843),
-    states: 2,
-    extraCssClasses: [
-        'UnstableAffliction-picker',
-    ],
-    changedEvent: (player) => player.changeEmitter,
-    getValue: (player) => player.getRotation().secondaryDot == SecondaryDot.UnstableAffliction,
-    setValue: (eventID, player, newValue) => {
-        const newRotation = player.getRotation();
-        newRotation.secondaryDot = newValue ? SecondaryDot.UnstableAffliction : SecondaryDot.NoSecondaryDot;
-        newRotation.preset = RotationPreset.Manual;
-        player.setRotation(eventID, newRotation);
-    },
-    showWhen: (player) => player.getTalents().unstableAffliction,
-};
-export const SpecSpellChaosBolt = {
-    id: ActionId.fromSpellId(59172),
-    states: 2,
-    extraCssClasses: [
-        'ChaosBolt-picker',
-    ],
-    changedEvent: (player) => player.changeEmitter,
-    getValue: (player) => player.getRotation().specSpell == SpecSpell.ChaosBolt,
-    setValue: (eventID, player, newValue) => {
-        const newRotation = player.getRotation();
-        newRotation.specSpell = newValue ? SpecSpell.ChaosBolt : SpecSpell.NoSpecSpell;
-        newRotation.preset = RotationPreset.Manual;
-        player.setRotation(eventID, newRotation);
-    },
-    showWhen: (player) => player.getTalents().chaosBolt,
-};
-export const SpecSpellHaunt = {
-    id: ActionId.fromSpellId(59164),
-    states: 2,
-    extraCssClasses: [
-        'Haunt-picker',
-    ],
-    changedEvent: (player) => player.changeEmitter,
-    getValue: (player) => player.getRotation().specSpell == SpecSpell.Haunt,
-    setValue: (eventID, player, newValue) => {
-        const newRotation = player.getRotation();
-        newRotation.specSpell = newValue ? SpecSpell.Haunt : SpecSpell.NoSpecSpell;
-        newRotation.preset = RotationPreset.Manual;
-        player.setRotation(eventID, newRotation);
-    },
-    showWhen: (player) => player.getTalents().haunt,
-};
+    changeEmitter: (player) => player.changeEmitter,
+});
 export const CorruptionSpell = {
+    type: 'icon',
     id: ActionId.fromSpellId(47813),
     states: 2,
     extraCssClasses: [
@@ -237,9 +90,10 @@ export const CorruptionSpell = {
     getValue: (player) => player.getRotation().corruption,
     setValue: (eventID, player, newValue) => {
         const newRotation = player.getRotation();
+        if (newRotation.primarySpell == PrimarySpell.Seed && newValue == true) {
+            newRotation.primarySpell = PrimarySpell.ShadowBolt;
+        }
         newRotation.corruption = newValue;
-        newRotation.primarySpell = PrimarySpell.ShadowBolt;
-        newRotation.preset = RotationPreset.Manual;
         player.setRotation(eventID, newRotation);
     },
 };
@@ -247,139 +101,108 @@ export const WarlockRotationConfig = {
     inputs: [
         {
             type: 'enum',
-            getModObject: (simUI) => simUI.player,
-            config: {
-                extraCssClasses: [
-                    'rotation-type-enum-picker',
-                ],
-                label: 'Spec',
-                labelTooltip: 'Switches between spec rotation settings. Will also update talents to defaults for the selected spec.',
-                values: [
-                    {
-                        name: 'Affliction', value: RotationType.Affliction,
-                    },
-                    {
-                        name: 'Demonology', value: RotationType.Demonology,
-                    },
-                    {
-                        name: 'Destruction', value: RotationType.Destruction,
-                    },
-                ],
-                changedEvent: (player) => player.rotationChangeEmitter,
-                getValue: (player) => player.getRotation().type,
-                setValue: (eventID, player, newValue) => {
-                    var newRotation = player.getRotation();
-                    var newOptions = player.getSpecOptions();
-                    TypedEvent.freezeAllAndDo(() => {
-                        if (newValue == RotationType.Affliction) {
+            label: 'Spec',
+            labelTooltip: 'Switches between spec rotation settings. Will also update talents to defaults for the selected spec.',
+            values: [
+                { name: 'Affliction', value: RotationType.Affliction },
+                { name: 'Demonology', value: RotationType.Demonology },
+                { name: 'Destruction', value: RotationType.Destruction },
+            ],
+            changedEvent: (player) => player.rotationChangeEmitter,
+            getValue: (player) => player.getRotation().type,
+            setValue: (eventID, player, newValue) => {
+                var newRotation = player.getRotation();
+                var newOptions = player.getSpecOptions();
+                TypedEvent.freezeAllAndDo(() => {
+                    if (newValue == RotationType.Affliction) {
+                        player.setTalentsString(eventID, Presets.AfflictionTalents.data.talentsString);
+                        player.setGlyphs(eventID, Presets.AfflictionTalents.data.glyphs || Glyphs.create());
+                        newRotation = Presets.AfflictionRotation;
+                        newOptions = Presets.AfflictionOptions;
+                    }
+                    else if (newValue == RotationType.Demonology) {
+                        player.setTalentsString(eventID, Presets.DemonologyTalents.data.talentsString);
+                        player.setGlyphs(eventID, Presets.DemonologyTalents.data.glyphs || Glyphs.create());
+                        newRotation = Presets.DemonologyRotation;
+                        newOptions = Presets.DemonologyOptions;
+                    }
+                    else {
+                        player.setTalentsString(eventID, Presets.DestructionTalents.data.talentsString);
+                        player.setGlyphs(eventID, Presets.DestructionTalents.data.glyphs || Glyphs.create());
+                        newRotation = Presets.DestructionRotation;
+                        newOptions = Presets.DestructionOptions;
+                    }
+                    newRotation.type = newValue;
+                    newRotation.preset = RotationPreset.Automatic;
+                    player.setRotation(eventID, newRotation);
+                    player.setSpecOptions(eventID, newOptions);
+                });
+            },
+        },
+        {
+            type: 'enum',
+            label: 'Rotation Preset',
+            labelTooltip: 'Automatic will select the spells for you if you have the last talent in a one of the trees. Otherwise you will have to manually select the spells you want to cast.',
+            values: [
+                { name: "Manual", value: RotationPreset.Manual },
+                { name: "Automatic", value: RotationPreset.Automatic },
+            ],
+            changedEvent: (player) => player.rotationChangeEmitter,
+            getValue: (player) => player.getRotation().preset,
+            setValue: (eventID, player, newValue) => {
+                var newRotation = player.getRotation();
+                var newOptions = player.getSpecOptions();
+                TypedEvent.freezeAllAndDo(() => {
+                    if (newValue == RotationPreset.Automatic) {
+                        if (newRotation.type == RotationType.Affliction) {
                             player.setTalentsString(eventID, Presets.AfflictionTalents.data.talentsString);
                             player.setGlyphs(eventID, Presets.AfflictionTalents.data.glyphs || Glyphs.create());
                             newRotation = Presets.AfflictionRotation;
                             newOptions = Presets.AfflictionOptions;
                         }
-                        else if (newValue == RotationType.Demonology) {
+                        else if (newRotation.type == RotationType.Demonology) {
                             player.setTalentsString(eventID, Presets.DemonologyTalents.data.talentsString);
                             player.setGlyphs(eventID, Presets.DemonologyTalents.data.glyphs || Glyphs.create());
                             newRotation = Presets.DemonologyRotation;
                             newOptions = Presets.DemonologyOptions;
                         }
-                        else {
+                        else if (newRotation.type == RotationType.Destruction) {
                             player.setTalentsString(eventID, Presets.DestructionTalents.data.talentsString);
                             player.setGlyphs(eventID, Presets.DestructionTalents.data.glyphs || Glyphs.create());
                             newRotation = Presets.DestructionRotation;
                             newOptions = Presets.DestructionOptions;
                         }
-                        newRotation.type = newValue;
-                        newRotation.preset = RotationPreset.Automatic;
+                        newRotation.preset = newValue;
                         player.setRotation(eventID, newRotation);
-                        player.setSpecOptions(eventID, newOptions);
-                    });
-                },
-            },
-        },
-        {
-            type: 'enum',
-            getModObject: (simUI) => simUI.player,
-            config: {
-                extraCssClasses: [
-                    'rotation-preset-enum-picker',
-                ],
-                label: 'Rotation Preset',
-                labelTooltip: 'Automatic will select the spells for you if you have the last talent in a one of the trees. Otherwise you will have to manually select the spells you want to cast.',
-                values: [
-                    {
-                        name: "Manual", value: RotationPreset.Manual,
-                    },
-                    {
-                        name: "Automatic", value: RotationPreset.Automatic,
-                    },
-                ],
-                changedEvent: (player) => player.rotationChangeEmitter,
-                getValue: (player) => player.getRotation().preset,
-                setValue: (eventID, player, newValue) => {
-                    const newRotation = player.getRotation();
-                    newRotation.preset = newValue;
-                    player.setRotation(eventID, newRotation);
-                },
-            },
-        },
-        {
-            type: 'enum',
-            getModObject: (simUI) => simUI.player,
-            config: {
-                extraCssClasses: [
-                    'curse-enum-picker',
-                ],
-                label: 'Curse',
-                labelTooltip: 'Manual curse selection. Choice ignored for an Automatic Rotation.',
-                values: [
-                    {
-                        name: "None", value: Curse.NoCurse,
-                    },
-                    {
-                        name: "Elements", value: Curse.Elements,
-                    },
-                    {
-                        name: "Weakness", value: Curse.Weakness,
-                    },
-                    {
-                        name: "Doom", value: Curse.Doom,
-                    },
-                    {
-                        name: "Agony", value: Curse.Agony,
-                    },
-                    {
-                        name: "Tongues", value: Curse.Tongues,
                     }
-                ],
-                changedEvent: (player) => player.rotationChangeEmitter,
-                getValue: (player) => player.getRotation().curse,
-                setValue: (eventID, player, newValue) => {
-                    const newRotation = player.getRotation();
-                    newRotation.curse = newValue;
-                    newRotation.preset = RotationPreset.Manual;
-                    player.setRotation(eventID, newRotation);
-                },
+                });
             },
         },
         {
-            type: 'boolean',
-            getModObject: (simUI) => simUI.player,
-            config: {
-                extraCssClasses: [
-                    'detonate-seed-picker',
-                ],
-                label: 'Detonate Seed on Cast',
-                labelTooltip: 'Simulates raid doing damage to targets such that seed detonates immediately on cast.',
-                changedEvent: (player) => player.rotationChangeEmitter,
-                getValue: (player) => player.getRotation().detonateSeed,
-                setValue: (eventID, player, newValue) => {
-                    const newRotation = player.getRotation();
-                    newRotation.detonateSeed = newValue;
-                    player.setRotation(eventID, newRotation);
-                },
-                showWhen: (player) => player.getRotation().primarySpell == PrimarySpell.Seed,
+            type: 'enum',
+            label: 'Curse',
+            labelTooltip: 'Manual curse selection.',
+            values: [
+                { name: "None", value: Curse.NoCurse },
+                { name: "Elements", value: Curse.Elements },
+                { name: "Weakness", value: Curse.Weakness },
+                { name: "Doom", value: Curse.Doom },
+                { name: "Agony", value: Curse.Agony },
+                { name: "Tongues", value: Curse.Tongues }
+            ],
+            changedEvent: (player) => player.rotationChangeEmitter,
+            getValue: (player) => player.getRotation().curse,
+            setValue: (eventID, player, newValue) => {
+                const newRotation = player.getRotation();
+                newRotation.curse = newValue;
+                player.setRotation(eventID, newRotation);
             },
         },
+        InputHelpers.makeRotationBooleanInput({
+            fieldName: 'detonateSeed',
+            label: 'Detonate Seed on Cast',
+            labelTooltip: 'Simulates raid doing damage to targets such that seed detonates immediately on cast.',
+            showWhen: (player) => player.getRotation().primarySpell == PrimarySpell.Seed,
+        }),
     ],
 };

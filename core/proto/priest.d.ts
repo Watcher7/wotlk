@@ -409,6 +409,23 @@ export interface ShadowPriest_Options {
      * @generated from protobuf field: bool use_shadowfiend = 1;
      */
     useShadowfiend: boolean;
+    /**
+     * @generated from protobuf field: proto.ShadowPriest.Options.Armor armor = 2;
+     */
+    armor: ShadowPriest_Options_Armor;
+}
+/**
+ * @generated from protobuf enum proto.ShadowPriest.Options.Armor
+ */
+export declare enum ShadowPriest_Options_Armor {
+    /**
+     * @generated from protobuf enum value: NoArmor = 0;
+     */
+    NoArmor = 0,
+    /**
+     * @generated from protobuf enum value: InnerFire = 1;
+     */
+    InnerFire = 1
 }
 /**
  * @generated from protobuf message proto.SmitePriest

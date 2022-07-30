@@ -13,6 +13,7 @@ export class AssignmentsPicker extends Component {
         this.raidSimUI = raidSimUI;
         this.innervatesPicker = new InnervatesPicker(this.rootElem, raidSimUI);
         this.powerInfusionsPicker = new PowerInfusionsPicker(this.rootElem, raidSimUI);
+        this.tricksOfTheTradesPicker = new TricksOfTheTradesPicker(this.rootElem, raidSimUI);
     }
 }
 ;
@@ -150,5 +151,27 @@ class PowerInfusionsPicker extends AssignedBuffPicker {
     }
     setBuffBotValue(eventID, buffBot, newValue) {
         buffBot.setPowerInfusionAssignment(eventID, newValue);
+    }
+}
+class TricksOfTheTradesPicker extends AssignedBuffPicker {
+    getTitle() {
+        return 'Tricks of the Trades';
+    }
+    getSourcePlayers() {
+        return this.raidSimUI.getPlayersAndBuffBots().filter(playerOrBot => playerOrBot?.getClass() == Class.ClassRogue);
+    }
+    getPlayerValue(player) {
+        return player.getSpecOptions().tricksOfTheTradeTarget || emptyRaidTarget();
+    }
+    setPlayerValue(eventID, player, newValue) {
+        const newOptions = player.getSpecOptions();
+        newOptions.tricksOfTheTradeTarget = newValue;
+        player.setSpecOptions(eventID, newOptions);
+    }
+    getBuffBotValue(buffBot) {
+        return buffBot.getTricksOfTheTradeAssignment();
+    }
+    setBuffBotValue(eventID, buffBot, newValue) {
+        buffBot.setTricksOfTheTradeAssignment(eventID, newValue);
     }
 }

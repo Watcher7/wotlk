@@ -3,7 +3,7 @@ import { newTalentsConfig } from './talents_picker.js';
 export const warlockTalentsConfig = newTalentsConfig([
     {
         name: "Affliction",
-        backgroundUrl: "https://wow.zamimg.com/images/wow/talents/backgrounds/wotlk/302.jpg",
+        backgroundUrl: "https://wow.zamimg.com/images/wow/talents/backgrounds/wrath/302.jpg",
         talents: [
             {
                 fieldName: "improvedCurseOfAgony",
@@ -375,7 +375,7 @@ export const warlockTalentsConfig = newTalentsConfig([
     },
     {
         name: "Demonology",
-        backgroundUrl: "https://wow.zamimg.com/images/wow/talents/backgrounds/wotlk/303.jpg",
+        backgroundUrl: "https://wow.zamimg.com/images/wow/talents/backgrounds/wrath/303.jpg",
         talents: [
             {
                 fieldName: "improvedHealthstone",
@@ -746,7 +746,7 @@ export const warlockTalentsConfig = newTalentsConfig([
     },
     {
         name: "Destruction",
-        backgroundUrl: "https://wow.zamimg.com/images/wow/talents/backgrounds/wotlk/301.jpg",
+        backgroundUrl: "https://wow.zamimg.com/images/wow/talents/backgrounds/wrath/301.jpg",
         talents: [
             {
                 fieldName: "improvedShadowBolt",

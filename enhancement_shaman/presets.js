@@ -6,7 +6,7 @@ import { Potions } from '/wotlk/core/proto/common.js';
 import { WeaponImbue } from '/wotlk/core/proto/common.js';
 import { SavedTalents } from '/wotlk/core/proto/ui.js';
 import { EnhancementShaman_Rotation as EnhancementShamanRotation, EnhancementShaman_Options as EnhancementShamanOptions, ShamanShield } from '/wotlk/core/proto/shaman.js';
-import { AirTotem, EarthTotem, FireTotem, WaterTotem, EnhancementShaman_Rotation_PrimaryShock as PrimaryShock, ShamanTotems, } from '/wotlk/core/proto/shaman.js';
+import { AirTotem, EarthTotem, FireTotem, WaterTotem, ShamanTotems, } from '/wotlk/core/proto/shaman.js';
 import * as Tooltips from '/wotlk/core/constants/tooltips.js';
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
@@ -14,15 +14,9 @@ import * as Tooltips from '/wotlk/core/constants/tooltips.js';
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wowhead.com/wotlk/talent-calc and copy the numbers in the url.
 export const StandardTalents = {
-    name: 'Ele Sub',
+    name: 'Standard',
     data: SavedTalents.create({
-        talentsString: '250030502-502500210501133531151',
-    }),
-};
-export const RestoSubspecTalents = {
-    name: 'Resto Sub',
-    data: SavedTalents.create({
-        talentsString: '02-502500210502133531151-05005301',
+        talentsString: '053030152-30205023105021333031131031051',
     }),
 };
 export const DefaultRotation = EnhancementShamanRotation.create({
@@ -32,7 +26,6 @@ export const DefaultRotation = EnhancementShamanRotation.create({
         fire: FireTotem.SearingTotem,
         water: WaterTotem.ManaSpringTotem,
     }),
-    primaryShock: PrimaryShock.Frost,
 });
 export const DefaultOptions = EnhancementShamanOptions.create({
     shield: ShamanShield.LightningShield,
@@ -44,7 +37,7 @@ export const DefaultConsumes = Consumes.create({
     flask: Flask.FlaskOfRelentlessAssault,
     food: Food.FoodRoastedClefthoof,
     mainHandImbue: WeaponImbue.WeaponImbueShamanWindfury,
-    offHandImbue: WeaponImbue.WeaponImbueShamanWindfury,
+    offHandImbue: WeaponImbue.WeaponImbueShamanFlametongue,
 });
 export const P1_PRESET = {
     name: 'P1 Preset',

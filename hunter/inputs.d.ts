@@ -1,96 +1,12 @@
 import { Spec } from '/wotlk/core/proto/common.js';
-import { ActionId } from '/wotlk/core/proto_utils/action_id.js';
 import { Player } from '/wotlk/core/player.js';
-import { IndividualSimUI } from '/wotlk/core/individual_sim_ui.js';
-import { EventID, TypedEvent } from '/wotlk/core/typed_event.js';
-import { Hunter_Rotation_StingType as StingType, Hunter_Options_Ammo as Ammo } from '/wotlk/core/proto/hunter.js';
-export declare const WeaponAmmo: {
-    extraCssClasses: string[];
-    numColumns: number;
-    values: ({
-        color: string;
-        value: Ammo;
-        actionId?: undefined;
-    } | {
-        actionId: ActionId;
-        value: Ammo;
-        color?: undefined;
-    })[];
-    equals: (a: Ammo, b: Ammo) => boolean;
-    zeroValue: Ammo;
-    changedEvent: (player: Player<Spec.SpecHunter>) => TypedEvent<void>;
-    getValue: (player: Player<Spec.SpecHunter>) => Ammo;
-    setValue: (eventID: EventID, player: Player<Spec.SpecHunter>, newValue: number) => void;
-};
-export declare const LatencyMs: {
-    type: "number";
-    getModObject: (simUI: IndividualSimUI<any>) => Player<any>;
-    config: {
-        extraCssClasses: string[];
-        label: string;
-        labelTooltip: string;
-        changedEvent: (player: Player<Spec.SpecHunter>) => TypedEvent<void>;
-        getValue: (player: Player<Spec.SpecHunter>) => number;
-        setValue: (eventID: EventID, player: Player<Spec.SpecHunter>, newValue: number) => void;
-    };
-};
-export declare const PetTypeInput: {
-    type: "enum";
-    getModObject: (simUI: IndividualSimUI<any>) => Player<any>;
-    config: import("/wotlk/core/components/enum_picker.js").EnumPickerConfig<Player<Spec.SpecHunter>>;
-};
-export declare const PetUptime: {
-    type: "number";
-    getModObject: (simUI: IndividualSimUI<any>) => Player<any>;
-    config: {
-        extraCssClasses: string[];
-        label: string;
-        labelTooltip: string;
-        changedEvent: (player: Player<Spec.SpecHunter>) => TypedEvent<void>;
-        getValue: (player: Player<Spec.SpecHunter>) => number;
-        setValue: (eventID: EventID, player: Player<Spec.SpecHunter>, newValue: number) => void;
-    };
-};
-export declare const SniperTrainingUptime: {
-    type: "number";
-    getModObject: (simUI: IndividualSimUI<any>) => Player<any>;
-    config: {
-        extraCssClasses: string[];
-        label: string;
-        labelTooltip: string;
-        changedEvent: (player: Player<Spec.SpecHunter>) => TypedEvent<void>;
-        getValue: (player: Player<Spec.SpecHunter>) => number;
-        setValue: (eventID: EventID, player: Player<Spec.SpecHunter>, newValue: number) => void;
-        showWhen: (player: Player<Spec.SpecHunter>) => boolean;
-    };
-};
+import * as InputHelpers from '/wotlk/core/components/input_helpers.js';
+import { Hunter_Options_Ammo as Ammo, Hunter_Options_PetType as PetType } from '/wotlk/core/proto/hunter.js';
+export declare const WeaponAmmo: InputHelpers.TypedIconEnumPickerConfig<Player<Spec.SpecHunter>, Ammo>;
+export declare const LatencyMs: InputHelpers.TypedNumberPickerConfig<Player<Spec.SpecHunter>>;
+export declare const PetTypeInput: InputHelpers.TypedIconEnumPickerConfig<Player<Spec.SpecHunter>, PetType>;
+export declare const PetUptime: InputHelpers.TypedNumberPickerConfig<Player<Spec.SpecHunter>>;
+export declare const SniperTrainingUptime: InputHelpers.TypedNumberPickerConfig<Player<Spec.SpecHunter>>;
 export declare const HunterRotationConfig: {
-    inputs: ({
-        type: "enum";
-        cssClass: string;
-        getModObject: (simUI: IndividualSimUI<any>) => Player<any>;
-        config: {
-            label: string;
-            labelTooltip: string;
-            values: {
-                name: string;
-                value: StingType;
-            }[];
-            changedEvent: (player: Player<Spec.SpecHunter>) => TypedEvent<void>;
-            getValue: (player: Player<Spec.SpecHunter>) => StingType;
-            setValue: (eventID: EventID, player: Player<Spec.SpecHunter>, newValue: number) => void;
-        };
-    } | {
-        type: "number";
-        cssClass: string;
-        getModObject: (simUI: IndividualSimUI<any>) => Player<any>;
-        config: {
-            label: string;
-            labelTooltip: string;
-            changedEvent: (player: Player<Spec.SpecHunter>) => TypedEvent<void>;
-            getValue: (player: Player<Spec.SpecHunter>) => number;
-            setValue: (eventID: EventID, player: Player<Spec.SpecHunter>, newValue: number) => void;
-            values?: undefined;
-        };
-    })[];
+    inputs: (InputHelpers.TypedNumberPickerConfig<Player<Spec.SpecHunter>> | InputHelpers.TypedEnumPickerConfig<Player<Spec.SpecHunter>>)[];
 };

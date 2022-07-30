@@ -34,7 +34,7 @@ export class Sim {
         this.showExperimental = false;
         // Database
         this.items = {};
-        this.enchants = {};
+        this.enchants = [];
         this.gems = {};
         this.presetEncounters = {};
         this.presetTargets = {};
@@ -48,6 +48,7 @@ export class Sim {
         this.showMatchingGemsChangeEmitter = new TypedEvent();
         this.showThreatMetricsChangeEmitter = new TypedEvent();
         this.showExperimentalChangeEmitter = new TypedEvent();
+        this.crashEmitter = new TypedEvent();
         // Fires when a raid sim API call completes.
         this.simResultEmitter = new TypedEvent();
         this.lastUsedRngSeed = 0;
@@ -56,7 +57,8 @@ export class Sim {
         this.workerPool = new WorkerPool(3);
         this._initPromise = this.workerPool.getGearList(GearListRequest.create()).then(result => {
             result.items.forEach(item => this.items[item.id] = item);
-            result.enchants.forEach(enchant => this.enchants[enchant.id] = enchant);
+            // result.enchants.forEach(enchant => this.enchants[enchant.id] = enchant);
+            this.enchants = result.enchants;
             result.gems.forEach(gem => this.gems[gem.id] = gem);
             result.encounters.forEach(encounter => this.presetEncounters[encounter.path] = encounter);
             result.encounters.map(e => e.targets).flat().forEach(target => this.presetTargets[target.path] = target);
@@ -140,47 +142,10 @@ export class Sim {
         const request = this.makeRaidSimRequest(false);
         var result = await this.workerPool.raidSimAsync(request, onProgress);
         if (result.errorResult != "") {
-            this.handleError(result.errorResult, this.encodeSimReq(request));
-            return;
+            throw new SimError(result.errorResult);
         }
         const simResult = await SimResult.makeNew(request, result);
         this.simResultEmitter.emit(eventID, simResult);
-    }
-    encodeSimReq(req) {
-        const protoBytes = RaidSimRequest.toBinary(req);
-        const deflated = pako.deflate(protoBytes, { to: 'string' });
-        return btoa(String.fromCharCode(...deflated));
-    }
-    handleError(errorStr, extra) {
-        if (window.confirm("Simulation Failure:\n" + errorStr + "\nPress Ok to file crash report")) {
-            // Splice out just the line numbers
-            var filteredError = errorStr.substring(0, errorStr.indexOf("Stack Trace:"));
-            const rExp = /(.*\.go:\d+)/g;
-            filteredError += errorStr.match(rExp)?.join(" ");
-            var hash = this.hashCode(filteredError);
-            fetch('https://api.github.com/search/issues?q=is:issue+is:open+repo:wowsims/wotlk+' + hash).then(resp => {
-                resp.json().then((issues) => {
-                    if (issues.total_count > 0) {
-                        window.open(issues.items[0].html_url, "_blank");
-                    }
-                    else {
-                        window.open("https://github.com/wowsims/wotlk/issues/new?assignees=&labels=&title=Crash%20Report%20" + hash + "&body=" + encodeURIComponent(errorStr + "\n\nRequest:\n" + extra), '_blank');
-                    }
-                });
-            }).catch(fetchErr => {
-                alert("Failed to file report... try again another time:" + fetchErr);
-            });
-        }
-        return;
-    }
-    hashCode(str) {
-        let hash = 0;
-        for (let i = 0, len = str.length; i < len; i++) {
-            let chr = str.charCodeAt(i);
-            hash = (hash << 5) - hash + chr;
-            hash |= 0; // Convert to 32bit integer
-        }
-        return hash;
     }
     async runRaidSimWithLogs(eventID) {
         if (this.raid.isEmpty()) {
@@ -193,7 +158,7 @@ export class Sim {
         const request = this.makeRaidSimRequest(true);
         const result = await this.workerPool.raidSimAsync(request, () => { });
         if (result.errorResult != "") {
-            this.handleError(result.errorResult, this.encodeSimReq(request));
+            throw new SimError(result.errorResult);
         }
         const simResult = await SimResult.makeNew(request, result);
         this.simResultEmitter.emit(eventID, simResult);
@@ -213,18 +178,13 @@ export class Sim {
         const req = ComputeStatsRequest.create({ raid: this.getModifiedRaidProto() });
         const result = await this.workerPool.computeStats(req);
         if (result.errorResult != "") {
-            this.handleError(result.errorResult, this.encodeComputeStatsReq(req));
+            this.crashEmitter.emit(eventID, new SimError(result.errorResult));
             return;
         }
         TypedEvent.freezeAllAndDo(() => {
             result.raidStats.parties
                 .forEach((partyStats, partyIndex) => partyStats.players.forEach((playerStats, playerIndex) => players[partyIndex * 5 + playerIndex]?.setCurrentStats(eventID, playerStats)));
         });
-    }
-    encodeComputeStatsReq(req) {
-        const protoBytes = ComputeStatsRequest.toBinary(req);
-        const deflated = pako.deflate(protoBytes, { to: 'string' });
-        return btoa(String.fromCharCode(...deflated));
     }
     async statWeights(player, epStats, epReferenceStat, onProgress) {
         if (this.raid.isEmpty()) {
@@ -401,7 +361,7 @@ export class Sim {
         const item = this.items[itemSpec.id];
         if (!item)
             return null;
-        const enchant = this.enchants[itemSpec.enchant] || null;
+        const enchant = itemSpec.enchant > 0 ? this.enchants.find(e => (e.id == itemSpec.enchant && e.type == item.type)) : null;
         const gems = itemSpec.gems.map(gemId => this.gems[gemId] || null);
         return new EquippedItem(item, enchant, gems);
     }
@@ -451,3 +411,9 @@ export class Sim {
     }
 }
 Sim.MAX_RNG_SEED = Math.pow(2, 32) - 1;
+export class SimError extends Error {
+    constructor(errorStr) {
+        super(errorStr);
+        this.errorStr = errorStr;
+    }
+}

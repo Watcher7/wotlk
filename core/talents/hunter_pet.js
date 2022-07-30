@@ -2,61 +2,51 @@ import { HunterPetTalents, Hunter_Options_PetType as PetType } from '/wotlk/core
 import { Component } from '/wotlk/core/components/component.js';
 import { SavedDataManager } from '/wotlk/core/components/saved_data_manager.js';
 import { TypedEvent } from '/wotlk/core/typed_event.js';
+import { ActionId } from '/wotlk/core/proto_utils/action_id.js';
 import { TalentsPicker, newTalentsConfig } from './talents_picker.js';
 import { protoToTalentString, talentStringToProto } from './factory.js';
+import * as InputHelpers from '/wotlk/core/components/input_helpers.js';
 export function makePetTypeInputConfig(includeLabel) {
-    return {
-        extraCssClasses: [
-            'pet-type-picker',
-        ],
-        label: includeLabel ? 'Pet' : '',
+    return InputHelpers.makeSpecOptionsEnumIconInput({
+        fieldName: 'petType',
+        numColumns: 5,
+        //label: includeLabel ? 'Pet' : '',
         values: [
-            { name: 'None', value: PetType.PetNone },
-            { name: 'Bat', value: PetType.Bat },
-            { name: 'Bear', value: PetType.Bear },
-            { name: 'Bird of Prey', value: PetType.BirdOfPrey },
-            { name: 'Boar', value: PetType.Boar },
-            { name: 'Carrion Bird', value: PetType.CarrionBird },
-            { name: 'Cat', value: PetType.Cat },
-            { name: 'Cat', value: PetType.Cat },
-            { name: 'Chimaera', value: PetType.Chimaera },
-            { name: 'Core Hound', value: PetType.CoreHound },
-            { name: 'Crab', value: PetType.Crab },
-            { name: 'Crab', value: PetType.Crab },
-            { name: 'Crocolisk', value: PetType.Crocolisk },
-            { name: 'Devilsaur', value: PetType.Devilsaur },
-            { name: 'Dragonhawk', value: PetType.Dragonhawk },
-            { name: 'Gorilla', value: PetType.Gorilla },
-            { name: 'Hyena', value: PetType.Hyena },
-            { name: 'Moth', value: PetType.Moth },
-            { name: 'Nether Ray', value: PetType.NetherRay },
-            { name: 'Raptor', value: PetType.Raptor },
-            { name: 'Raptor', value: PetType.Raptor },
-            { name: 'Ravager', value: PetType.Ravager },
-            { name: 'Ravager', value: PetType.Ravager },
-            { name: 'Rhino', value: PetType.Rhino },
-            { name: 'Scorpid', value: PetType.Scorpid },
-            { name: 'Serpent', value: PetType.Serpent },
-            { name: 'Silithid', value: PetType.Silithid },
-            { name: 'Spider', value: PetType.Spider },
-            { name: 'Spirit Beast', value: PetType.SpiritBeast },
-            { name: 'Spore Bat', value: PetType.SporeBat },
-            { name: 'Tallstrider', value: PetType.Tallstrider },
-            { name: 'Turtle', value: PetType.Turtle },
-            { name: 'Warp Stalker', value: PetType.WarpStalker },
-            { name: 'Wasp', value: PetType.Wasp },
-            { name: 'Wind Serpent', value: PetType.WindSerpent },
-            { name: 'Wolf', value: PetType.Wolf },
-            { name: 'Worm', value: PetType.Worm },
+            { color: 'grey', value: PetType.PetNone },
+            { actionId: ActionId.fromPetName('Bat'), tooltip: 'Bat', value: PetType.Bat },
+            { actionId: ActionId.fromPetName('Bear'), tooltip: 'Bear', value: PetType.Bear },
+            { actionId: ActionId.fromPetName('Bird of Prey'), tooltip: 'Bird of Prey', value: PetType.BirdOfPrey },
+            { actionId: ActionId.fromPetName('Boar'), tooltip: 'Boar', value: PetType.Boar },
+            { actionId: ActionId.fromPetName('Carrion Bird'), tooltip: 'Carrion Bird', value: PetType.CarrionBird },
+            { actionId: ActionId.fromPetName('Cat'), tooltip: 'Cat', value: PetType.Cat },
+            { actionId: ActionId.fromPetName('Chimaera'), tooltip: 'Chimaera (Exotic)', value: PetType.Chimaera },
+            { actionId: ActionId.fromPetName('Core Hound'), tooltip: 'Core Hound (Exotic)', value: PetType.CoreHound },
+            { actionId: ActionId.fromPetName('Crab'), tooltip: 'Crab', value: PetType.Crab },
+            { actionId: ActionId.fromPetName('Crocolisk'), tooltip: 'Crocolisk', value: PetType.Crocolisk },
+            { actionId: ActionId.fromPetName('Devilsaur'), tooltip: 'Devilsaur (Exotic)', value: PetType.Devilsaur },
+            { actionId: ActionId.fromPetName('Dragonhawk'), tooltip: 'Dragonhawk', value: PetType.Dragonhawk },
+            { actionId: ActionId.fromPetName('Gorilla'), tooltip: 'Gorilla', value: PetType.Gorilla },
+            { actionId: ActionId.fromPetName('Hyena'), tooltip: 'Hyena', value: PetType.Hyena },
+            { actionId: ActionId.fromPetName('Moth'), tooltip: 'Moth', value: PetType.Moth },
+            { actionId: ActionId.fromPetName('Nether Ray'), tooltip: 'Nether Ray', value: PetType.NetherRay },
+            { actionId: ActionId.fromPetName('Raptor'), tooltip: 'Raptor', value: PetType.Raptor },
+            { actionId: ActionId.fromPetName('Ravager'), tooltip: 'Ravager', value: PetType.Ravager },
+            { actionId: ActionId.fromPetName('Rhino'), tooltip: 'Rhino', value: PetType.Rhino },
+            { actionId: ActionId.fromPetName('Scorpid'), tooltip: 'Scorpid', value: PetType.Scorpid },
+            { actionId: ActionId.fromPetName('Serpent'), tooltip: 'Serpent', value: PetType.Serpent },
+            { actionId: ActionId.fromPetName('Silithid'), tooltip: 'Silithid (Exotic)', value: PetType.Silithid },
+            { actionId: ActionId.fromPetName('Spider'), tooltip: 'Spider', value: PetType.Spider },
+            { actionId: ActionId.fromPetName('Spirit Beast'), tooltip: 'Spirit Beast (Exotic)', value: PetType.SpiritBeast },
+            { actionId: ActionId.fromPetName('Spore Bat'), tooltip: 'Spore Bat', value: PetType.SporeBat },
+            { actionId: ActionId.fromPetName('Tallstrider'), tooltip: 'Tallstrider', value: PetType.Tallstrider },
+            { actionId: ActionId.fromPetName('Turtle'), tooltip: 'Turtle', value: PetType.Turtle },
+            { actionId: ActionId.fromPetName('Warp Stalker'), tooltip: 'Warp Stalker', value: PetType.WarpStalker },
+            { actionId: ActionId.fromPetName('Wasp'), tooltip: 'Wasp', value: PetType.Wasp },
+            { actionId: ActionId.fromPetName('Wind Serpent'), tooltip: 'Wind Serpent', value: PetType.WindSerpent },
+            { actionId: ActionId.fromPetName('Wolf'), tooltip: 'Wolf', value: PetType.Wolf },
+            { actionId: ActionId.fromPetName('Worm'), tooltip: 'Worm (Exotic)', value: PetType.Worm },
         ],
-        changedEvent: (player) => player.specOptionsChangeEmitter,
-        getValue: (player) => player.getSpecOptions().petType,
-        setValue: (eventID, player, newValue) => {
-            const newOptions = player.getSpecOptions();
-            newOptions.petType = newValue;
-            player.setSpecOptions(eventID, newOptions);
-        },
-    };
+    });
 }
 var PetCategory;
 (function (PetCategory) {

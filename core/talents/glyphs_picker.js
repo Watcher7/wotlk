@@ -2,6 +2,7 @@ import { ItemQuality } from '/wotlk/core/proto/common.js';
 import { ActionId } from '/wotlk/core/proto_utils/action_id.js';
 import { setItemQualityCssClass } from '/wotlk/core/css_utils.js';
 import { TypedEvent } from '/wotlk/core/typed_event.js';
+import { stringComparator } from '/wotlk/core/utils.js';
 import { Component } from '/wotlk/core/components/component.js';
 import { Input } from '/wotlk/core/components/input.js';
 import { Popup } from '/wotlk/core/components/popup.js';
@@ -22,6 +23,8 @@ export class GlyphsPicker extends Component {
         const minorGlyphs = Object.keys(glyphsConfig.minorGlyphs).map(idStr => Number(idStr));
         const majorGlyphsData = majorGlyphs.map(glyph => this.getGlyphData(glyph));
         const minorGlyphsData = minorGlyphs.map(glyph => this.getGlyphData(glyph));
+        majorGlyphsData.sort((a, b) => stringComparator(a.name, b.name));
+        minorGlyphsData.sort((a, b) => stringComparator(a.name, b.name));
         this.majorGlyphPickers = ['major1', 'major2', 'major3'].map(glyphField => new GlyphPicker(this.rootElem, player, majorGlyphsData, glyphField, true));
         this.minorGlyphPickers = ['minor1', 'minor2', 'minor3'].map(glyphField => new GlyphPicker(this.rootElem, player, minorGlyphsData, glyphField, false));
     }
@@ -86,6 +89,7 @@ class GlyphSelectorModal extends Popup {
     constructor(parent, glyphPicker, glyphOptions) {
         super(parent);
         this.rootElem.classList.add('selector-modal');
+        this.rootElem.classList.add('glyph-modal');
         this.rootElem.innerHTML = `
 			<div class="selector-modal-tab-content-header">
 				<input class="selector-modal-search" type="text" placeholder="Search...">

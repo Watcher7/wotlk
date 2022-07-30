@@ -1,9 +1,9 @@
 import { Spec } from '/wotlk/core/proto/common.js';
-import { HunterPetTalents } from '/wotlk/core/proto/hunter.js';
+import { HunterPetTalents, Hunter_Options_PetType as PetType } from '/wotlk/core/proto/hunter.js';
 import { Player } from '/wotlk/core/player.js';
 import { Component } from '/wotlk/core/components/component.js';
-import { EnumPickerConfig } from '/wotlk/core/components/enum_picker.js';
-export declare function makePetTypeInputConfig(includeLabel: boolean): EnumPickerConfig<Player<Spec.SpecHunter>>;
+import * as InputHelpers from '/wotlk/core/components/input_helpers.js';
+export declare function makePetTypeInputConfig(includeLabel: boolean): InputHelpers.TypedIconEnumPickerConfig<Player<Spec.SpecHunter>, PetType>;
 declare enum PetCategory {
     Cunning = 0,
     Ferocity = 1,

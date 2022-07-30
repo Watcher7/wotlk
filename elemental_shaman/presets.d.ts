@@ -6,14 +6,20 @@ export declare const StandardTalents: {
     name: string;
     data: SavedTalents;
 };
-export declare const RestoTalents: {
-    name: string;
-    data: SavedTalents;
-};
 export declare const DefaultRotation: ElementalShamanRotation;
 export declare const DefaultOptions: ElementalShamanOptions;
 export declare const DefaultConsumes: Consumes;
+export declare const SWP_PRESET: {
+    name: string;
+    tooltip: string;
+    gear: EquipmentSpec;
+};
 export declare const PRE_RAID_PRESET: {
+    name: string;
+    tooltip: string;
+    gear: EquipmentSpec;
+};
+export declare const P1_PRESET: {
     name: string;
     tooltip: string;
     gear: EquipmentSpec;

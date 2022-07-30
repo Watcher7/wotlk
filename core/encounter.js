@@ -8,6 +8,7 @@ export class Encounter {
         this.duration = 180;
         this.durationVariation = 5;
         this.executeProportion20 = 0.2;
+        this.executeProportion25 = 0.25;
         this.executeProportion35 = 0.35;
         this.useHealth = false;
         this.targetsChangeEmitter = new TypedEvent();
@@ -51,6 +52,15 @@ export class Encounter {
         if (newExecuteProportion20 == this.executeProportion20)
             return;
         this.executeProportion20 = newExecuteProportion20;
+        this.executeProportionChangeEmitter.emit(eventID);
+    }
+    getExecuteProportion25() {
+        return this.executeProportion25;
+    }
+    setExecuteProportion25(eventID, newExecuteProportion25) {
+        if (newExecuteProportion25 == this.executeProportion25)
+            return;
+        this.executeProportion25 = newExecuteProportion25;
         this.executeProportionChangeEmitter.emit(eventID);
     }
     getExecuteProportion35() {
@@ -108,6 +118,7 @@ export class Encounter {
             duration: this.duration,
             durationVariation: this.durationVariation,
             executeProportion20: this.executeProportion20,
+            executeProportion25: this.executeProportion25,
             executeProportion35: this.executeProportion35,
             useHealth: this.useHealth,
             targets: this.targets.map(target => target.toProto()),
@@ -118,6 +129,7 @@ export class Encounter {
             this.setDuration(eventID, proto.duration);
             this.setDurationVariation(eventID, proto.durationVariation);
             this.setExecuteProportion20(eventID, proto.executeProportion20);
+            this.setExecuteProportion25(eventID, proto.executeProportion25);
             this.setExecuteProportion35(eventID, proto.executeProportion35);
             this.setUseHealth(eventID, proto.useHealth);
             if (proto.targets.length > 0) {
@@ -137,6 +149,7 @@ export class Encounter {
             duration: 180,
             durationVariation: 5,
             executeProportion20: 0.2,
+            executeProportion25: 0.25,
             executeProportion35: 0.35,
             targets: [Target.defaultProto()],
         }));

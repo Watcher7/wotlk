@@ -348,6 +348,18 @@ export interface RetributionPaladin {
  * @generated from protobuf message proto.RetributionPaladin.Rotation
  */
 export interface RetributionPaladin_Rotation {
+    /**
+     * @generated from protobuf field: int32 exo_slack = 1;
+     */
+    exoSlack: number;
+    /**
+     * @generated from protobuf field: int32 cons_slack = 2;
+     */
+    consSlack: number;
+    /**
+     * @generated from protobuf field: double divine_plea_percentage = 3;
+     */
+    divinePleaPercentage: number;
 }
 /**
  * @generated from protobuf message proto.RetributionPaladin.Options
@@ -373,6 +385,10 @@ export interface RetributionPaladin_Options {
      * @generated from protobuf field: bool use_avenging_wrath = 5;
      */
     useAvengingWrath: boolean;
+    /**
+     * @generated from protobuf field: bool use_divine_plea = 6;
+     */
+    useDivinePlea: boolean;
 }
 /**
  * @generated from protobuf message proto.ProtectionPaladin

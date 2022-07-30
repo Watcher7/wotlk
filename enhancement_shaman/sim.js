@@ -57,9 +57,9 @@ export class EnhancementShamanSimUI extends IndividualSimUI {
                 gear: Presets.P1_PRESET.gear,
                 // Default EP weights for sorting gear in the gear picker.
                 epWeights: Stats.fromMap({
-                    [Stat.StatIntellect]: 0.078,
-                    [Stat.StatAgility]: 1.317,
-                    [Stat.StatStrength]: 2.2,
+                    [Stat.StatIntellect]: 1.378,
+                    [Stat.StatAgility]: 1.517,
+                    [Stat.StatStrength]: 1.1,
                     [Stat.StatSpellPower]: 0.433,
                     [Stat.StatNatureSpellPower]: 0.216,
                     [Stat.StatAttackPower]: 1.0,
@@ -101,21 +101,18 @@ export class EnhancementShamanSimUI extends IndividualSimUI {
                     misery: true,
                 }),
             },
-            // IconInputs to include in the 'Self Buffs' section on the settings tab.
-            selfBuffInputs: [
-                ShamanInputs.IconWaterShield,
-                ShamanInputs.IconLightningShield,
-                ShamanInputs.IconBloodlust,
+            // IconInputs to include in the 'Player' section on the settings tab.
+            playerIconInputs: [
+                ShamanInputs.ShamanShieldInput,
+                ShamanInputs.Bloodlust,
+                ShamanInputs.ShamanImbueMH,
+                ShamanInputs.ShamanImbueOH,
             ],
-            //	weaponImbues: [
-            //		WeaponImbue.WeaponImbueShamanWindfury,
-            //		WeaponImbue.WeaponImbueShamanFlametongue,
-            //		WeaponImbue.WeaponImbueShamanFrostbrand,
-            //		WeaponImbue.WeaponImbueShamanRockbiter,
-            //		WeaponImbue.WeaponImbueRighteousWeaponCoating,
-            //	],
             // Inputs to include in the 'Rotation' section on the settings tab.
             rotationInputs: ShamanInputs.EnhancementShamanRotationConfig,
+            // Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
+            includeBuffDebuffInputs: [],
+            excludeBuffDebuffInputs: [],
             // Inputs to include in the 'Other' section on the settings tab.
             otherInputs: {
                 inputs: [
@@ -129,10 +126,6 @@ export class EnhancementShamanSimUI extends IndividualSimUI {
                 TotemsSection,
             ],
             encounterPicker: {
-                // Target stats to show for 'Simple' encounters.
-                simpleTargetStats: [
-                    Stat.StatArmor,
-                ],
                 // Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
                 showExecuteProportion: false,
             },
@@ -140,7 +133,6 @@ export class EnhancementShamanSimUI extends IndividualSimUI {
                 // Preset talents that the user can quickly select.
                 talents: [
                     Presets.StandardTalents,
-                    Presets.RestoSubspecTalents,
                 ],
                 // Preset gear configurations that the user can quickly select.
                 gear: [

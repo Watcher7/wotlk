@@ -1,7 +1,7 @@
-import { RaidBuffs, PartyBuffs, IndividualBuffs, Debuffs, Stat, TristateEffect, } from '/wotlk/core/proto/common.js';
+import { PartyBuffs, Stat, } from '/wotlk/core/proto/common.js';
 import { Stats } from '/wotlk/core/proto_utils/stats.js';
 import { IndividualSimUI } from '/wotlk/core/individual_sim_ui.js';
-import { Warlock_Options as WarlockOptions, Warlock_Options_Armor as Armor, Warlock_Options_Summon as Summon, Warlock_Options_WeaponImbue as WeaponImbue, } from '/wotlk/core/proto/warlock.js';
+import * as IconInputs from '/wotlk/core/components/icon_inputs.js';
 import * as OtherInputs from '/wotlk/core/components/other_inputs.js';
 import * as WarlockInputs from './inputs.js';
 import * as Presets from './presets.js';
@@ -10,24 +10,27 @@ export class WarlockSimUI extends IndividualSimUI {
         super(parentElem, player, {
             cssClass: 'warlock-sim-ui',
             // List any known bugs / issues here and they'll be shown on the site.
-            knownIssues: [],
+            knownIssues: [
+                "Some snapshotting mechanics needs to be fixed (mainly implementing rollover mechanic).",
+                "Some secondary spells need to be implemented.",
+                "Rotations will be optimized.",
+            ],
             // All stats for which EP should be calculated.
             epStats: [
                 Stat.StatIntellect,
+                Stat.StatSpirit,
                 Stat.StatSpellPower,
                 Stat.StatShadowSpellPower,
                 Stat.StatFireSpellPower,
                 Stat.StatSpellHit,
                 Stat.StatSpellCrit,
                 Stat.StatSpellHaste,
-                Stat.StatMP5,
             ],
-            // Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
+            // Reference stat against which to calculate EP. DPS classes use either spell power or attack power.
             epReferenceStat: Stat.StatSpellPower,
             // Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
             displayStats: [
                 Stat.StatHealth,
-                Stat.StatStamina,
                 Stat.StatIntellect,
                 Stat.StatSpirit,
                 Stat.StatSpellPower,
@@ -41,17 +44,16 @@ export class WarlockSimUI extends IndividualSimUI {
             defaults: {
                 // Default equipped gear.
                 gear: Presets.SWP_BIS.gear,
-                // TODO: FIND EPS FOR WARLOCKS
                 // Default EP weights for sorting gear in the gear picker.
                 epWeights: Stats.fromMap({
-                    [Stat.StatIntellect]: 0.4,
-                    [Stat.StatSpirit]: 0.1,
+                    [Stat.StatIntellect]: 0.2,
+                    [Stat.StatSpirit]: 0.42,
                     [Stat.StatSpellPower]: 1,
                     [Stat.StatShadowSpellPower]: 1,
-                    [Stat.StatFireSpellPower]: 1,
-                    [Stat.StatSpellCrit]: 0.8,
-                    [Stat.StatSpellHaste]: 1.2,
-                    [Stat.StatMP5]: 0.00,
+                    [Stat.StatFireSpellPower]: 0,
+                    [Stat.StatSpellHit]: 0.93,
+                    [Stat.StatSpellCrit]: 0.52,
+                    [Stat.StatSpellHaste]: 0.77,
                 }),
                 // Default consumes settings.
                 consumes: Presets.DefaultConsumes,
@@ -60,64 +62,41 @@ export class WarlockSimUI extends IndividualSimUI {
                 // Default talents.
                 talents: Presets.AfflictionTalents.data,
                 // Default spec-specific settings.
-                specOptions: WarlockOptions.create({
-                    armor: Armor.FelArmor,
-                    summon: Summon.Felhunter,
-                    weaponImbue: WeaponImbue.GrandSpellstone,
-                }),
-                // Default raid/party buffs settings.
-                raidBuffs: RaidBuffs.create({
-                    giftOfTheWild: TristateEffect.TristateEffectRegular,
-                    arcaneBrilliance: true,
-                    totemOfWrath: true,
-                    moonkinAura: TristateEffect.TristateEffectRegular,
-                    wrathOfAirTotem: true,
-                    sanctifiedRetribution: true,
-                    swiftRetribution: true,
-                    divineSpirit: true,
-                    bloodlust: true,
-                }),
+                specOptions: Presets.DestructionOptions,
+                // Default buffs and debuffs settings.
+                raidBuffs: Presets.DefaultRaidBuffs,
                 partyBuffs: PartyBuffs.create({}),
-                individualBuffs: IndividualBuffs.create({
-                    blessingOfKings: true,
-                    blessingOfWisdom: TristateEffect.TristateEffectImproved,
-                }),
-                debuffs: Debuffs.create({
-                    judgementOfWisdom: true,
-                    misery: true,
-                    ebonPlaguebringer: true,
-                    faerieFire: TristateEffect.TristateEffectImproved,
-                    heartOfTheCrusader: true,
-                    sunderArmor: true,
-                }),
+                individualBuffs: Presets.DefaultIndividualBuffs,
+                debuffs: Presets.DefaultDebuffs,
             },
-            // IconInputs to include in the 'Self Buffs' section on the settings tab.
-            selfBuffInputs: [
-                WarlockInputs.FelArmor,
-                WarlockInputs.DemonArmor,
-            ],
-            petInputs: [
-                WarlockInputs.SummonImp,
-                WarlockInputs.SummonSuccubus,
-                WarlockInputs.SummonFelhunter,
-                WarlockInputs.SummonFelguard,
-            ],
-            weaponImbueInputs: [
-                WarlockInputs.GrandSpellstone,
-                WarlockInputs.GrandFirestone,
+            // IconInputs to include in the 'Player' section on the settings tab.
+            playerIconInputs: [
+                WarlockInputs.PetInput,
+                WarlockInputs.ArmorInput,
+                WarlockInputs.WeaponImbueInput,
             ],
             // Inputs to include in the 'Rotation' section on the settings tab.
-            rotationInputs: WarlockInputs.WarlockRotationConfig,
-            spellInputs: [
-                WarlockInputs.PrimarySpellShadowBolt,
-                WarlockInputs.PrimarySpellIncinerate,
-                WarlockInputs.PrimarySpellSeed,
-                WarlockInputs.SecondaryDotImmolate,
-                WarlockInputs.SecondaryDotUnstableAffliction,
-                WarlockInputs.SpecSpellChaosBolt,
-                WarlockInputs.SpecSpellHaunt,
+            rotationIconInputs: [
+                WarlockInputs.PrimarySpellInput,
                 WarlockInputs.CorruptionSpell,
+                WarlockInputs.SecondaryDotInput,
+                WarlockInputs.SpecSpellInput,
             ],
+            rotationInputs: WarlockInputs.WarlockRotationConfig,
+            // Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
+            includeBuffDebuffInputs: [
+                IconInputs.ReplenishmentBuff,
+                IconInputs.MajorArmorDebuff,
+                IconInputs.MinorArmorDebuff,
+                IconInputs.PhysicalDamageDebuff,
+                IconInputs.MeleeHasteBuff,
+                IconInputs.MeleeCritBuff,
+                IconInputs.MP5Buff,
+                IconInputs.AttackPowerPercentBuff,
+                IconInputs.AttackPowerBuff,
+                IconInputs.StaminaBuff,
+            ],
+            excludeBuffDebuffInputs: [],
             // Inputs to include in the 'Other' section on the settings tab.
             otherInputs: {
                 inputs: [
@@ -126,12 +105,6 @@ export class WarlockSimUI extends IndividualSimUI {
                 ],
             },
             encounterPicker: {
-                // Target stats to show for 'Simple' encounters.
-                simpleTargetStats: [
-                    Stat.StatShadowResistance,
-                    Stat.StatFireResistance,
-                    Stat.StatArmor,
-                ],
                 // Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
                 showExecuteProportion: false,
             },
@@ -144,7 +117,10 @@ export class WarlockSimUI extends IndividualSimUI {
                 ],
                 //Preset gear configurations that the user can quickly select.
                 gear: [
+                    // Presets.Naked,
                     Presets.SWP_BIS,
+                    Presets.P1_PreBiS,
+                    Presets.P1_BiS,
                 ],
             },
         });

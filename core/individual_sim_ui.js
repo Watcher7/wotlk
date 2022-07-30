@@ -47,8 +47,7 @@ import { addRaidSimAction } from '/wotlk/core/components/raid_sim_action.js';
 import { addStatWeightsAction } from '/wotlk/core/components/stat_weights_action.js';
 import { getEnumValues } from '/wotlk/core/utils.js';
 import { getMetaGemConditionDescription } from '/wotlk/core/proto_utils/gems.js';
-import { isDualWieldSpec } from '/wotlk/core/proto_utils/utils.js';
-import { launchedSpecs } from '/wotlk/core/launched_sims.js';
+import { simLaunchStatuses } from '/wotlk/core/launched_sims.js';
 import { makePetTypeInputConfig } from '/wotlk/core/talents/hunter_pet.js';
 import { newIndividualExporters } from '/wotlk/core/components/exporters.js';
 import { newIndividualImporters } from '/wotlk/core/components/importers.js';
@@ -64,31 +63,13 @@ const SAVED_GEAR_STORAGE_KEY = '__savedGear__';
 const SAVED_ROTATION_STORAGE_KEY = '__savedRotation__';
 const SAVED_SETTINGS_STORAGE_KEY = '__savedSettings__';
 const SAVED_TALENTS_STORAGE_KEY = '__savedTalents__';
-class IndividualSimIconPicker {
-    constructor(parent, modObj, input, simUI) {
-        let picker = null;
-        if ('states' in input) {
-            picker = new IconPicker(parent, modObj, input);
-        }
-        else {
-            picker = new IconEnumPicker(parent, modObj, input);
-        }
-        if (input.exclusivityTags) {
-            simUI.registerExclusiveEffect({
-                tags: input.exclusivityTags,
-                changedEvent: picker.changeEmitter,
-                isActive: () => Boolean(picker.getInputValue()),
-                deactivate: (eventID) => picker.setValue(eventID, (typeof picker.getInputValue() == 'number') ? 0 : false),
-            });
-        }
-    }
-}
 // Extended shared UI for all individual player sims.
 export class IndividualSimUI extends SimUI {
     constructor(parentElem, player, config) {
         super(parentElem, player.sim, {
             spec: player.spec,
             knownIssues: config.knownIssues,
+            launchStatus: simLaunchStatuses[player.spec],
         });
         this.rootElem.classList.add('individual-sim-ui', config.cssClass);
         this.player = player;
@@ -97,19 +78,6 @@ export class IndividualSimUI extends SimUI {
         this.settingsMuuri = null;
         this.prevEpIterations = 0;
         this.prevEpSimResult = null;
-        if (!launchedSpecs.includes(this.player.spec)) {
-            this.addWarning({
-                updateOn: new TypedEvent(),
-                getContent: () => {
-                    if (this.player.getClass() == Class.ClassWarlock) {
-                        return 'This sim is under current development for Wrath of the Lich King. Talents and Glyphs are mostly ready but rotations are under development.';
-                    }
-                    else {
-                        return 'This sim has not yet been updated from its TBC state.';
-                    }
-                },
-            });
-        }
         this.addWarning({
             updateOn: this.player.gearChangeEmitter,
             getContent: () => {
@@ -141,18 +109,6 @@ export class IndividualSimUI extends SimUI {
             },
         });
         (config.warnings || []).forEach(warning => this.addWarning(warning(this)));
-        this.exclusivityMap = {
-            'Battle Elixir': [],
-            'Drums': [],
-            'Food': [],
-            'Pet Food': [],
-            'Guardian Elixir': [],
-            'Potion': [],
-            'Conjured': [],
-            'Spirit': [],
-            'MH Weapon Imbue': [],
-            'OH Weapon Imbue': [],
-        };
         if (!this.isWithinRaidSim) {
             // This needs to go before all the UI components so that gear loading is the
             // first callback invoked from waitForInit().
@@ -289,20 +245,6 @@ export class IndividualSimUI extends SimUI {
         });
     }
     addSettingsTab() {
-        var petsSelectionSection = ``;
-        if (this.individualConfig.petInputs?.length) {
-            petsSelectionSection = `
-			   <fieldset class="settings-section pets-section">
-					<legend>Pets</legend>
-				</fieldset>`;
-        }
-        var spellSection = ``;
-        if (this.individualConfig.spellInputs?.length) {
-            spellSection = `
-			    <fieldset class="settings-section spell-section">
-					<legend>Spells</legend>
-				</fieldset>`;
-        }
         this.addTab('SETTINGS', 'settings-tab', `
 			<div class="settings-inputs">
 				<div class="settings-section-container">
@@ -311,32 +253,14 @@ export class IndividualSimUI extends SimUI {
 					</fieldset>
 					<fieldset class="settings-section race-section">
 						<legend>Player</legend>
+						<div class="settings-section-iconrow player-iconrow"></div>
 					</fieldset>
-			`
-            +
-                spellSection
-            +
-                `
 					<fieldset class="settings-section rotation-section">
 						<legend>Rotation</legend>
+						<div class="settings-section-iconrow rotation-iconrow"></div>
 					</fieldset>
 				</div>
 				<div class="settings-section-container custom-sections-container">
-				</div>
-				<div class="settings-section-container">
-					<fieldset class="settings-section self-buffs-section">
-						<legend>Self Buffs</legend>
-					</fieldset>
-					<fieldset class="settings-section imbues-section">
-					<legend>Imbues</legend>
-						<div class="consumes-imbue-mh"></div>
-						<div class="consumes-imbue-oh"></div>
-					</fieldset>
-			`
-            +
-                petsSelectionSection
-            +
-                `
 				</div>
 				<div class="settings-section-container labeled-icon-section within-raid-sim-hide">
 					<fieldset class="settings-section buffs-section">
@@ -369,11 +293,10 @@ export class IndividualSimUI extends SimUI {
 							<span>Food</span>
 							<div class="consumes-row-inputs">
 								<div class="consumes-food"></div>
-								<div class="consumes-alcohol"></div>
 							</div>
 						</div>
 						<div class="consumes-row">
-							<span>Trade</span>
+							<span>Eng</span>
 							<div class="consumes-row-inputs consumes-trade">
 							</div>
 						</div>
@@ -394,16 +317,6 @@ export class IndividualSimUI extends SimUI {
 						<div class="cooldowns-section-content">
 						</div>
 					</fieldset>
-<<<<<<< HEAD
-				</div>
-				<div class="settings-section-container labeled-icon-section within-raid-sim-hide">
-					<fieldset class="settings-section debuffs-section">
-						<legend>Debuffs</legend>
-					</fieldset>
-				</div>
-				<div class="settings-section-container">
-=======
->>>>>>> bbfeb8c4ae5bfc08c7406a4edb21d0d36971cc67
 					<fieldset class="settings-section other-settings-section">
 						<legend>Other</legend>
 					</fieldset>
@@ -417,7 +330,7 @@ export class IndividualSimUI extends SimUI {
 			</div>
 		`);
         const settingsTab = this.rootElem.getElementsByClassName('settings-inputs')[0];
-        const configureIconSection = (sectionElem, iconPickers, tooltip) => {
+        const configureIconSection = (sectionElem, iconPickers, tooltip, adjustColumns) => {
             if (tooltip) {
                 tippy(sectionElem, {
                     'content': tooltip,
@@ -427,13 +340,25 @@ export class IndividualSimUI extends SimUI {
             if (iconPickers.length == 0) {
                 sectionElem.style.display = 'none';
             }
+            else if (adjustColumns) {
+                if (iconPickers.length < 4) {
+                    sectionElem.style.gridTemplateColumns = `repeat(${iconPickers.length}, 1fr)`;
+                }
+                else if (iconPickers.length > 4 && iconPickers.length < 8) {
+                    sectionElem.style.gridTemplateColumns = `repeat(${Math.ceil(iconPickers.length / 2)}, 1fr)`;
+                }
+            }
         };
-        const selfBuffsSection = this.rootElem.getElementsByClassName('self-buffs-section')[0];
-        configureIconSection(selfBuffsSection, this.individualConfig.selfBuffInputs.map(iconInput => new IndividualSimIconPicker(selfBuffsSection, this.player, iconInput, this)), Tooltips.SELF_BUFFS_SECTION);
-        if (this.individualConfig.petInputs?.length) {
-            const petsSection = this.rootElem.getElementsByClassName('pets-section')[0];
-            configureIconSection(petsSection, this.individualConfig.petInputs.map(iconInput => new IndividualSimIconPicker(petsSection, this.player, iconInput, this)), Tooltips.PETS_SECTION);
-        }
+        const makeIconInput = (parent, inputConfig) => {
+            if (inputConfig.type == 'icon') {
+                return new IconPicker(parent, this.player, inputConfig);
+            }
+            else if (inputConfig.type == 'iconEnum') {
+                return new IconEnumPicker(parent, this.player, inputConfig);
+            }
+        };
+        const playerIconsSection = this.rootElem.getElementsByClassName('player-iconrow')[0];
+        configureIconSection(playerIconsSection, this.individualConfig.playerIconInputs.map(iconInput => makeIconInput(playerIconsSection, iconInput)), '', true);
         const buffOptions = this.splitRelevantOptions([
             { item: IconInputs.AllStatsBuff, stats: [] },
             { item: IconInputs.AllStatsPercentBuff, stats: [] },
@@ -449,19 +374,19 @@ export class IndividualSimUI extends SimUI {
             { item: IconInputs.MeleeHasteBuff, stats: [Stat.StatMeleeHaste] },
             { item: IconInputs.SpellPowerBuff, stats: [Stat.StatSpellPower] },
             { item: IconInputs.SpellCritBuff, stats: [Stat.StatSpellCrit] },
-            { item: IconInputs.SpellHasteBuff, stats: [Stat.StatSpellHaste] },
             { item: IconInputs.HastePercentBuff, stats: [Stat.StatMeleeHaste, Stat.StatSpellHaste] },
             { item: IconInputs.DamagePercentBuff, stats: [Stat.StatAttackPower, Stat.StatSpellPower] },
-            { item: IconInputs.DamageReductionPercentBuff, stats: [Stat.StatStamina] },
+            { item: IconInputs.DamageReductionPercentBuff, stats: [Stat.StatArmor] },
             { item: IconInputs.MP5Buff, stats: [Stat.StatMP5] },
-            //{ item: IconInputs.ReplenishmentBuff, stats: [Stat.StatMP5] },
+            { item: IconInputs.ReplenishmentBuff, stats: [Stat.StatMP5] },
         ]);
         const buffsSection = this.rootElem.getElementsByClassName('buffs-section')[0];
         configureIconSection(buffsSection, buffOptions.map(multiIconInput => new MultiIconPicker(buffsSection, this.player, multiIconInput, this)), Tooltips.OTHER_BUFFS_SECTION);
         const otherBuffOptions = this.splitRelevantOptions([
             { item: IconInputs.Bloodlust, stats: [Stat.StatMeleeHaste, Stat.StatSpellHaste] },
+            { item: IconInputs.SpellHasteBuff, stats: [Stat.StatSpellHaste] },
         ]);
-        otherBuffOptions.forEach(iconInput => new IndividualSimIconPicker(buffsSection, this.player, iconInput, this));
+        otherBuffOptions.forEach(iconInput => makeIconInput(buffsSection, iconInput));
         const miscBuffOptions = this.splitRelevantOptions([
             { item: IconInputs.HeroicPresence, stats: [Stat.StatMeleeHit, Stat.StatSpellHit] },
             { item: IconInputs.BraidedEterniumChain, stats: [Stat.StatMeleeCrit] },
@@ -473,6 +398,7 @@ export class IndividualSimUI extends SimUI {
             { item: IconInputs.ManaTideTotem, stats: [Stat.StatMP5] },
             { item: IconInputs.Innervate, stats: [Stat.StatMP5] },
             { item: IconInputs.PowerInfusion, stats: [Stat.StatMP5, Stat.StatSpellPower] },
+            { item: IconInputs.TricksOfTheTrade, stats: [Stat.StatAttackPower, Stat.StatSpellPower] },
         ]);
         if (miscBuffOptions.length > 0) {
             new MultiIconPicker(buffsSection, this.player, {
@@ -499,10 +425,21 @@ export class IndividualSimUI extends SimUI {
         configureIconSection(debuffsSection, debuffOptions.map(multiIconInput => new MultiIconPicker(debuffsSection, this.player, multiIconInput, this)), Tooltips.DEBUFFS_SECTION);
         const otherDebuffOptions = this.splitRelevantOptions([
             { item: IconInputs.JudgementOfWisdom, stats: [Stat.StatMP5, Stat.StatIntellect] },
-            { item: IconInputs.JudgementOfLight, stats: [Stat.StatStamina] },
-            { item: IconInputs.GiftOfArthas, stats: [Stat.StatStamina] },
+            { item: IconInputs.HuntersMark, stats: [Stat.StatRangedAttackPower] },
         ]);
-        otherDebuffOptions.forEach(iconInput => new IndividualSimIconPicker(debuffsSection, this.player, iconInput, this));
+        otherDebuffOptions.forEach(iconInput => makeIconInput(debuffsSection, iconInput));
+        const miscDebuffOptions = this.splitRelevantOptions([
+            { item: IconInputs.JudgementOfLight, stats: [Stat.StatStamina] },
+            { item: IconInputs.GiftOfArthas, stats: [Stat.StatAttackPower] },
+        ]);
+        if (miscDebuffOptions.length > 0) {
+            new MultiIconPicker(debuffsSection, this.player, {
+                inputs: miscDebuffOptions,
+                numColumns: 3,
+                emptyColor: 'grey',
+                label: 'Misc',
+            }, this);
+        }
         const potionOptions = this.splitRelevantOptions([
             { item: Potions.RunicHealingPotion, stats: [Stat.StatStamina] },
             { item: Potions.RunicManaPotion, stats: [Stat.StatIntellect] },
@@ -583,29 +520,29 @@ export class IndividualSimUI extends SimUI {
             const elem = this.rootElem.getElementsByClassName('consumes-food')[0];
             new IconEnumPicker(elem, this.player, IconInputs.makeFoodInput(foodOptions));
         }
-        if (this.individualConfig.weaponImbueInputs?.length) {
-            const mhImbueSection = this.rootElem.getElementsByClassName('consumes-imbue-mh')[0];
-            configureIconSection(mhImbueSection, this.individualConfig.weaponImbueInputs.map(iconInput => new IndividualSimIconPicker(mhImbueSection, this.player, iconInput, this)));
-            const ohImbueSection = this.rootElem.getElementsByClassName('consumes-imbue-oh')[0];
-            if (isDualWieldSpec(this.player.spec)) {
-                configureIconSection(ohImbueSection, this.individualConfig.weaponImbueInputs.map(iconInput => new IndividualSimIconPicker(ohImbueSection, this.player, iconInput, this)));
-            }
-        }
         const tradeConsumesElem = this.rootElem.getElementsByClassName('consumes-trade')[0];
-        new IndividualSimIconPicker(tradeConsumesElem, this.player, IconInputs.SuperSapper, this);
-        new IndividualSimIconPicker(tradeConsumesElem, this.player, IconInputs.GoblinSapper, this);
-        new IndividualSimIconPicker(tradeConsumesElem, this.player, IconInputs.FillerExplosiveInput, this);
-        //if (this.individualConfig.consumeOptions?.pet?.length) {
-        //	const petConsumesElem = this.rootElem.getElementsByClassName('consumes-pet')[0] as HTMLElement;
-        //	this.individualConfig.consumeOptions.pet.map(iconInput => new IndividualSimIconPicker(petConsumesElem, this.player, iconInput, this));
-        //} else {
-        //	const petRowElem = this.rootElem.getElementsByClassName('consumes-row-pet')[0] as HTMLElement;
-        //	petRowElem.style.display = 'none';
-        //}
-        //if (this.individualConfig.consumeOptions?.other?.length) {
-        //	const containerElem = this.rootElem.getElementsByClassName('consumes-other')[0] as HTMLElement;
-        //	this.individualConfig.consumeOptions.other.map(iconInput => new IndividualSimIconPicker(containerElem, this.player, iconInput, this));
-        //}
+        //tradeConsumesElem.parentElement!.style.display = 'none';
+        makeIconInput(tradeConsumesElem, IconInputs.ThermalSapper);
+        makeIconInput(tradeConsumesElem, IconInputs.ExplosiveDecoy);
+        makeIconInput(tradeConsumesElem, IconInputs.FillerExplosiveInput);
+        const updateProfession = () => {
+            if (this.player.hasProfession(Profession.Engineering)) {
+                tradeConsumesElem.parentElement.style.removeProperty('display');
+            }
+            else {
+                tradeConsumesElem.parentElement.style.display = 'none';
+            }
+        };
+        this.player.professionChangeEmitter.on(updateProfession);
+        updateProfession();
+        if (this.individualConfig.petConsumeInputs?.length) {
+            const petConsumesElem = this.rootElem.getElementsByClassName('consumes-pet')[0];
+            this.individualConfig.petConsumeInputs.map(iconInput => makeIconInput(petConsumesElem, iconInput));
+        }
+        else {
+            const petRowElem = this.rootElem.getElementsByClassName('consumes-row-pet')[0];
+            petRowElem.style.display = 'none';
+        }
         const configureInputSection = (sectionElem, sectionConfig) => {
             if (sectionConfig.tooltip) {
                 tippy(sectionElem, {
@@ -615,22 +552,19 @@ export class IndividualSimUI extends SimUI {
             }
             sectionConfig.inputs.forEach(inputConfig => {
                 if (inputConfig.type == 'number') {
-                    new NumberPicker(sectionElem, inputConfig.getModObject(this), inputConfig.config);
+                    new NumberPicker(sectionElem, this.player, inputConfig);
                 }
                 else if (inputConfig.type == 'boolean') {
-                    new BooleanPicker(sectionElem, inputConfig.getModObject(this), inputConfig.config);
+                    new BooleanPicker(sectionElem, this.player, inputConfig);
                 }
                 else if (inputConfig.type == 'enum') {
-                    new EnumPicker(sectionElem, inputConfig.getModObject(this), inputConfig.config);
-                }
-                else if (inputConfig.type == 'iconEnum') {
-                    new IconEnumPicker(sectionElem, inputConfig.getModObject(this), inputConfig.config);
+                    new EnumPicker(sectionElem, this.player, inputConfig);
                 }
             });
         };
-        if (this.individualConfig.spellInputs?.length) {
-            const spellSection = this.rootElem.getElementsByClassName('spell-section')[0];
-            configureIconSection(spellSection, this.individualConfig.spellInputs.map(iconInput => new IndividualSimIconPicker(spellSection, this.player, iconInput, this)), Tooltips.SPELLS_SECTION);
+        if (this.individualConfig.rotationIconInputs?.length) {
+            const rotationIconSection = this.rootElem.getElementsByClassName('rotation-iconrow')[0];
+            configureIconSection(rotationIconSection, this.individualConfig.rotationIconInputs.map(iconInput => makeIconInput(rotationIconSection, iconInput)), '', true);
         }
         configureInputSection(this.rootElem.getElementsByClassName('rotation-section')[0], this.individualConfig.rotationInputs);
         if (this.individualConfig.otherInputs?.inputs.length) {
@@ -778,7 +712,7 @@ export class IndividualSimUI extends SimUI {
             sectionElem.classList.add('settings-section', sectionCssPrefix + '-section');
             sectionElem.innerHTML = `<legend>${sectionName}</legend>`;
             customSectionsContainer.appendChild(sectionElem);
-            configureIconSection(sectionElem, sectionConfig.map(iconInput => new IndividualSimIconPicker(sectionElem, this.player, iconInput, this)));
+            configureIconSection(sectionElem, sectionConfig.map(iconInput => makeIconInput(sectionElem, iconInput)));
             anyCustomSections = true;
         }
         ;
@@ -813,6 +747,7 @@ export class IndividualSimUI extends SimUI {
 					<div class="talents-picker">
 					</div>
 					<div class="glyphs-picker">
+					<span>Glyphs</span>
 					</div>
 				</div>
 				<div class="saved-talents-manager">
@@ -882,7 +817,7 @@ export class IndividualSimUI extends SimUI {
                         updateToggle();
                     },
                 });
-                const petTypeToggle = new EnumPicker(toggleContainer, this.player, makePetTypeInputConfig(false));
+                const petTypeToggle = new IconEnumPicker(toggleContainer, this.player, makePetTypeInputConfig(false));
                 updateToggle();
             }
         });
@@ -929,24 +864,6 @@ export class IndividualSimUI extends SimUI {
             }
         });
     }
-    registerExclusiveEffect(effect) {
-        effect.tags.forEach(tag => {
-            this.exclusivityMap[tag].push(effect);
-            effect.changedEvent.on(eventID => {
-                if (!effect.isActive())
-                    return;
-                // TODO: Mark the parent somehow so we can track this for undo/redo.
-                const newEventID = TypedEvent.nextEventID();
-                TypedEvent.freezeAllAndDo(() => {
-                    this.exclusivityMap[tag].forEach(otherEffect => {
-                        if (otherEffect == effect || !otherEffect.isActive())
-                            return;
-                        otherEffect.deactivate(newEventID);
-                    });
-                });
-            });
-        });
-    }
     getSavedGearStorageKey() {
         return this.getStorageKey(SAVED_GEAR_STORAGE_KEY);
     }
@@ -983,6 +900,18 @@ export class IndividualSimUI extends SimUI {
             epWeights: this.player.getEpWeights().asArray(),
         });
     }
+    toLink() {
+        const proto = this.toProto();
+        // When sharing links, people generally don't intend to share settings/ep weights.
+        proto.settings = undefined;
+        proto.epWeights = [];
+        const protoBytes = IndividualSimSettings.toBinary(proto);
+        const deflated = pako.deflate(protoBytes, { to: 'string' });
+        const encoded = btoa(String.fromCharCode(...deflated));
+        const linkUrl = new URL(window.location.href);
+        linkUrl.hash = encoded;
+        return linkUrl.toString();
+    }
     fromProto(eventID, settings) {
         TypedEvent.freezeAllAndDo(() => {
             if (!settings.player) {
@@ -1010,7 +939,10 @@ export class IndividualSimUI extends SimUI {
     }
     splitRelevantOptions(options) {
         return options
-            .filter(option => option.stats.length == 0 || option.stats.some(stat => this.individualConfig.epStats.includes(stat)))
+            .filter(option => this.individualConfig.includeBuffDebuffInputs.includes(option.item) ||
+            option.stats.length == 0 ||
+            option.stats.some(stat => this.individualConfig.epStats.includes(stat)))
+            .filter(option => !this.individualConfig.excludeBuffDebuffInputs.includes(option.item))
             .map(option => option.item);
     }
 }

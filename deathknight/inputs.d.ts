@@ -1,102 +1,17 @@
 import { Spec } from '/wotlk/core/proto/common.js';
-import { Player } from '/wotlk/core/player.js';
-import { EventID, TypedEvent } from '/wotlk/core/typed_event.js';
-import { IndividualSimUI } from '/wotlk/core/individual_sim_ui.js';
-export declare const StartingRunicPower: {
-    type: "number";
-    getModObject: (simUI: IndividualSimUI<any>) => Player<any>;
-    config: {
-        extraCssClasses: string[];
-        label: string;
-        labelTooltip: string;
-        changedEvent: (player: Player<Spec.SpecDeathKnight>) => TypedEvent<void>;
-        getValue: (player: Player<Spec.SpecDeathKnight>) => number;
-        setValue: (eventID: EventID, player: Player<Spec.SpecDeathKnight>, newValue: number) => void;
-    };
-};
-export declare const PetUptime: {
-    type: "number";
-    getModObject: (simUI: IndividualSimUI<any>) => Player<any>;
-    config: {
-        extraCssClasses: string[];
-        label: string;
-        labelTooltip: string;
-        changedEvent: (player: Player<Spec.SpecDeathKnight>) => TypedEvent<void>;
-        getValue: (player: Player<Spec.SpecDeathKnight>) => number;
-        setValue: (eventID: EventID, player: Player<Spec.SpecDeathKnight>, newValue: number) => void;
-    };
-};
-export declare const PrecastGhoulFrenzy: {
-    type: "boolean";
-    getModObject: (simUI: IndividualSimUI<any>) => Player<any>;
-    config: {
-        extraCssClasses: string[];
-        label: string;
-        labelTooltip: string;
-        changedEvent: (player: Player<Spec.SpecDeathKnight>) => TypedEvent<void>;
-        getValue: (player: Player<Spec.SpecDeathKnight>) => boolean;
-        setValue: (eventID: EventID, player: Player<Spec.SpecDeathKnight>, newValue: boolean) => void;
-    };
-};
-export declare const UseDeathAndDecay: {
-    type: "boolean";
-    getModObject: (simUI: IndividualSimUI<any>) => Player<any>;
-    config: {
-        extraCssClasses: string[];
-        label: string;
-        labelTooltip: string;
-        changedEvent: (player: Player<Spec.SpecDeathKnight>) => TypedEvent<void>;
-        getValue: (player: Player<Spec.SpecDeathKnight>) => boolean;
-        setValue: (eventID: EventID, player: Player<Spec.SpecDeathKnight>, newValue: boolean) => void;
-    };
-};
-export declare const UnholyPresenceOpener: {
-    type: "boolean";
-    getModObject: (simUI: IndividualSimUI<any>) => Player<any>;
-    config: {
-        extraCssClasses: string[];
-        label: string;
-        labelTooltip: string;
-        changedEvent: (player: Player<Spec.SpecDeathKnight>) => TypedEvent<void>;
-        getValue: (player: Player<Spec.SpecDeathKnight>) => boolean;
-        setValue: (eventID: EventID, player: Player<Spec.SpecDeathKnight>, newValue: boolean) => void;
-    };
-};
-export declare const RefreshHornOfWinter: {
-    type: "boolean";
-    getModObject: (simUI: IndividualSimUI<any>) => Player<any>;
-    config: {
-        extraCssClasses: string[];
-        label: string;
-        labelTooltip: string;
-        changedEvent: (player: Player<Spec.SpecDeathKnight>) => TypedEvent<void>;
-        getValue: (player: Player<Spec.SpecDeathKnight>) => boolean;
-        setValue: (eventID: EventID, player: Player<Spec.SpecDeathKnight>, newValue: boolean) => void;
-    };
-};
-export declare const PrecastHornOfWinter: {
-    type: "boolean";
-    getModObject: (simUI: IndividualSimUI<any>) => Player<any>;
-    config: {
-        extraCssClasses: string[];
-        label: string;
-        labelTooltip: string;
-        changedEvent: (player: Player<Spec.SpecDeathKnight>) => TypedEvent<void>;
-        getValue: (player: Player<Spec.SpecDeathKnight>) => boolean;
-        setValue: (eventID: EventID, player: Player<Spec.SpecDeathKnight>, newValue: boolean) => void;
-    };
-};
+import * as InputHelpers from '/wotlk/core/components/input_helpers.js';
+import { Player } from '../core/player';
+export declare const StartingRunicPower: InputHelpers.TypedNumberPickerConfig<Player<Spec.SpecDeathknight>>;
+export declare const PetUptime: InputHelpers.TypedNumberPickerConfig<Player<Spec.SpecDeathknight>>;
+export declare const PrecastGhoulFrenzy: InputHelpers.TypedBooleanPickerConfig<Player<Spec.SpecDeathknight>>;
+export declare const PrecastHornOfWinter: InputHelpers.TypedBooleanPickerConfig<Player<Spec.SpecDeathknight>>;
+export declare const RefreshHornOfWinter: InputHelpers.TypedBooleanPickerConfig<Player<Spec.SpecDeathknight>>;
+export declare const DiseaseRefreshDuration: InputHelpers.TypedNumberPickerConfig<Player<Spec.SpecDeathknight>>;
+export declare const UseDeathAndDecay: InputHelpers.TypedBooleanPickerConfig<Player<Spec.SpecDeathknight>>;
+export declare const SetDeathAndDecayPrio: InputHelpers.TypedEnumPickerConfig<Player<Spec.SpecDeathknight>>;
+export declare const BloodTapGhoulFrenzy: InputHelpers.TypedBooleanPickerConfig<Player<Spec.SpecDeathknight>>;
+export declare const SetFirstDisease: InputHelpers.TypedEnumPickerConfig<Player<Spec.SpecDeathknight>>;
+export declare const UseArmyOfTheDead: InputHelpers.TypedEnumPickerConfig<Player<Spec.SpecDeathknight>>;
 export declare const DeathKnightRotationConfig: {
-    inputs: {
-        type: "boolean";
-        getModObject: (simUI: IndividualSimUI<any>) => Player<any>;
-        config: {
-            extraCssClasses: string[];
-            label: string;
-            labelTooltip: string;
-            changedEvent: (player: Player<Spec.SpecDeathKnight>) => TypedEvent<void>;
-            getValue: (player: Player<Spec.SpecDeathKnight>) => boolean;
-            setValue: (eventID: EventID, player: Player<Spec.SpecDeathKnight>, newValue: boolean) => void;
-        };
-    }[];
+    inputs: (InputHelpers.TypedBooleanPickerConfig<Player<Spec.SpecDeathknight>> | InputHelpers.TypedEnumPickerConfig<Player<Spec.SpecDeathknight>>)[];
 };

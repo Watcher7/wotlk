@@ -8,6 +8,7 @@ export declare class Encounter {
     private duration;
     private durationVariation;
     private executeProportion20;
+    private executeProportion25;
     private executeProportion35;
     private useHealth;
     private targets;
@@ -23,6 +24,8 @@ export declare class Encounter {
     setDuration(eventID: EventID, newDuration: number): void;
     getExecuteProportion20(): number;
     setExecuteProportion20(eventID: EventID, newExecuteProportion20: number): void;
+    getExecuteProportion25(): number;
+    setExecuteProportion25(eventID: EventID, newExecuteProportion25: number): void;
     getExecuteProportion35(): number;
     setExecuteProportion35(eventID: EventID, newExecuteProportion35: number): void;
     getUseHealth(): boolean;

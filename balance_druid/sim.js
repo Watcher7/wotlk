@@ -47,7 +47,7 @@ export class BalanceDruidSimUI extends IndividualSimUI {
             ],
             defaults: {
                 // Default equipped gear.
-                gear: Presets.P1_ALLIANCE_PRESET.gear,
+                gear: Presets.P5_PRESET.gear,
                 // Default EP weights for sorting gear in the gear picker.
                 epWeights: Stats.fromMap({
                     [Stat.StatIntellect]: 0.54,
@@ -91,12 +91,15 @@ export class BalanceDruidSimUI extends IndividualSimUI {
                     curseOfElements: true,
                 }),
             },
-            // IconInputs to include in the 'Self Buffs' section on the settings tab.
-            selfBuffInputs: [
+            // IconInputs to include in the 'Player' section on the settings tab.
+            playerIconInputs: [
                 DruidInputs.SelfInnervate,
             ],
             // Inputs to include in the 'Rotation' section on the settings tab.
             rotationInputs: DruidInputs.BalanceDruidRotationConfig,
+            // Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
+            includeBuffDebuffInputs: [],
+            excludeBuffDebuffInputs: [],
             // Inputs to include in the 'Other' section on the settings tab.
             otherInputs: {
                 inputs: [
@@ -105,10 +108,6 @@ export class BalanceDruidSimUI extends IndividualSimUI {
                 ],
             },
             encounterPicker: {
-                // Target stats to show for 'Simple' encounters.
-                simpleTargetStats: [
-                    Stat.StatArcaneResistance,
-                ],
                 // Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
                 showExecuteProportion: false,
             },
@@ -119,12 +118,6 @@ export class BalanceDruidSimUI extends IndividualSimUI {
                 ],
                 // Preset gear configurations that the user can quickly select.
                 gear: [
-                    Presets.P1_ALLIANCE_PRESET,
-                    Presets.P2_ALLIANCE_PRESET,
-                    Presets.P1_HORDE_PRESET,
-                    Presets.P2_HORDE_PRESET,
-                    Presets.P3_PRESET,
-                    Presets.P4_PRESET,
                     Presets.P5_PRESET,
                 ],
             },

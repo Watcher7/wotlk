@@ -105,10 +105,13 @@ export class FeralTankDruidSimUI extends IndividualSimUI {
                     demoralizingShout: TristateEffect.TristateEffectImproved,
                 }),
             },
-            // IconInputs to include in the 'Self Buffs' section on the settings tab.
-            selfBuffInputs: [],
+            // IconInputs to include in the 'Player' section on the settings tab.
+            playerIconInputs: [],
             // Inputs to include in the 'Rotation' section on the settings tab.
             rotationInputs: DruidInputs.FeralTankDruidRotationConfig,
+            // Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
+            includeBuffDebuffInputs: [],
+            excludeBuffDebuffInputs: [],
             // Inputs to include in the 'Other' section on the settings tab.
             otherInputs: {
                 inputs: [
@@ -122,10 +125,6 @@ export class FeralTankDruidSimUI extends IndividualSimUI {
                 ],
             },
             encounterPicker: {
-                // Target stats to show for 'Simple' encounters.
-                simpleTargetStats: [
-                    Stat.StatArmor,
-                ],
                 // Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
                 showExecuteProportion: false,
             },

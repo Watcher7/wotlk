@@ -17,6 +17,11 @@ export declare const SurvivalTalents: {
 export declare const DefaultRotation: HunterRotation;
 export declare const DefaultOptions: HunterOptions;
 export declare const DefaultConsumes: Consumes;
+export declare const PRERAID_PRESET: {
+    name: string;
+    tooltip: string;
+    gear: EquipmentSpec;
+};
 export declare const P1_PRESET: {
     name: string;
     tooltip: string;

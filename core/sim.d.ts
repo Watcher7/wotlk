@@ -9,7 +9,6 @@ import { Item } from '/wotlk/core/proto/common.js';
 import { Stat } from '/wotlk/core/proto/common.js';
 import { Raid as RaidProto } from '/wotlk/core/proto/api.js';
 import { PresetEncounter, PresetTarget } from '/wotlk/core/proto/api.js';
-import { ComputeStatsRequest } from '/wotlk/core/proto/api.js';
 import { RaidSimRequest, RaidSimResult } from '/wotlk/core/proto/api.js';
 import { StatWeightsRequest, StatWeightsResult } from '/wotlk/core/proto/api.js';
 import { SimSettings as SimSettingsProto } from '/wotlk/core/proto/ui.js';
@@ -56,6 +55,7 @@ export declare class Sim {
     readonly showMatchingGemsChangeEmitter: TypedEvent<void>;
     readonly showThreatMetricsChangeEmitter: TypedEvent<void>;
     readonly showExperimentalChangeEmitter: TypedEvent<void>;
+    readonly crashEmitter: TypedEvent<SimError>;
     readonly settingsChangeEmitter: TypedEvent<void>;
     readonly changeEmitter: TypedEvent<void>;
     readonly simResultEmitter: TypedEvent<SimResult>;
@@ -68,12 +68,8 @@ export declare class Sim {
     getModifiedRaidProto(): RaidProto;
     private makeRaidSimRequest;
     runRaidSim(eventID: EventID, onProgress: Function): Promise<void>;
-    encodeSimReq(req: RaidSimRequest): string;
-    handleError(errorStr: string, extra: string): void;
-    hashCode(str: string): number;
     runRaidSimWithLogs(eventID: EventID): Promise<SimResult>;
     private updateCharacterStats;
-    encodeComputeStatsReq(req: ComputeStatsRequest): string;
     statWeights(player: Player<any>, epStats: Array<Stat>, epReferenceStat: Stat, onProgress: Function): Promise<StatWeightsResult>;
     getItems(slot: ItemSlot | undefined): Array<Item>;
     getEnchants(slot: ItemSlot | undefined): Array<Enchant>;
@@ -110,4 +106,8 @@ export declare class Sim {
     toProto(): SimSettingsProto;
     fromProto(eventID: EventID, proto: SimSettingsProto): void;
     applyDefaults(eventID: EventID, isTankSim: boolean): void;
+}
+export declare class SimError extends Error {
+    readonly errorStr: string;
+    constructor(errorStr: string);
 }

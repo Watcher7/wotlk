@@ -4,6 +4,7 @@ export interface IconEnumValueConfig<ModObject, T> {
     actionId?: ActionId;
     color?: string;
     value: T;
+    tooltip?: string;
     showWhen?: (obj: ModObject) => boolean;
 }
 export interface IconEnumPickerConfig<ModObject, T> extends InputConfig<ModObject, T> {

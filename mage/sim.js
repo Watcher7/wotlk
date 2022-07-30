@@ -47,7 +47,7 @@ export class MageSimUI extends IndividualSimUI {
             ],
             defaults: {
                 // Default equipped gear.
-                gear: Presets.P1_ARCANE_PRESET.gear,
+                gear: Presets.P5_ARCANE_PRESET.gear,
                 // Default EP weights for sorting gear in the gear picker.
                 epWeights: Stats.fromMap({
                     [Stat.StatIntellect]: 1.29,
@@ -89,13 +89,15 @@ export class MageSimUI extends IndividualSimUI {
                     curseOfElements: true,
                 }),
             },
-            // IconInputs to include in the 'Self Buffs' section on the settings tab.
-            selfBuffInputs: [
-                MageInputs.MageArmor,
-                MageInputs.MoltenArmor,
+            // IconInputs to include in the 'Player' section on the settings tab.
+            playerIconInputs: [
+                MageInputs.Armor,
             ],
             // Inputs to include in the 'Rotation' section on the settings tab.
             rotationInputs: MageInputs.MageRotationConfig,
+            // Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
+            includeBuffDebuffInputs: [],
+            excludeBuffDebuffInputs: [],
             // Inputs to include in the 'Other' section on the settings tab.
             otherInputs: {
                 inputs: [
@@ -107,12 +109,6 @@ export class MageSimUI extends IndividualSimUI {
                 ],
             },
             encounterPicker: {
-                // Target stats to show for 'Simple' encounters.
-                simpleTargetStats: [
-                    Stat.StatArcaneResistance,
-                    Stat.StatFireResistance,
-                    Stat.StatFrostResistance,
-                ],
                 // Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
                 showExecuteProportion: true,
             },
@@ -126,20 +122,8 @@ export class MageSimUI extends IndividualSimUI {
                 ],
                 // Preset gear configurations that the user can quickly select.
                 gear: [
-                    Presets.P1_ARCANE_PRESET,
-                    Presets.P2_ARCANE_PRESET,
-                    Presets.P3_ARCANE_PRESET,
-                    Presets.P4_ARCANE_PRESET,
                     Presets.P5_ARCANE_PRESET,
-                    Presets.P1_FIRE_PRESET,
-                    Presets.P2_FIRE_PRESET,
-                    Presets.P3_FIRE_PRESET,
-                    Presets.P4_FIRE_PRESET,
                     Presets.P5_FIRE_PRESET,
-                    Presets.P1_FROST_PRESET,
-                    Presets.P2_FROST_PRESET,
-                    Presets.P3_FROST_PRESET,
-                    Presets.P4_FROST_PRESET,
                     Presets.P5_FROST_PRESET,
                 ],
             },

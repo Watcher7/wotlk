@@ -1,105 +1,40 @@
-import { WeaponImbue } from '/wotlk/core/proto/common.js';
-import { TypedEvent } from '/wotlk/core/typed_event.js';
+import * as InputHelpers from '/wotlk/core/components/input_helpers.js';
 import { Rogue_Rotation_Builder as Builder, } from '/wotlk/core/proto/rogue.js';
 // Configuration for spec-specific UI elements on the settings tab.
 // These don't need to be in a separate file but it keeps things cleaner.
 export const RogueRotationConfig = {
     inputs: [
-        {
-            type: 'enum', cssClass: 'builder-picker',
-            getModObject: (simUI) => simUI.player,
-            config: {
-                label: 'Builder',
-                values: [
-                    {
-                        name: 'Auto', value: Builder.Auto,
-                        tooltip: 'Automatically selects a builder based on weapons/talents.',
-                    },
-                    { name: 'Sinister Strike', value: Builder.SinisterStrike },
-                    { name: 'Mutilate', value: Builder.Mutilate },
-                ],
-                changedEvent: (player) => player.rotationChangeEmitter,
-                getValue: (player) => player.getRotation().builder,
-                setValue: (eventID, player, newValue) => {
-                    const newRotation = player.getRotation();
-                    newRotation.builder = newValue;
-                    player.setRotation(eventID, newRotation);
+        InputHelpers.makeRotationEnumInput({
+            fieldName: 'builder',
+            label: 'Builder',
+            values: [
+                {
+                    name: 'Auto', value: Builder.Auto,
+                    tooltip: 'Automatically selects a builder based on weapons/talents.',
                 },
-            },
-        },
-        {
-            type: 'boolean', cssClass: 'maintain-expose-armor-picker',
-            getModObject: (simUI) => simUI.player,
-            config: {
-                label: 'Maintain EA',
-                labelTooltip: 'Keeps Expose Armor active on the primary target.',
-                changedEvent: (player) => player.rotationChangeEmitter,
-                getValue: (player) => player.getRotation().maintainExposeArmor,
-                setValue: (eventID, player, newValue) => {
-                    const newRotation = player.getRotation();
-                    newRotation.maintainExposeArmor = newValue;
-                    player.setRotation(eventID, newRotation);
-                },
-            },
-        },
-        {
-            type: 'boolean', cssClass: 'use-rupture-picker',
-            getModObject: (simUI) => simUI.player,
-            config: {
-                label: 'Use Rupture',
-                labelTooltip: 'Uses Rupture over Eviscerate when appropriate.',
-                changedEvent: (player) => player.rotationChangeEmitter,
-                getValue: (player) => player.getRotation().useRupture,
-                setValue: (eventID, player, newValue) => {
-                    const newRotation = player.getRotation();
-                    newRotation.useRupture = newValue;
-                    player.setRotation(eventID, newRotation);
-                },
-            },
-        },
-        {
-            type: 'boolean', cssClass: 'use-shiv-picker',
-            getModObject: (simUI) => simUI.player,
-            config: {
-                label: 'Use Shiv',
-                labelTooltip: 'Uses Shiv in place of the selected builder if Deadly Poison is about to expire. Requires Deadly Poison in the off-hand.',
-                changedEvent: (player) => TypedEvent.onAny([player.rotationChangeEmitter, player.consumesChangeEmitter]),
-                getValue: (player) => player.getRotation().useShiv,
-                setValue: (eventID, player, newValue) => {
-                    const newRotation = player.getRotation();
-                    newRotation.useShiv = newValue;
-                    player.setRotation(eventID, newRotation);
-                },
-                enableWhen: (player) => player.getConsumes().offHandImbue == WeaponImbue.WeaponImbueRogueDeadlyPoison,
-            },
-        },
-        {
-            type: 'number', cssClass: 'min-combo-points-for-dps-finisher-picker',
-            getModObject: (simUI) => simUI.player,
-            config: {
-                label: 'Min CPs for Damage Finisher',
-                labelTooltip: 'Will not use Eviscerate or Rupture unless the Rogue has at least this many Combo Points.',
-                changedEvent: (player) => player.rotationChangeEmitter,
-                getValue: (player) => player.getRotation().minComboPointsForDamageFinisher,
-                setValue: (eventID, player, newValue) => {
-                    const newRotation = player.getRotation();
-                    newRotation.minComboPointsForDamageFinisher = newValue;
-                    player.setRotation(eventID, newRotation);
-                },
-            },
-        },
+                { name: 'Sinister Strike', value: Builder.SinisterStrike },
+                { name: 'Mutilate', value: Builder.Mutilate },
+            ],
+        }),
+        InputHelpers.makeRotationBooleanInput({
+            fieldName: 'maintainExposeArmor',
+            label: 'Maintain EA',
+            labelTooltip: 'Keeps Expose Armor active on the primary target.',
+        }),
+        InputHelpers.makeRotationBooleanInput({
+            fieldName: 'useRupture',
+            label: 'Use Rupture',
+            labelTooltip: 'Uses Rupture over Eviscerate when appropriate.',
+        }),
+        InputHelpers.makeRotationBooleanInput({
+            fieldName: 'useShiv',
+            label: 'Use Shiv',
+            labelTooltip: 'Uses Shiv in place of the selected builder if Deadly Poison is about to expire. Requires Deadly Poison in the off-hand.',
+        }),
+        InputHelpers.makeRotationNumberInput({
+            fieldName: 'minComboPointsForDamageFinisher',
+            label: 'Min CPs for Damage Finisher',
+            labelTooltip: 'Will not use Eviscerate or Rupture unless the Rogue has at least this many Combo Points.',
+        }),
     ],
 };
-function makeBooleanRogueBuffInput(id, optionsFieldName) {
-    return {
-        id: id,
-        states: 2,
-        changedEvent: (player) => player.specOptionsChangeEmitter,
-        getValue: (player) => player.getSpecOptions()[optionsFieldName],
-        setValue: (eventID, player, newValue) => {
-            const newOptions = player.getSpecOptions();
-            newOptions[optionsFieldName] = newValue;
-            player.setSpecOptions(eventID, newOptions);
-        },
-    };
-}

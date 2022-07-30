@@ -27,6 +27,20 @@ export var ShadowPriest_Rotation_RotationType;
     ShadowPriest_Rotation_RotationType[ShadowPriest_Rotation_RotationType["Ideal"] = 3] = "Ideal";
 })(ShadowPriest_Rotation_RotationType || (ShadowPriest_Rotation_RotationType = {}));
 /**
+ * @generated from protobuf enum proto.ShadowPriest.Options.Armor
+ */
+export var ShadowPriest_Options_Armor;
+(function (ShadowPriest_Options_Armor) {
+    /**
+     * @generated from protobuf enum value: NoArmor = 0;
+     */
+    ShadowPriest_Options_Armor[ShadowPriest_Options_Armor["NoArmor"] = 0] = "NoArmor";
+    /**
+     * @generated from protobuf enum value: InnerFire = 1;
+     */
+    ShadowPriest_Options_Armor[ShadowPriest_Options_Armor["InnerFire"] = 1] = "InnerFire";
+})(ShadowPriest_Options_Armor || (ShadowPriest_Options_Armor = {}));
+/**
  * @generated from protobuf enum proto.SmitePriest.Rotation.RotationType
  */
 export var SmitePriest_Rotation_RotationType;
@@ -936,11 +950,12 @@ export const ShadowPriest_Rotation = new ShadowPriest_Rotation$Type();
 class ShadowPriest_Options$Type extends MessageType {
     constructor() {
         super("proto.ShadowPriest.Options", [
-            { no: 1, name: "use_shadowfiend", kind: "scalar", T: 8 /*ScalarType.BOOL*/ }
+            { no: 1, name: "use_shadowfiend", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 2, name: "armor", kind: "enum", T: () => ["proto.ShadowPriest.Options.Armor", ShadowPriest_Options_Armor] }
         ]);
     }
     create(value) {
-        const message = { useShadowfiend: false };
+        const message = { useShadowfiend: false, armor: 0 };
         Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
         if (value !== undefined)
             reflectionMergePartial(this, message, value);
@@ -953,6 +968,9 @@ class ShadowPriest_Options$Type extends MessageType {
             switch (fieldNo) {
                 case /* bool use_shadowfiend */ 1:
                     message.useShadowfiend = reader.bool();
+                    break;
+                case /* proto.ShadowPriest.Options.Armor armor */ 2:
+                    message.armor = reader.int32();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -969,6 +987,9 @@ class ShadowPriest_Options$Type extends MessageType {
         /* bool use_shadowfiend = 1; */
         if (message.useShadowfiend !== false)
             writer.tag(1, WireType.Varint).bool(message.useShadowfiend);
+        /* proto.ShadowPriest.Options.Armor armor = 2; */
+        if (message.armor !== 0)
+            writer.tag(2, WireType.Varint).int32(message.armor);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);

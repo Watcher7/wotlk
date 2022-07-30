@@ -19,11 +19,11 @@
 
 @font-face {
   font-family: SimDefaultFont;
-  src: url(/wotlk/assets/PlusJakartaSans-Regular.woff2);
+  src: url(/wotlk/assets/fonts/PlusJakartaSans-Regular.woff2);
 }
 @font-face {
   font-family: SimDefaultFont;
-  src: url(/wotlk/assets/PlusJakartaSans-Bold.woff2);
+  src: url(/wotlk/assets/fonts/PlusJakartaSans-Bold.woff2);
   font-weight: bold;
 }
 * {
@@ -108,8 +108,26 @@
 .dropdown-panel {
   display: none;
   position: absolute;
-  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
+  box-shadow: 2px 4px 20px 5px #000;
+}
+
+.multi-icon-picker-dropdown {
+  margin-left: 25px;
+  margin-top: -25px;
+  background-color: #000 !important;
+  border: 1px gray solid;
+  padding: 1px;
+}
+
+.multi-icon-dropdown-container {
+  margin: 2px;
+}
+
+.icon-enum-picker-dropdown {
+  background-color: #000;
+  border: 1px gray solid;
+  padding: 1px;
 }
 
 .dropdown-panel-column {
@@ -272,7 +290,7 @@
 .sim-title-dropdown {
   position: fixed !important;
   z-index: 9999 !important;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(1, 1fr);
   grid-auto-flow: column;
 }
 
@@ -330,11 +348,11 @@
 
 @font-face {
   font-family: SimDefaultFont;
-  src: url(/wotlk/assets/PlusJakartaSans-Regular.woff2);
+  src: url(/wotlk/assets/fonts/PlusJakartaSans-Regular.woff2);
 }
 @font-face {
   font-family: SimDefaultFont;
-  src: url(/wotlk/assets/PlusJakartaSans-Bold.woff2);
+  src: url(/wotlk/assets/fonts/PlusJakartaSans-Bold.woff2);
   font-weight: bold;
 }
 * {
@@ -419,8 +437,26 @@
 .dropdown-panel {
   display: none;
   position: absolute;
-  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
+  box-shadow: 2px 4px 20px 5px #000;
+}
+
+.multi-icon-picker-dropdown {
+  margin-left: 25px;
+  margin-top: -25px;
+  background-color: #000 !important;
+  border: 1px gray solid;
+  padding: 1px;
+}
+
+.multi-icon-dropdown-container {
+  margin: 2px;
+}
+
+.icon-enum-picker-dropdown {
+  background-color: #000;
+  border: 1px gray solid;
+  padding: 1px;
 }
 
 .dropdown-panel-column {
@@ -649,7 +685,7 @@ input, select {
   color: var(--main-text-color);
   overflow-y: auto;
   flex: 4;
-  min-width: 250px;
+  min-width: calc(275px + 1vw);
 }
 
 .nav-tabs {
@@ -755,9 +791,9 @@ input, select {
 }
 
 .downbin {
-  mask: url(/wotlk/assets/gauge.svg);
+  mask: url(/wotlk/assets/img/gauge.svg);
   mask-size: cover;
-  -webkit-mask: url(/wotlk/assets/gauge.svg);
+  -webkit-mask: url(/wotlk/assets/img/gauge.svg);
   -webkit-mask-size: cover;
   display: inline-block;
   width: 22px;
@@ -848,11 +884,11 @@ input, select {
 
 @font-face {
   font-family: SimDefaultFont;
-  src: url(/wotlk/assets/PlusJakartaSans-Regular.woff2);
+  src: url(/wotlk/assets/fonts/PlusJakartaSans-Regular.woff2);
 }
 @font-face {
   font-family: SimDefaultFont;
-  src: url(/wotlk/assets/PlusJakartaSans-Bold.woff2);
+  src: url(/wotlk/assets/fonts/PlusJakartaSans-Bold.woff2);
   font-weight: bold;
 }
 * {
@@ -937,8 +973,26 @@ input, select {
 .dropdown-panel {
   display: none;
   position: absolute;
-  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
+  box-shadow: 2px 4px 20px 5px #000;
+}
+
+.multi-icon-picker-dropdown {
+  margin-left: 25px;
+  margin-top: -25px;
+  background-color: #000 !important;
+  border: 1px gray solid;
+  padding: 1px;
+}
+
+.multi-icon-dropdown-container {
+  margin: 2px;
+}
+
+.icon-enum-picker-dropdown {
+  background-color: #000;
+  border: 1px gray solid;
+  padding: 1px;
 }
 
 .dropdown-panel-column {
@@ -1087,11 +1141,11 @@ input, select {
 
 @font-face {
   font-family: SimDefaultFont;
-  src: url(/wotlk/assets/PlusJakartaSans-Regular.woff2);
+  src: url(/wotlk/assets/fonts/PlusJakartaSans-Regular.woff2);
 }
 @font-face {
   font-family: SimDefaultFont;
-  src: url(/wotlk/assets/PlusJakartaSans-Bold.woff2);
+  src: url(/wotlk/assets/fonts/PlusJakartaSans-Bold.woff2);
   font-weight: bold;
 }
 * {
@@ -1176,8 +1230,26 @@ input, select {
 .dropdown-panel {
   display: none;
   position: absolute;
-  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
+  box-shadow: 2px 4px 20px 5px #000;
+}
+
+.multi-icon-picker-dropdown {
+  margin-left: 25px;
+  margin-top: -25px;
+  background-color: #000 !important;
+  border: 1px gray solid;
+  padding: 1px;
+}
+
+.multi-icon-dropdown-container {
+  margin: 2px;
+}
+
+.icon-enum-picker-dropdown {
+  background-color: #000;
+  border: 1px gray solid;
+  padding: 1px;
 }
 
 .dropdown-panel-column {
@@ -1565,11 +1637,11 @@ input, select {
 
 @font-face {
   font-family: SimDefaultFont;
-  src: url(/wotlk/assets/PlusJakartaSans-Regular.woff2);
+  src: url(/wotlk/assets/fonts/PlusJakartaSans-Regular.woff2);
 }
 @font-face {
   font-family: SimDefaultFont;
-  src: url(/wotlk/assets/PlusJakartaSans-Bold.woff2);
+  src: url(/wotlk/assets/fonts/PlusJakartaSans-Bold.woff2);
   font-weight: bold;
 }
 * {
@@ -1654,8 +1726,26 @@ input, select {
 .dropdown-panel {
   display: none;
   position: absolute;
-  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
+  box-shadow: 2px 4px 20px 5px #000;
+}
+
+.multi-icon-picker-dropdown {
+  margin-left: 25px;
+  margin-top: -25px;
+  background-color: #000 !important;
+  border: 1px gray solid;
+  padding: 1px;
+}
+
+.multi-icon-dropdown-container {
+  margin: 2px;
+}
+
+.icon-enum-picker-dropdown {
+  background-color: #000;
+  border: 1px gray solid;
+  padding: 1px;
 }
 
 .dropdown-panel-column {

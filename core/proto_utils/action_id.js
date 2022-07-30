@@ -202,6 +202,14 @@ export class ActionId {
                 if (this.tag)
                     name += ' (LO)';
                 break;
+            case 'Holy Vengeance':
+                if (this.tag == 1) {
+                    name += ' (Swing Roll)';
+                }
+                else if (this.tag == 2) {
+                    name += ' (DoT)';
+                }
+                break;
             case 'Holy Shield':
                 if (this.tag == 1) {
                     name += ' (Proc)';
@@ -230,6 +238,19 @@ export class ActionId {
                     name += ' (Spell)';
                 }
                 break;
+            case 'Scourge Strike':
+                if (this.tag == 1) {
+                    name += ' (Physical)';
+                }
+                else if (this.tag == 2) {
+                    name += ' (Shadow)';
+                }
+                break;
+            case 'Frost Strike':
+            case 'Plague Strike':
+            case 'Blood Strike':
+            case 'Obliterate':
+            case 'Blood-Caked Strike':
             case 'Lightning Speed':
             case 'Windfury Weapon':
                 if (this.tag == 1) {
@@ -480,6 +501,8 @@ export const defaultTargetIcon = 'https://wow.zamimg.com/images/wow/icons/large/
 const petNameToActionId = {
     'Gnomish Flame Turret': ActionId.fromItemId(23841),
     'Water Elemental': ActionId.fromSpellId(31687),
+    'Spirit Wolf 1': ActionId.fromSpellId(51533),
+    'Spirit Wolf 2': ActionId.fromSpellId(51533)
 };
 // https://wowhead.com/wotlk/hunter-pets
 const petNameToIcon = {
@@ -499,6 +522,7 @@ const petNameToIcon = {
     'Felhunter': 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_summonfelhunter.jpg',
     'Gargoyle': 'https://wow.zamimg.com/images/wow/icons/large/ability_hunter_pet_bat.jpg',
     'Ghoul': 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_raisedead.jpg',
+    'Army of the Dead': 'https://wow.zamimg.com/images/wow/icons/large/spell_deathknight_armyofthedead.jpg',
     'Gorilla': 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_gorilla.jpg',
     'Hyena': 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_hyena.jpg',
     'Imp': 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_summonimp.jpg',
@@ -513,7 +537,7 @@ const petNameToIcon = {
     'Silithid': 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_silithid.jpg',
     'Spider': 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_spider.jpg',
     'Spirit Beast': 'https://wow.zamimg.com/images/wow/icons/medium/ability_druid_primalprecision.jpg',
-    'SporeBat': 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_sporebat.jpg',
+    'Spore Bat': 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_sporebat.jpg',
     'Succubus': 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_summonsuccubus.jpg',
     'Tallstrider': 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_tallstrider.jpg',
     'Turtle': 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_turtle.jpg',
@@ -532,8 +556,8 @@ export const resourceTypeToIcon = {
     [ResourceType.ResourceTypeComboPoints]: 'https://wow.zamimg.com/images/wow/icons/medium/inv_mace_2h_pvp410_c_01.jpg',
     [ResourceType.ResourceTypeFocus]: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_focusfire.jpg',
     [ResourceType.ResourceTypeRunicPower]: 'https://wow.zamimg.com/images/wow/icons/medium/inv_sword_62.jpg',
-    [ResourceType.ResourceTypeBloodRune]: '/wotlk/assets/blood_rune.png',
-    [ResourceType.ResourceTypeFrostRune]: '/wotlk/assets/frost_rune.png',
-    [ResourceType.ResourceTypeUnholyRune]: '/wotlk/assets/unholy_rune.png',
-    [ResourceType.ResourceTypeDeathRune]: '/wotlk/assets/death_rune.png',
+    [ResourceType.ResourceTypeBloodRune]: '/wotlk/assets/img/blood_rune.png',
+    [ResourceType.ResourceTypeFrostRune]: '/wotlk/assets/img/frost_rune.png',
+    [ResourceType.ResourceTypeUnholyRune]: '/wotlk/assets/img/unholy_rune.png',
+    [ResourceType.ResourceTypeDeathRune]: '/wotlk/assets/img/death_rune.png',
 };

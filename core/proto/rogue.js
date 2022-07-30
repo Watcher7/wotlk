@@ -3,6 +3,7 @@ import { UnknownFieldHandler } from '/wotlk/protobuf-ts/index.js';
 import { reflectionMergePartial } from '/wotlk/protobuf-ts/index.js';
 import { MESSAGE_TYPE } from '/wotlk/protobuf-ts/index.js';
 import { MessageType } from '/wotlk/protobuf-ts/index.js';
+import { RaidTarget } from './common.js';
 /**
  * @generated from protobuf enum proto.Rogue.Rotation.Builder
  */
@@ -949,7 +950,9 @@ export const Rogue_Rotation = new Rogue_Rotation$Type();
 // @generated message type with reflection information, may provide speed optimized methods
 class Rogue_Options$Type extends MessageType {
     constructor() {
-        super("proto.Rogue.Options", []);
+        super("proto.Rogue.Options", [
+            { no: 1, name: "tricks_of_the_trade_target", kind: "message", T: () => RaidTarget }
+        ]);
     }
     create(value) {
         const message = {};
@@ -959,9 +962,28 @@ class Rogue_Options$Type extends MessageType {
         return message;
     }
     internalBinaryRead(reader, length, options, target) {
-        return target ?? this.create();
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* proto.RaidTarget tricks_of_the_trade_target */ 1:
+                    message.tricksOfTheTradeTarget = RaidTarget.internalBinaryRead(reader, reader.uint32(), options, message.tricksOfTheTradeTarget);
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
     }
     internalBinaryWrite(message, writer, options) {
+        /* proto.RaidTarget tricks_of_the_trade_target = 1; */
+        if (message.tricksOfTheTradeTarget)
+            RaidTarget.internalBinaryWrite(message.tricksOfTheTradeTarget, writer.tag(1, WireType.LengthDelimited).fork(), options).join();
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);

@@ -14,9 +14,11 @@ export class BuffBot {
         this.raidIndex = NO_ASSIGNMENT;
         this.innervateAssignment = emptyRaidTarget();
         this.powerInfusionAssignment = emptyRaidTarget();
+        this.tricksOfTheTradeAssignment = emptyRaidTarget();
         this.raidIndexChangeEmitter = new TypedEvent();
         this.innervateAssignmentChangeEmitter = new TypedEvent();
         this.powerInfusionAssignmentChangeEmitter = new TypedEvent();
+        this.tricksOfTheTradeAssignmentChangeEmitter = new TypedEvent();
         this.changeEmitter = new TypedEvent();
         const settings = buffBotPresets.find(preset => preset.buffBotId == id);
         if (!settings) {
@@ -29,6 +31,7 @@ export class BuffBot {
             this.raidIndexChangeEmitter,
             this.innervateAssignmentChangeEmitter,
             this.powerInfusionAssignmentChangeEmitter,
+            this.tricksOfTheTradeAssignmentChangeEmitter,
         ].forEach(emitter => emitter.on(eventID => this.changeEmitter.emit(eventID)));
         this.changeEmitter.on(eventID => sim.raid.getParty(this.getPartyIndex()).changeEmitter.emit(eventID));
     }
@@ -82,12 +85,24 @@ export class BuffBot {
         this.powerInfusionAssignment = RaidTarget.clone(newPowerInfusionAssignment);
         this.powerInfusionAssignmentChangeEmitter.emit(eventID);
     }
+    getTricksOfTheTradeAssignment() {
+        // Defensive copy.
+        return RaidTarget.clone(this.tricksOfTheTradeAssignment);
+    }
+    setTricksOfTheTradeAssignment(eventID, newTricksOfTheTradeAssignment) {
+        if (RaidTarget.equals(newTricksOfTheTradeAssignment, this.tricksOfTheTradeAssignment))
+            return;
+        // Defensive copy.
+        this.tricksOfTheTradeAssignment = RaidTarget.clone(newTricksOfTheTradeAssignment);
+        this.tricksOfTheTradeAssignmentChangeEmitter.emit(eventID);
+    }
     toProto() {
         return BuffBotProto.create({
             id: this.settings.buffBotId,
             raidIndex: this.getRaidIndex(),
             innervateAssignment: this.getInnervateAssignment(),
             powerInfusionAssignment: this.getPowerInfusionAssignment(),
+            tricksOfTheTradeAssignment: this.getTricksOfTheTradeAssignment(),
         });
     }
     fromProto(eventID, proto) {
@@ -101,6 +116,7 @@ export class BuffBot {
             this.setRaidIndex(eventID, proto.raidIndex);
             this.setInnervateAssignment(eventID, proto.innervateAssignment || emptyRaidTarget());
             this.setPowerInfusionAssignment(eventID, proto.powerInfusionAssignment || emptyRaidTarget());
+            this.setTricksOfTheTradeAssignment(eventID, proto.tricksOfTheTradeAssignment || emptyRaidTarget());
         });
     }
     clone(eventID) {

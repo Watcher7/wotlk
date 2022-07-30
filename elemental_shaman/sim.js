@@ -73,7 +73,7 @@ export class ElementalShamanSimUI extends IndividualSimUI {
             },
             defaults: {
                 // Default equipped gear.
-                gear: Presets.PRE_RAID_PRESET.gear,
+                gear: Presets.P1_PRESET.gear,
                 // Default EP weights for sorting gear in the gear picker.
                 epWeights: Stats.fromMap({
                     [Stat.StatIntellect]: 0.17,
@@ -96,27 +96,33 @@ export class ElementalShamanSimUI extends IndividualSimUI {
                     arcaneBrilliance: true,
                     divineSpirit: true,
                     giftOfTheWild: TristateEffect.TristateEffectImproved,
+                    moonkinAura: TristateEffect.TristateEffectImproved,
+                    sanctifiedRetribution: true,
                 }),
                 partyBuffs: PartyBuffs.create({}),
                 individualBuffs: IndividualBuffs.create({
                     blessingOfKings: true,
                     blessingOfWisdom: 2,
-                    replenishment: true,
+                    vampiricTouch: true,
                 }),
                 debuffs: Debuffs.create({
                     faerieFire: TristateEffect.TristateEffectImproved,
                     judgementOfWisdom: true,
                     misery: true,
                     curseOfElements: true,
+                    shadowMastery: true,
                 }),
             },
-            // IconInputs to include in the 'Self Buffs' section on the settings tab.
-            selfBuffInputs: [
-                ShamanInputs.IconWaterShield,
-                ShamanInputs.IconBloodlust,
+            // IconInputs to include in the 'Player' section on the settings tab.
+            playerIconInputs: [
+                ShamanInputs.ShamanShieldInput,
+                ShamanInputs.Bloodlust,
             ],
             // Inputs to include in the 'Rotation' section on the settings tab.
             rotationInputs: ShamanInputs.ElementalShamanRotationConfig,
+            // Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
+            includeBuffDebuffInputs: [],
+            excludeBuffDebuffInputs: [],
             // Inputs to include in the 'Other' section on the settings tab.
             otherInputs: {
                 inputs: [
@@ -128,10 +134,6 @@ export class ElementalShamanSimUI extends IndividualSimUI {
                 TotemsSection,
             ],
             encounterPicker: {
-                // Target stats to show for 'Simple' encounters.
-                simpleTargetStats: [
-                    Stat.StatNatureResistance,
-                ],
                 // Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
                 showExecuteProportion: false,
             },
@@ -139,11 +141,12 @@ export class ElementalShamanSimUI extends IndividualSimUI {
                 // Preset talents that the user can quickly select.
                 talents: [
                     Presets.StandardTalents,
-                    Presets.RestoTalents,
                 ],
                 // Preset gear configurations that the user can quickly select.
                 gear: [
+                    Presets.SWP_PRESET,
                     Presets.PRE_RAID_PRESET,
+                    Presets.P1_PRESET,
                 ],
             },
         });

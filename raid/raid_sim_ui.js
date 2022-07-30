@@ -6,12 +6,13 @@ import { SavedDataManager } from "/wotlk/core/components/saved_data_manager.js";
 import { SettingsMenu } from "/wotlk/core/components/settings_menu.js";
 import * as Tooltips from "/wotlk/core/constants/tooltips.js";
 import { Raid as RaidProto } from "/wotlk/core/proto/api.js";
-import { Class, Encounter as EncounterProto, Stat, TristateEffect } from "/wotlk/core/proto/common.js";
+import { Class, Encounter as EncounterProto, TristateEffect } from "/wotlk/core/proto/common.js";
 import { Blessings } from "/wotlk/core/proto/paladin.js";
 import { BlessingsAssignments, RaidSimSettings, SavedEncounter, SavedRaid } from "/wotlk/core/proto/ui.js";
 import { playerToSpec } from "/wotlk/core/proto_utils/utils.js";
 import { Sim } from "/wotlk/core/sim.js";
 import { SimUI } from "/wotlk/core/sim_ui.js";
+import { LaunchStatus, raidSimLaunched } from '/wotlk/core/launched_sims.js';
 import { TypedEvent } from "/wotlk/core/typed_event.js";
 import { BlessingsPicker } from "./blessings_picker.js";
 import { newRaidExporters, newRaidImporters } from "./import_export.js";
@@ -24,6 +25,7 @@ export class RaidSimUI extends SimUI {
     constructor(parentElem, config) {
         super(parentElem, new Sim(), {
             spec: null,
+            launchStatus: raidSimLaunched ? LaunchStatus.Launched : LaunchStatus.Unlaunched,
             knownIssues: (config.knownIssues || []).concat(extraKnownIssues),
         });
         this.raidSimResultsManager = null;
@@ -166,9 +168,6 @@ export class RaidSimUI extends SimUI {
 		`);
         const encounterSectionElem = this.rootElem.getElementsByClassName('raid-encounter-section')[0];
         new EncounterPicker(encounterSectionElem, this.sim.encounter, {
-            simpleTargetStats: [
-                Stat.StatArmor,
-            ],
             showExecuteProportion: true,
         }, this);
         const savedEncounterManager = new SavedDataManager(this.rootElem.getElementsByClassName('saved-encounter-manager')[0], this.sim.encounter, {
@@ -314,6 +313,17 @@ export class RaidSimUI extends SimUI {
             blessings: this.blessingsPicker.getAssignments(),
             encounter: this.sim.encounter.toProto(),
         });
+    }
+    toLink() {
+        const proto = this.toProto();
+        // When sharing links, people generally don't intend to share settings.
+        proto.settings = undefined;
+        const protoBytes = RaidSimSettings.toBinary(proto);
+        const deflated = pako.deflate(protoBytes, { to: 'string' });
+        const encoded = btoa(String.fromCharCode(...deflated));
+        const linkUrl = new URL(window.location.href);
+        linkUrl.hash = encoded;
+        return linkUrl.toString();
     }
     fromProto(eventID, settings) {
         TypedEvent.freezeAllAndDo(() => {

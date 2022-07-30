@@ -180,6 +180,10 @@ export interface BuffBot {
      * @generated from protobuf field: proto.RaidTarget power_infusion_assignment = 4;
      */
     powerInfusionAssignment?: RaidTarget;
+    /**
+     * @generated from protobuf field: proto.RaidTarget tricks_of_the_trade_assignment = 5;
+     */
+    tricksOfTheTradeAssignment?: RaidTarget;
 }
 /**
  * @generated from protobuf message proto.BlessingsAssignment

@@ -1,7 +1,7 @@
 import { Consumes } from '/wotlk/core/proto/common.js';
 import { EquipmentSpec } from '/wotlk/core/proto/common.js';
 import { SavedTalents } from '/wotlk/core/proto/ui.js';
-import { DeathKnight_Rotation as DeathKnightRotation, DeathKnight_Options as DeathKnightOptions } from '/wotlk/core/proto/deathknight.js';
+import { Deathknight_Rotation as DeathKnightRotation, Deathknight_Options as DeathKnightOptions } from '/wotlk/core/proto/deathknight.js';
 export declare const FrostTalents: {
     name: string;
     data: SavedTalents;
@@ -28,6 +28,11 @@ export declare const P1_FROST_PRE_BIS_PRESET: {
     gear: EquipmentSpec;
 };
 export declare const P1_FROST_BIS_PRESET: {
+    name: string;
+    tooltip: string;
+    gear: EquipmentSpec;
+};
+export declare const P1_FROST_HITCAP_PRESET: {
     name: string;
     tooltip: string;
     gear: EquipmentSpec;

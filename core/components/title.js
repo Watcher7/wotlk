@@ -1,5 +1,5 @@
 import { Component } from '/wotlk/core/components/component.js';
-import { launchedSpecs, raidSimLaunched } from '/wotlk/core/launched_sims.js';
+import { getLaunchedSims, raidSimLaunched } from '/wotlk/core/launched_sims.js';
 import { classColors, getSpecSiteUrl, naturalSpecOrder, raidSimSiteUrl, specNames, specToClass, titleIcons, raidSimIcon, } from '/wotlk/core/proto_utils/utils.js';
 ;
 // Dropdown menu for selecting a player.
@@ -17,7 +17,7 @@ export class Title extends Component {
             event.preventDefault();
         });
         const orderedLaunchedSpecs = naturalSpecOrder
-            .filter(spec => launchedSpecs.includes(spec))
+            .filter(spec => getLaunchedSims().includes(spec))
             .concat(raidSimLaunched ? [null] : []); // Null represents the raid sim.
         dropdownPanel.style.gridTemplateRows = `repeat(${Math.ceil(orderedLaunchedSpecs.length / 2)}, 1fr)`;
         const currentOption = this.makeOptionData(currentSpec, true);

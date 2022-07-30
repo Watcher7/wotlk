@@ -13,6 +13,6 @@ export declare class CharacterStats extends Component {
     private readonly modifyDisplayStats?;
     constructor(parent: HTMLElement, player: Player<any>, stats: Array<Stat>, modifyDisplayStats?: (player: Player<any>) => StatMods);
     private updateStats;
-    static statDisplayString(stats: Stats, stat: Stat): string;
+    static statDisplayString(player: Player<any>, stats: Stats, stat: Stat): string;
     static getDebuffStats(player: Player<any>): Stats;
 }

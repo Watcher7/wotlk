@@ -71,17 +71,9 @@ export const playerPresets = [
         defaultGear: {
             [Faction.Unknown]: {},
             [Faction.Alliance]: {
-                1: BalanceDruidPresets.P1_ALLIANCE_PRESET.gear,
-                2: BalanceDruidPresets.P2_ALLIANCE_PRESET.gear,
-                3: BalanceDruidPresets.P3_PRESET.gear,
-                4: BalanceDruidPresets.P4_PRESET.gear,
                 5: BalanceDruidPresets.P5_PRESET.gear,
             },
             [Faction.Horde]: {
-                1: BalanceDruidPresets.P1_HORDE_PRESET.gear,
-                2: BalanceDruidPresets.P2_HORDE_PRESET.gear,
-                3: BalanceDruidPresets.P3_PRESET.gear,
-                4: BalanceDruidPresets.P4_PRESET.gear,
                 5: BalanceDruidPresets.P5_PRESET.gear,
             },
         },
@@ -215,18 +207,10 @@ export const playerPresets = [
         defaultGear: {
             [Faction.Unknown]: {},
             [Faction.Alliance]: {
-                1: MagePresets.P1_ARCANE_PRESET.gear,
-                2: MagePresets.P2_ARCANE_PRESET.gear,
-                3: MagePresets.P3_ARCANE_PRESET.gear,
-                4: MagePresets.P4_ARCANE_PRESET.gear,
-                5: MagePresets.P5_ARCANE_PRESET.gear,
+                0: MagePresets.P5_ARCANE_PRESET.gear,
             },
             [Faction.Horde]: {
-                1: MagePresets.P1_ARCANE_PRESET.gear,
-                2: MagePresets.P2_ARCANE_PRESET.gear,
-                3: MagePresets.P3_ARCANE_PRESET.gear,
-                4: MagePresets.P4_ARCANE_PRESET.gear,
-                5: MagePresets.P5_ARCANE_PRESET.gear,
+                0: MagePresets.P5_ARCANE_PRESET.gear,
             },
         },
         tooltip: 'Arcane Mage',
@@ -247,18 +231,10 @@ export const playerPresets = [
         defaultGear: {
             [Faction.Unknown]: {},
             [Faction.Alliance]: {
-                1: MagePresets.P1_FIRE_PRESET.gear,
-                2: MagePresets.P2_FIRE_PRESET.gear,
-                3: MagePresets.P3_FIRE_PRESET.gear,
-                4: MagePresets.P4_FIRE_PRESET.gear,
-                5: MagePresets.P5_FIRE_PRESET.gear,
+                0: MagePresets.P5_FIRE_PRESET.gear,
             },
             [Faction.Horde]: {
-                1: MagePresets.P1_FIRE_PRESET.gear,
-                2: MagePresets.P2_FIRE_PRESET.gear,
-                3: MagePresets.P3_FIRE_PRESET.gear,
-                4: MagePresets.P4_FIRE_PRESET.gear,
-                5: MagePresets.P5_FIRE_PRESET.gear,
+                0: MagePresets.P5_FIRE_PRESET.gear,
             },
         },
         tooltip: 'Fire Mage',
@@ -279,18 +255,10 @@ export const playerPresets = [
         defaultGear: {
             [Faction.Unknown]: {},
             [Faction.Alliance]: {
-                1: MagePresets.P1_FROST_PRESET.gear,
-                2: MagePresets.P2_FROST_PRESET.gear,
-                3: MagePresets.P3_FROST_PRESET.gear,
-                4: MagePresets.P4_FROST_PRESET.gear,
-                5: MagePresets.P5_FROST_PRESET.gear,
+                0: MagePresets.P5_FROST_PRESET.gear,
             },
             [Faction.Horde]: {
-                1: MagePresets.P1_FROST_PRESET.gear,
-                2: MagePresets.P2_FROST_PRESET.gear,
-                3: MagePresets.P3_FROST_PRESET.gear,
-                4: MagePresets.P4_FROST_PRESET.gear,
-                5: MagePresets.P5_FROST_PRESET.gear,
+                0: MagePresets.P5_FROST_PRESET.gear,
             },
         },
         tooltip: 'Frost Mage',
@@ -335,10 +303,10 @@ export const playerPresets = [
         defaultGear: {
             [Faction.Unknown]: {},
             [Faction.Alliance]: {
-                1: ElementalShamanPresets.PRE_RAID_PRESET.gear,
+                1: ElementalShamanPresets.P1_PRESET.gear,
             },
             [Faction.Horde]: {
-                1: ElementalShamanPresets.PRE_RAID_PRESET.gear,
+                1: ElementalShamanPresets.P1_PRESET.gear,
             },
         },
         tooltip: specNames[Spec.SpecElementalShaman],
@@ -815,6 +783,25 @@ export const buffBotPresets = [
                 const playerProto = raidProto.parties[partyIndex].players[playerIndex];
                 if (playerProto.buffs) {
                     playerProto.buffs.powerInfusions++;
+                }
+            }
+        },
+    },
+    {
+        // The value of this field must never change, to preserve local storage data.
+        buffBotId: 'Rogue',
+        spec: Spec.SpecShadowPriest,
+        name: 'Rogue',
+        tooltip: 'Rogue: Adds TotT.',
+        iconUrl: 'https://wow.zamimg.com/images/wow/icons/large/ability_rogue_tricksofthetrade.jpg',
+        modifyRaidProto: (buffBot, raidProto, partyProto) => {
+            const tricksOfTheTradeIndex = buffBot.getTricksOfTheTradeAssignment().targetIndex;
+            if (tricksOfTheTradeIndex != NO_TARGET) {
+                const partyIndex = Math.floor(tricksOfTheTradeIndex / 5);
+                const playerIndex = tricksOfTheTradeIndex % 5;
+                const playerProto = raidProto.parties[partyIndex].players[playerIndex];
+                if (playerProto.buffs) {
+                    playerProto.buffs.tricksOfTheTrades++;
                 }
             }
         },

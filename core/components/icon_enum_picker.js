@@ -38,6 +38,12 @@ export class IconEnumPicker extends Input {
             option.classList.add('dropdown-option', 'icon-enum-picker-option');
             optionContainer.appendChild(option);
             this.setImage(option, valueConfig);
+            if (valueConfig.tooltip) {
+                tippy(option, {
+                    'content': valueConfig.tooltip,
+                    'allowHTML': true,
+                });
+            }
             if (valueConfig.showWhen) {
                 config.changedEvent(this.modObject).on(eventID => {
                     const show = valueConfig.showWhen && valueConfig.showWhen(this.modObject);

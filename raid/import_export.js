@@ -217,6 +217,7 @@ class RaidWCLImporter extends Importer {
 							}
 							innervates: table(fightIDs: [${fightID}], dataType:Casts, endTime: 99999999, sourceClass: "Druid", abilityID: 29166),
 							powerInfusion: table(fightIDs: [${fightID}], dataType:Casts, endTime: 99999999, sourceClass: "Priest", abilityID: 10060)
+							tricksOfTheTrade: table(fightIDs: [${fightID}], dataType:Casts, endTime: 99999999, sourceClass: "Rogue", abilityID: 57933)
 						}
 					}
 				}
@@ -235,6 +236,7 @@ class RaidWCLImporter extends Importer {
         const playerData = wclData.playerDetails.data.entries;
         const innervateData = wclData.innervates.data.entries;
         const powerInfusionData = wclData.powerInfusion.data.entries;
+        const tricksOfTheTradeData = wclData.tricksOfTheTrade.data.entries;
         // Set up the general variables we need for import to be successful.
         const fight = wclData.fights[0];
         const startTime = fight.startTime;
@@ -317,6 +319,7 @@ class RaidWCLImporter extends Importer {
         };
         processBuffCastData(innervateData).forEach((cast) => cast.player.innervateTarget = cast.target);
         processBuffCastData(powerInfusionData).forEach((cast) => cast.player.powerInfusionTarget = cast.target);
+        processBuffCastData(tricksOfTheTradeData).forEach((cast) => cast.player.tricksOfTheTradeTarget = cast.target);
         const wclPlayers = sortByProperty(sortByProperty(mappedPlayers, 'type'), 'sortPriority');
         let raidIndex = 0;
         // Sorts buff bots to the end of the array to prevent overwriting them later on.
@@ -455,9 +458,9 @@ class RaidWCLImporter extends Importer {
         });
         // Insert the innervate / PI buffs into the options for the raid.
         wclPlayers
-            .filter((player) => player.innervateTarget || player.powerInfusionTarget)
+            .filter((player) => player.innervateTarget || player.powerInfusionTarget || player.tricksOfTheTradeTarget)
             .forEach((player) => {
-            const target = wclPlayers.find((wclPlayer) => wclPlayer.name === player.innervateTarget || player.name === player.powerInfusionTarget);
+            const target = wclPlayers.find((wclPlayer) => wclPlayer.name === player.innervateTarget || player.name === player.powerInfusionTarget || player.name === player.tricksOfTheTradeTarget);
             if (!target) {
                 console.warn('Could not find target assignment player');
                 return;
@@ -480,6 +483,10 @@ class RaidWCLImporter extends Importer {
                     else if (player.powerInfusionTarget) {
                         buffBot.powerInfusionAssignment = RaidTarget.create();
                         buffBot.powerInfusionAssignment.targetIndex = targetRaidIndex;
+                    }
+                    else if (player.tricksOfTheTradeTarget) {
+                        buffBot.tricksOfTheTradeAssignment = RaidTarget.create();
+                        buffBot.tricksOfTheTradeAssignment.targetIndex = targetRaidIndex;
                     }
                 }
                 return;
@@ -511,6 +518,9 @@ class RaidWCLImporter extends Importer {
             }
             else if (player.powerInfusionTarget) {
                 // Pretty sure there is no shadow priest that has PI
+            }
+            else if (player.tricksOfTheTradeTarget) {
+                // TODO: I'm not sure what I'm supposed to do here
             }
         });
         wclPlayers

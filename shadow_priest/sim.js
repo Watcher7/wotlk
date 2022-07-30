@@ -21,7 +21,6 @@ export class ShadowPriestSimUI extends IndividualSimUI {
                 Stat.StatIntellect,
                 Stat.StatSpirit,
                 Stat.StatSpellPower,
-                Stat.StatShadowSpellPower,
                 Stat.StatSpellHit,
                 Stat.StatSpellCrit,
                 Stat.StatSpellHaste,
@@ -36,7 +35,6 @@ export class ShadowPriestSimUI extends IndividualSimUI {
                 Stat.StatIntellect,
                 Stat.StatSpirit,
                 Stat.StatSpellPower,
-                Stat.StatShadowSpellPower,
                 Stat.StatSpellHit,
                 Stat.StatSpellCrit,
                 Stat.StatSpellHaste,
@@ -44,7 +42,7 @@ export class ShadowPriestSimUI extends IndividualSimUI {
             ],
             modifyDisplayStats: (player) => {
                 let stats = new Stats();
-                stats = stats.addStat(Stat.StatSpellHit, player.getTalents().shadowFocus * 2 * Mechanics.SPELL_HIT_RATING_PER_HIT_CHANCE);
+                stats = stats.addStat(Stat.StatSpellHit, player.getTalents().shadowFocus * 1 * Mechanics.SPELL_HIT_RATING_PER_HIT_CHANCE);
                 return {
                     talents: stats,
                 };
@@ -93,10 +91,15 @@ export class ShadowPriestSimUI extends IndividualSimUI {
                     curseOfElements: true,
                 }),
             },
-            // IconInputs to include in the 'Self Buffs' section on the settings tab.
-            selfBuffInputs: [],
+            // IconInputs to include in the 'Player' section on the settings tab.
+            playerIconInputs: [
+                ShadowPriestInputs.ArmorInput,
+            ],
             // Inputs to include in the 'Rotation' section on the settings tab.
             rotationInputs: ShadowPriestInputs.ShadowPriestRotationConfig,
+            // Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
+            includeBuffDebuffInputs: [],
+            excludeBuffDebuffInputs: [],
             // Inputs to include in the 'Other' section on the settings tab.
             otherInputs: {
                 inputs: [
@@ -105,10 +108,6 @@ export class ShadowPriestSimUI extends IndividualSimUI {
                 ],
             },
             encounterPicker: {
-                // Target stats to show for 'Simple' encounters.
-                simpleTargetStats: [
-                    Stat.StatShadowResistance,
-                ],
                 // Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
                 showExecuteProportion: false,
             },
@@ -119,6 +118,7 @@ export class ShadowPriestSimUI extends IndividualSimUI {
                 ],
                 // Preset gear configurations that the user can quickly select.
                 gear: [
+                    Presets.PreBis_PRESET,
                     Presets.P1_PRESET,
                 ],
             },

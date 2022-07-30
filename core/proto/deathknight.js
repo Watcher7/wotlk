@@ -4,161 +4,207 @@ import { reflectionMergePartial } from '/wotlk/protobuf-ts/index.js';
 import { MESSAGE_TYPE } from '/wotlk/protobuf-ts/index.js';
 import { MessageType } from '/wotlk/protobuf-ts/index.js';
 /**
- * @generated from protobuf enum proto.DeathKnightMajorGlyph
+ * @generated from protobuf enum proto.Deathknight.Rotation.ArmyOfTheDead
  */
-export var DeathKnightMajorGlyph;
-(function (DeathKnightMajorGlyph) {
+export var Deathknight_Rotation_ArmyOfTheDead;
+(function (Deathknight_Rotation_ArmyOfTheDead) {
     /**
-     * @generated from protobuf enum value: DeathKnightMajorGlyphNone = 0;
+     * @generated from protobuf enum value: DoNotUse = 0;
      */
-    DeathKnightMajorGlyph[DeathKnightMajorGlyph["DeathKnightMajorGlyphNone"] = 0] = "DeathKnightMajorGlyphNone";
+    Deathknight_Rotation_ArmyOfTheDead[Deathknight_Rotation_ArmyOfTheDead["DoNotUse"] = 0] = "DoNotUse";
+    /**
+     * @generated from protobuf enum value: PreCast = 1;
+     */
+    Deathknight_Rotation_ArmyOfTheDead[Deathknight_Rotation_ArmyOfTheDead["PreCast"] = 1] = "PreCast";
+    /**
+     * @generated from protobuf enum value: AsMajorCd = 2;
+     */
+    Deathknight_Rotation_ArmyOfTheDead[Deathknight_Rotation_ArmyOfTheDead["AsMajorCd"] = 2] = "AsMajorCd";
+})(Deathknight_Rotation_ArmyOfTheDead || (Deathknight_Rotation_ArmyOfTheDead = {}));
+/**
+ * @generated from protobuf enum proto.Deathknight.Rotation.DeathAndDecayPrio
+ */
+export var Deathknight_Rotation_DeathAndDecayPrio;
+(function (Deathknight_Rotation_DeathAndDecayPrio) {
+    /**
+     * @generated from protobuf enum value: MaxRuneDowntime = 0;
+     */
+    Deathknight_Rotation_DeathAndDecayPrio[Deathknight_Rotation_DeathAndDecayPrio["MaxRuneDowntime"] = 0] = "MaxRuneDowntime";
+    /**
+     * @generated from protobuf enum value: MaxDndUptime = 1;
+     */
+    Deathknight_Rotation_DeathAndDecayPrio[Deathknight_Rotation_DeathAndDecayPrio["MaxDndUptime"] = 1] = "MaxDndUptime";
+})(Deathknight_Rotation_DeathAndDecayPrio || (Deathknight_Rotation_DeathAndDecayPrio = {}));
+/**
+ * @generated from protobuf enum proto.Deathknight.Rotation.FirstDisease
+ */
+export var Deathknight_Rotation_FirstDisease;
+(function (Deathknight_Rotation_FirstDisease) {
+    /**
+     * @generated from protobuf enum value: FrostFever = 0;
+     */
+    Deathknight_Rotation_FirstDisease[Deathknight_Rotation_FirstDisease["FrostFever"] = 0] = "FrostFever";
+    /**
+     * @generated from protobuf enum value: BloodPlague = 1;
+     */
+    Deathknight_Rotation_FirstDisease[Deathknight_Rotation_FirstDisease["BloodPlague"] = 1] = "BloodPlague";
+})(Deathknight_Rotation_FirstDisease || (Deathknight_Rotation_FirstDisease = {}));
+/**
+ * @generated from protobuf enum proto.DeathknightMajorGlyph
+ */
+export var DeathknightMajorGlyph;
+(function (DeathknightMajorGlyph) {
+    /**
+     * @generated from protobuf enum value: DeathknightMajorGlyphNone = 0;
+     */
+    DeathknightMajorGlyph[DeathknightMajorGlyph["DeathknightMajorGlyphNone"] = 0] = "DeathknightMajorGlyphNone";
     /**
      * @generated from protobuf enum value: GlyphOfAntiMagicShell = 43533;
      */
-    DeathKnightMajorGlyph[DeathKnightMajorGlyph["GlyphOfAntiMagicShell"] = 43533] = "GlyphOfAntiMagicShell";
+    DeathknightMajorGlyph[DeathknightMajorGlyph["GlyphOfAntiMagicShell"] = 43533] = "GlyphOfAntiMagicShell";
     /**
      * @generated from protobuf enum value: GlyphOfBloodStrike = 43826;
      */
-    DeathKnightMajorGlyph[DeathKnightMajorGlyph["GlyphOfBloodStrike"] = 43826] = "GlyphOfBloodStrike";
+    DeathknightMajorGlyph[DeathknightMajorGlyph["GlyphOfBloodStrike"] = 43826] = "GlyphOfBloodStrike";
     /**
      * @generated from protobuf enum value: GlyphOfBoneShield = 43536;
      */
-    DeathKnightMajorGlyph[DeathKnightMajorGlyph["GlyphOfBoneShield"] = 43536] = "GlyphOfBoneShield";
+    DeathknightMajorGlyph[DeathknightMajorGlyph["GlyphOfBoneShield"] = 43536] = "GlyphOfBoneShield";
     /**
      * @generated from protobuf enum value: GlyphOfChainsOfIce = 43537;
      */
-    DeathKnightMajorGlyph[DeathKnightMajorGlyph["GlyphOfChainsOfIce"] = 43537] = "GlyphOfChainsOfIce";
+    DeathknightMajorGlyph[DeathknightMajorGlyph["GlyphOfChainsOfIce"] = 43537] = "GlyphOfChainsOfIce";
     /**
      * @generated from protobuf enum value: GlyphOfDancingRuneWeapon = 45799;
      */
-    DeathKnightMajorGlyph[DeathKnightMajorGlyph["GlyphOfDancingRuneWeapon"] = 45799] = "GlyphOfDancingRuneWeapon";
+    DeathknightMajorGlyph[DeathknightMajorGlyph["GlyphOfDancingRuneWeapon"] = 45799] = "GlyphOfDancingRuneWeapon";
     /**
      * @generated from protobuf enum value: GlyphOfDarkCommand = 43538;
      */
-    DeathKnightMajorGlyph[DeathKnightMajorGlyph["GlyphOfDarkCommand"] = 43538] = "GlyphOfDarkCommand";
+    DeathknightMajorGlyph[DeathknightMajorGlyph["GlyphOfDarkCommand"] = 43538] = "GlyphOfDarkCommand";
     /**
      * @generated from protobuf enum value: GlyphOfDarkDeath = 45804;
      */
-    DeathKnightMajorGlyph[DeathKnightMajorGlyph["GlyphOfDarkDeath"] = 45804] = "GlyphOfDarkDeath";
+    DeathknightMajorGlyph[DeathknightMajorGlyph["GlyphOfDarkDeath"] = 45804] = "GlyphOfDarkDeath";
     /**
      * @generated from protobuf enum value: GlyphOfDeathAndDecay = 43542;
      */
-    DeathKnightMajorGlyph[DeathKnightMajorGlyph["GlyphOfDeathAndDecay"] = 43542] = "GlyphOfDeathAndDecay";
+    DeathknightMajorGlyph[DeathknightMajorGlyph["GlyphOfDeathAndDecay"] = 43542] = "GlyphOfDeathAndDecay";
     /**
      * @generated from protobuf enum value: GlyphOfDeathGrip = 43541;
      */
-    DeathKnightMajorGlyph[DeathKnightMajorGlyph["GlyphOfDeathGrip"] = 43541] = "GlyphOfDeathGrip";
+    DeathknightMajorGlyph[DeathknightMajorGlyph["GlyphOfDeathGrip"] = 43541] = "GlyphOfDeathGrip";
     /**
      * @generated from protobuf enum value: GlyphOfDeathStrike = 43827;
      */
-    DeathKnightMajorGlyph[DeathKnightMajorGlyph["GlyphOfDeathStrike"] = 43827] = "GlyphOfDeathStrike";
+    DeathknightMajorGlyph[DeathknightMajorGlyph["GlyphOfDeathStrike"] = 43827] = "GlyphOfDeathStrike";
     /**
      * @generated from protobuf enum value: GlyphOfDisease = 45805;
      */
-    DeathKnightMajorGlyph[DeathKnightMajorGlyph["GlyphOfDisease"] = 45805] = "GlyphOfDisease";
+    DeathknightMajorGlyph[DeathknightMajorGlyph["GlyphOfDisease"] = 45805] = "GlyphOfDisease";
     /**
      * @generated from protobuf enum value: GlyphOfFrostStrike = 43543;
      */
-    DeathKnightMajorGlyph[DeathKnightMajorGlyph["GlyphOfFrostStrike"] = 43543] = "GlyphOfFrostStrike";
+    DeathknightMajorGlyph[DeathknightMajorGlyph["GlyphOfFrostStrike"] = 43543] = "GlyphOfFrostStrike";
     /**
      * @generated from protobuf enum value: GlyphOfHeartStrike = 43534;
      */
-    DeathKnightMajorGlyph[DeathKnightMajorGlyph["GlyphOfHeartStrike"] = 43534] = "GlyphOfHeartStrike";
+    DeathknightMajorGlyph[DeathknightMajorGlyph["GlyphOfHeartStrike"] = 43534] = "GlyphOfHeartStrike";
     /**
      * @generated from protobuf enum value: GlyphOfHowlingBlast = 45806;
      */
-    DeathKnightMajorGlyph[DeathKnightMajorGlyph["GlyphOfHowlingBlast"] = 45806] = "GlyphOfHowlingBlast";
+    DeathknightMajorGlyph[DeathknightMajorGlyph["GlyphOfHowlingBlast"] = 45806] = "GlyphOfHowlingBlast";
     /**
      * @generated from protobuf enum value: GlyphOfHungeringCold = 45800;
      */
-    DeathKnightMajorGlyph[DeathKnightMajorGlyph["GlyphOfHungeringCold"] = 45800] = "GlyphOfHungeringCold";
+    DeathknightMajorGlyph[DeathknightMajorGlyph["GlyphOfHungeringCold"] = 45800] = "GlyphOfHungeringCold";
     /**
      * @generated from protobuf enum value: GlyphOfIceboundFortitude = 43545;
      */
-    DeathKnightMajorGlyph[DeathKnightMajorGlyph["GlyphOfIceboundFortitude"] = 43545] = "GlyphOfIceboundFortitude";
+    DeathknightMajorGlyph[DeathknightMajorGlyph["GlyphOfIceboundFortitude"] = 43545] = "GlyphOfIceboundFortitude";
     /**
      * @generated from protobuf enum value: GlyphOfIcyTouch = 43546;
      */
-    DeathKnightMajorGlyph[DeathKnightMajorGlyph["GlyphOfIcyTouch"] = 43546] = "GlyphOfIcyTouch";
+    DeathknightMajorGlyph[DeathknightMajorGlyph["GlyphOfIcyTouch"] = 43546] = "GlyphOfIcyTouch";
     /**
      * @generated from protobuf enum value: GlyphOfObliterate = 43547;
      */
-    DeathKnightMajorGlyph[DeathKnightMajorGlyph["GlyphOfObliterate"] = 43547] = "GlyphOfObliterate";
+    DeathknightMajorGlyph[DeathknightMajorGlyph["GlyphOfObliterate"] = 43547] = "GlyphOfObliterate";
     /**
      * @generated from protobuf enum value: GlyphOfPlagueStrike = 43548;
      */
-    DeathKnightMajorGlyph[DeathKnightMajorGlyph["GlyphOfPlagueStrike"] = 43548] = "GlyphOfPlagueStrike";
+    DeathknightMajorGlyph[DeathknightMajorGlyph["GlyphOfPlagueStrike"] = 43548] = "GlyphOfPlagueStrike";
     /**
      * @generated from protobuf enum value: GlyphOfRuneStrike = 43550;
      */
-    DeathKnightMajorGlyph[DeathKnightMajorGlyph["GlyphOfRuneStrike"] = 43550] = "GlyphOfRuneStrike";
+    DeathknightMajorGlyph[DeathknightMajorGlyph["GlyphOfRuneStrike"] = 43550] = "GlyphOfRuneStrike";
     /**
      * @generated from protobuf enum value: GlyphOfRuneTap = 43825;
      */
-    DeathKnightMajorGlyph[DeathKnightMajorGlyph["GlyphOfRuneTap"] = 43825] = "GlyphOfRuneTap";
+    DeathknightMajorGlyph[DeathknightMajorGlyph["GlyphOfRuneTap"] = 43825] = "GlyphOfRuneTap";
     /**
      * @generated from protobuf enum value: GlyphOfScourgeStrike = 43551;
      */
-    DeathKnightMajorGlyph[DeathKnightMajorGlyph["GlyphOfScourgeStrike"] = 43551] = "GlyphOfScourgeStrike";
+    DeathknightMajorGlyph[DeathknightMajorGlyph["GlyphOfScourgeStrike"] = 43551] = "GlyphOfScourgeStrike";
     /**
      * @generated from protobuf enum value: GlyphOfStrangulate = 43552;
      */
-    DeathKnightMajorGlyph[DeathKnightMajorGlyph["GlyphOfStrangulate"] = 43552] = "GlyphOfStrangulate";
+    DeathknightMajorGlyph[DeathknightMajorGlyph["GlyphOfStrangulate"] = 43552] = "GlyphOfStrangulate";
     /**
      * @generated from protobuf enum value: GlyphOfTheGhoul = 43549;
      */
-    DeathKnightMajorGlyph[DeathKnightMajorGlyph["GlyphOfTheGhoul"] = 43549] = "GlyphOfTheGhoul";
+    DeathknightMajorGlyph[DeathknightMajorGlyph["GlyphOfTheGhoul"] = 43549] = "GlyphOfTheGhoul";
     /**
      * @generated from protobuf enum value: GlyphOfUnbreakableArmor = 43553;
      */
-    DeathKnightMajorGlyph[DeathKnightMajorGlyph["GlyphOfUnbreakableArmor"] = 43553] = "GlyphOfUnbreakableArmor";
+    DeathknightMajorGlyph[DeathknightMajorGlyph["GlyphOfUnbreakableArmor"] = 43553] = "GlyphOfUnbreakableArmor";
     /**
      * @generated from protobuf enum value: GlyphOfUnholyBlight = 45803;
      */
-    DeathKnightMajorGlyph[DeathKnightMajorGlyph["GlyphOfUnholyBlight"] = 45803] = "GlyphOfUnholyBlight";
+    DeathknightMajorGlyph[DeathknightMajorGlyph["GlyphOfUnholyBlight"] = 45803] = "GlyphOfUnholyBlight";
     /**
      * @generated from protobuf enum value: GlyphOfVampiricBlood = 43554;
      */
-    DeathKnightMajorGlyph[DeathKnightMajorGlyph["GlyphOfVampiricBlood"] = 43554] = "GlyphOfVampiricBlood";
-})(DeathKnightMajorGlyph || (DeathKnightMajorGlyph = {}));
+    DeathknightMajorGlyph[DeathknightMajorGlyph["GlyphOfVampiricBlood"] = 43554] = "GlyphOfVampiricBlood";
+})(DeathknightMajorGlyph || (DeathknightMajorGlyph = {}));
 /**
- * @generated from protobuf enum proto.DeathKnightMinorGlyph
+ * @generated from protobuf enum proto.DeathknightMinorGlyph
  */
-export var DeathKnightMinorGlyph;
-(function (DeathKnightMinorGlyph) {
+export var DeathknightMinorGlyph;
+(function (DeathknightMinorGlyph) {
     /**
-     * @generated from protobuf enum value: DeathKnightMinorGlyphNone = 0;
+     * @generated from protobuf enum value: DeathknightMinorGlyphNone = 0;
      */
-    DeathKnightMinorGlyph[DeathKnightMinorGlyph["DeathKnightMinorGlyphNone"] = 0] = "DeathKnightMinorGlyphNone";
+    DeathknightMinorGlyph[DeathknightMinorGlyph["DeathknightMinorGlyphNone"] = 0] = "DeathknightMinorGlyphNone";
     /**
      * @generated from protobuf enum value: GlyphOfBloodTap = 43535;
      */
-    DeathKnightMinorGlyph[DeathKnightMinorGlyph["GlyphOfBloodTap"] = 43535] = "GlyphOfBloodTap";
+    DeathknightMinorGlyph[DeathknightMinorGlyph["GlyphOfBloodTap"] = 43535] = "GlyphOfBloodTap";
     /**
      * @generated from protobuf enum value: GlyphOfCorpseExplosion = 43671;
      */
-    DeathKnightMinorGlyph[DeathKnightMinorGlyph["GlyphOfCorpseExplosion"] = 43671] = "GlyphOfCorpseExplosion";
+    DeathknightMinorGlyph[DeathknightMinorGlyph["GlyphOfCorpseExplosion"] = 43671] = "GlyphOfCorpseExplosion";
     /**
      * @generated from protobuf enum value: GlyphOfDeathSEmbrace = 43539;
      */
-    DeathKnightMinorGlyph[DeathKnightMinorGlyph["GlyphOfDeathSEmbrace"] = 43539] = "GlyphOfDeathSEmbrace";
+    DeathknightMinorGlyph[DeathknightMinorGlyph["GlyphOfDeathSEmbrace"] = 43539] = "GlyphOfDeathSEmbrace";
     /**
      * @generated from protobuf enum value: GlyphOfHornOfWinter = 43544;
      */
-    DeathKnightMinorGlyph[DeathKnightMinorGlyph["GlyphOfHornOfWinter"] = 43544] = "GlyphOfHornOfWinter";
+    DeathknightMinorGlyph[DeathknightMinorGlyph["GlyphOfHornOfWinter"] = 43544] = "GlyphOfHornOfWinter";
     /**
      * @generated from protobuf enum value: GlyphOfPestilence = 43672;
      */
-    DeathKnightMinorGlyph[DeathKnightMinorGlyph["GlyphOfPestilence"] = 43672] = "GlyphOfPestilence";
+    DeathknightMinorGlyph[DeathknightMinorGlyph["GlyphOfPestilence"] = 43672] = "GlyphOfPestilence";
     /**
      * @generated from protobuf enum value: GlyphOfRaiseDead = 43673;
      */
-    DeathKnightMinorGlyph[DeathKnightMinorGlyph["GlyphOfRaiseDead"] = 43673] = "GlyphOfRaiseDead";
-})(DeathKnightMinorGlyph || (DeathKnightMinorGlyph = {}));
+    DeathknightMinorGlyph[DeathknightMinorGlyph["GlyphOfRaiseDead"] = 43673] = "GlyphOfRaiseDead";
+})(DeathknightMinorGlyph || (DeathknightMinorGlyph = {}));
 // @generated message type with reflection information, may provide speed optimized methods
-class DeathKnightTalents$Type extends MessageType {
+class DeathknightTalents$Type extends MessageType {
     constructor() {
-        super("proto.DeathKnightTalents", [
+        super("proto.DeathknightTalents", [
             { no: 1, name: "butchery", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
             { no: 2, name: "subversion", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
             { no: 3, name: "blade_barrier", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
@@ -808,16 +854,16 @@ class DeathKnightTalents$Type extends MessageType {
     }
 }
 /**
- * @generated MessageType for protobuf message proto.DeathKnightTalents
+ * @generated MessageType for protobuf message proto.DeathknightTalents
  */
-export const DeathKnightTalents = new DeathKnightTalents$Type();
+export const DeathknightTalents = new DeathknightTalents$Type();
 // @generated message type with reflection information, may provide speed optimized methods
-class DeathKnight$Type extends MessageType {
+class Deathknight$Type extends MessageType {
     constructor() {
-        super("proto.DeathKnight", [
-            { no: 1, name: "rotation", kind: "message", T: () => DeathKnight_Rotation },
-            { no: 2, name: "talents", kind: "message", T: () => DeathKnightTalents },
-            { no: 3, name: "options", kind: "message", T: () => DeathKnight_Options }
+        super("proto.Deathknight", [
+            { no: 1, name: "rotation", kind: "message", T: () => Deathknight_Rotation },
+            { no: 2, name: "talents", kind: "message", T: () => DeathknightTalents },
+            { no: 3, name: "options", kind: "message", T: () => Deathknight_Options }
         ]);
     }
     create(value) {
@@ -832,14 +878,14 @@ class DeathKnight$Type extends MessageType {
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
-                case /* proto.DeathKnight.Rotation rotation */ 1:
-                    message.rotation = DeathKnight_Rotation.internalBinaryRead(reader, reader.uint32(), options, message.rotation);
+                case /* proto.Deathknight.Rotation rotation */ 1:
+                    message.rotation = Deathknight_Rotation.internalBinaryRead(reader, reader.uint32(), options, message.rotation);
                     break;
-                case /* proto.DeathKnightTalents talents */ 2:
-                    message.talents = DeathKnightTalents.internalBinaryRead(reader, reader.uint32(), options, message.talents);
+                case /* proto.DeathknightTalents talents */ 2:
+                    message.talents = DeathknightTalents.internalBinaryRead(reader, reader.uint32(), options, message.talents);
                     break;
-                case /* proto.DeathKnight.Options options */ 3:
-                    message.options = DeathKnight_Options.internalBinaryRead(reader, reader.uint32(), options, message.options);
+                case /* proto.Deathknight.Options options */ 3:
+                    message.options = Deathknight_Options.internalBinaryRead(reader, reader.uint32(), options, message.options);
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -853,15 +899,15 @@ class DeathKnight$Type extends MessageType {
         return message;
     }
     internalBinaryWrite(message, writer, options) {
-        /* proto.DeathKnight.Rotation rotation = 1; */
+        /* proto.Deathknight.Rotation rotation = 1; */
         if (message.rotation)
-            DeathKnight_Rotation.internalBinaryWrite(message.rotation, writer.tag(1, WireType.LengthDelimited).fork(), options).join();
-        /* proto.DeathKnightTalents talents = 2; */
+            Deathknight_Rotation.internalBinaryWrite(message.rotation, writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        /* proto.DeathknightTalents talents = 2; */
         if (message.talents)
-            DeathKnightTalents.internalBinaryWrite(message.talents, writer.tag(2, WireType.LengthDelimited).fork(), options).join();
-        /* proto.DeathKnight.Options options = 3; */
+            DeathknightTalents.internalBinaryWrite(message.talents, writer.tag(2, WireType.LengthDelimited).fork(), options).join();
+        /* proto.Deathknight.Options options = 3; */
         if (message.options)
-            DeathKnight_Options.internalBinaryWrite(message.options, writer.tag(3, WireType.LengthDelimited).fork(), options).join();
+            Deathknight_Options.internalBinaryWrite(message.options, writer.tag(3, WireType.LengthDelimited).fork(), options).join();
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -869,19 +915,24 @@ class DeathKnight$Type extends MessageType {
     }
 }
 /**
- * @generated MessageType for protobuf message proto.DeathKnight
+ * @generated MessageType for protobuf message proto.Deathknight
  */
-export const DeathKnight = new DeathKnight$Type();
+export const Deathknight = new Deathknight$Type();
 // @generated message type with reflection information, may provide speed optimized methods
-class DeathKnight_Rotation$Type extends MessageType {
+class Deathknight_Rotation$Type extends MessageType {
     constructor() {
-        super("proto.DeathKnight.Rotation", [
-            { no: 1, name: "use_death_and_decay", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
-            { no: 2, name: "unholy_presence_opener", kind: "scalar", T: 8 /*ScalarType.BOOL*/ }
+        super("proto.Deathknight.Rotation", [
+            { no: 1, name: "army_of_the_dead", kind: "enum", T: () => ["proto.Deathknight.Rotation.ArmyOfTheDead", Deathknight_Rotation_ArmyOfTheDead] },
+            { no: 2, name: "use_death_and_decay", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 3, name: "bt_ghoul_frenzy", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 4, name: "disease_refresh_duration", kind: "scalar", T: 1 /*ScalarType.DOUBLE*/ },
+            { no: 5, name: "refresh_horn_of_winter", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 6, name: "first_disease", kind: "enum", T: () => ["proto.Deathknight.Rotation.FirstDisease", Deathknight_Rotation_FirstDisease] },
+            { no: 7, name: "death_and_decay_prio", kind: "enum", T: () => ["proto.Deathknight.Rotation.DeathAndDecayPrio", Deathknight_Rotation_DeathAndDecayPrio] }
         ]);
     }
     create(value) {
-        const message = { useDeathAndDecay: false, unholyPresenceOpener: false };
+        const message = { armyOfTheDead: 0, useDeathAndDecay: false, btGhoulFrenzy: false, diseaseRefreshDuration: 0, refreshHornOfWinter: false, firstDisease: 0, deathAndDecayPrio: 0 };
         Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
         if (value !== undefined)
             reflectionMergePartial(this, message, value);
@@ -892,11 +943,26 @@ class DeathKnight_Rotation$Type extends MessageType {
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
-                case /* bool use_death_and_decay */ 1:
+                case /* proto.Deathknight.Rotation.ArmyOfTheDead army_of_the_dead */ 1:
+                    message.armyOfTheDead = reader.int32();
+                    break;
+                case /* bool use_death_and_decay */ 2:
                     message.useDeathAndDecay = reader.bool();
                     break;
-                case /* bool unholy_presence_opener */ 2:
-                    message.unholyPresenceOpener = reader.bool();
+                case /* bool bt_ghoul_frenzy */ 3:
+                    message.btGhoulFrenzy = reader.bool();
+                    break;
+                case /* double disease_refresh_duration */ 4:
+                    message.diseaseRefreshDuration = reader.double();
+                    break;
+                case /* bool refresh_horn_of_winter */ 5:
+                    message.refreshHornOfWinter = reader.bool();
+                    break;
+                case /* proto.Deathknight.Rotation.FirstDisease first_disease */ 6:
+                    message.firstDisease = reader.int32();
+                    break;
+                case /* proto.Deathknight.Rotation.DeathAndDecayPrio death_and_decay_prio */ 7:
+                    message.deathAndDecayPrio = reader.int32();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -910,12 +976,27 @@ class DeathKnight_Rotation$Type extends MessageType {
         return message;
     }
     internalBinaryWrite(message, writer, options) {
-        /* bool use_death_and_decay = 1; */
+        /* proto.Deathknight.Rotation.ArmyOfTheDead army_of_the_dead = 1; */
+        if (message.armyOfTheDead !== 0)
+            writer.tag(1, WireType.Varint).int32(message.armyOfTheDead);
+        /* bool use_death_and_decay = 2; */
         if (message.useDeathAndDecay !== false)
-            writer.tag(1, WireType.Varint).bool(message.useDeathAndDecay);
-        /* bool unholy_presence_opener = 2; */
-        if (message.unholyPresenceOpener !== false)
-            writer.tag(2, WireType.Varint).bool(message.unholyPresenceOpener);
+            writer.tag(2, WireType.Varint).bool(message.useDeathAndDecay);
+        /* bool bt_ghoul_frenzy = 3; */
+        if (message.btGhoulFrenzy !== false)
+            writer.tag(3, WireType.Varint).bool(message.btGhoulFrenzy);
+        /* double disease_refresh_duration = 4; */
+        if (message.diseaseRefreshDuration !== 0)
+            writer.tag(4, WireType.Bit64).double(message.diseaseRefreshDuration);
+        /* bool refresh_horn_of_winter = 5; */
+        if (message.refreshHornOfWinter !== false)
+            writer.tag(5, WireType.Varint).bool(message.refreshHornOfWinter);
+        /* proto.Deathknight.Rotation.FirstDisease first_disease = 6; */
+        if (message.firstDisease !== 0)
+            writer.tag(6, WireType.Varint).int32(message.firstDisease);
+        /* proto.Deathknight.Rotation.DeathAndDecayPrio death_and_decay_prio = 7; */
+        if (message.deathAndDecayPrio !== 0)
+            writer.tag(7, WireType.Varint).int32(message.deathAndDecayPrio);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -923,22 +1004,21 @@ class DeathKnight_Rotation$Type extends MessageType {
     }
 }
 /**
- * @generated MessageType for protobuf message proto.DeathKnight.Rotation
+ * @generated MessageType for protobuf message proto.Deathknight.Rotation
  */
-export const DeathKnight_Rotation = new DeathKnight_Rotation$Type();
+export const Deathknight_Rotation = new Deathknight_Rotation$Type();
 // @generated message type with reflection information, may provide speed optimized methods
-class DeathKnight_Options$Type extends MessageType {
+class Deathknight_Options$Type extends MessageType {
     constructor() {
-        super("proto.DeathKnight.Options", [
+        super("proto.Deathknight.Options", [
             { no: 1, name: "starting_runic_power", kind: "scalar", T: 1 /*ScalarType.DOUBLE*/ },
             { no: 2, name: "pet_uptime", kind: "scalar", T: 1 /*ScalarType.DOUBLE*/ },
             { no: 3, name: "precast_ghoul_frenzy", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
-            { no: 4, name: "refresh_horn_of_winter", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
-            { no: 5, name: "precast_horn_of_winter", kind: "scalar", T: 8 /*ScalarType.BOOL*/ }
+            { no: 4, name: "precast_horn_of_winter", kind: "scalar", T: 8 /*ScalarType.BOOL*/ }
         ]);
     }
     create(value) {
-        const message = { startingRunicPower: 0, petUptime: 0, precastGhoulFrenzy: false, refreshHornOfWinter: false, precastHornOfWinter: false };
+        const message = { startingRunicPower: 0, petUptime: 0, precastGhoulFrenzy: false, precastHornOfWinter: false };
         Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
         if (value !== undefined)
             reflectionMergePartial(this, message, value);
@@ -958,10 +1038,7 @@ class DeathKnight_Options$Type extends MessageType {
                 case /* bool precast_ghoul_frenzy */ 3:
                     message.precastGhoulFrenzy = reader.bool();
                     break;
-                case /* bool refresh_horn_of_winter */ 4:
-                    message.refreshHornOfWinter = reader.bool();
-                    break;
-                case /* bool precast_horn_of_winter */ 5:
+                case /* bool precast_horn_of_winter */ 4:
                     message.precastHornOfWinter = reader.bool();
                     break;
                 default:
@@ -985,12 +1062,9 @@ class DeathKnight_Options$Type extends MessageType {
         /* bool precast_ghoul_frenzy = 3; */
         if (message.precastGhoulFrenzy !== false)
             writer.tag(3, WireType.Varint).bool(message.precastGhoulFrenzy);
-        /* bool refresh_horn_of_winter = 4; */
-        if (message.refreshHornOfWinter !== false)
-            writer.tag(4, WireType.Varint).bool(message.refreshHornOfWinter);
-        /* bool precast_horn_of_winter = 5; */
+        /* bool precast_horn_of_winter = 4; */
         if (message.precastHornOfWinter !== false)
-            writer.tag(5, WireType.Varint).bool(message.precastHornOfWinter);
+            writer.tag(4, WireType.Varint).bool(message.precastHornOfWinter);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -998,6 +1072,140 @@ class DeathKnight_Options$Type extends MessageType {
     }
 }
 /**
- * @generated MessageType for protobuf message proto.DeathKnight.Options
+ * @generated MessageType for protobuf message proto.Deathknight.Options
  */
-export const DeathKnight_Options = new DeathKnight_Options$Type();
+export const Deathknight_Options = new Deathknight_Options$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class TankDeathknight$Type extends MessageType {
+    constructor() {
+        super("proto.TankDeathknight", [
+            { no: 1, name: "rotation", kind: "message", T: () => TankDeathknight_Rotation },
+            { no: 2, name: "talents", kind: "message", T: () => DeathknightTalents },
+            { no: 3, name: "options", kind: "message", T: () => TankDeathknight_Options }
+        ]);
+    }
+    create(value) {
+        const message = {};
+        Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
+        if (value !== undefined)
+            reflectionMergePartial(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader, length, options, target) {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* proto.TankDeathknight.Rotation rotation */ 1:
+                    message.rotation = TankDeathknight_Rotation.internalBinaryRead(reader, reader.uint32(), options, message.rotation);
+                    break;
+                case /* proto.DeathknightTalents talents */ 2:
+                    message.talents = DeathknightTalents.internalBinaryRead(reader, reader.uint32(), options, message.talents);
+                    break;
+                case /* proto.TankDeathknight.Options options */ 3:
+                    message.options = TankDeathknight_Options.internalBinaryRead(reader, reader.uint32(), options, message.options);
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message, writer, options) {
+        /* proto.TankDeathknight.Rotation rotation = 1; */
+        if (message.rotation)
+            TankDeathknight_Rotation.internalBinaryWrite(message.rotation, writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        /* proto.DeathknightTalents talents = 2; */
+        if (message.talents)
+            DeathknightTalents.internalBinaryWrite(message.talents, writer.tag(2, WireType.LengthDelimited).fork(), options).join();
+        /* proto.TankDeathknight.Options options = 3; */
+        if (message.options)
+            TankDeathknight_Options.internalBinaryWrite(message.options, writer.tag(3, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message proto.TankDeathknight
+ */
+export const TankDeathknight = new TankDeathknight$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class TankDeathknight_Rotation$Type extends MessageType {
+    constructor() {
+        super("proto.TankDeathknight.Rotation", []);
+    }
+    create(value) {
+        const message = {};
+        Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
+        if (value !== undefined)
+            reflectionMergePartial(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader, length, options, target) {
+        return target ?? this.create();
+    }
+    internalBinaryWrite(message, writer, options) {
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message proto.TankDeathknight.Rotation
+ */
+export const TankDeathknight_Rotation = new TankDeathknight_Rotation$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class TankDeathknight_Options$Type extends MessageType {
+    constructor() {
+        super("proto.TankDeathknight.Options", [
+            { no: 1, name: "starting_runic_power", kind: "scalar", T: 1 /*ScalarType.DOUBLE*/ }
+        ]);
+    }
+    create(value) {
+        const message = { startingRunicPower: 0 };
+        Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
+        if (value !== undefined)
+            reflectionMergePartial(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader, length, options, target) {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* double starting_runic_power */ 1:
+                    message.startingRunicPower = reader.double();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message, writer, options) {
+        /* double starting_runic_power = 1; */
+        if (message.startingRunicPower !== 0)
+            writer.tag(1, WireType.Bit64).double(message.startingRunicPower);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message proto.TankDeathknight.Options
+ */
+export const TankDeathknight_Options = new TankDeathknight_Options$Type();

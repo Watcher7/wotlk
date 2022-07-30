@@ -2,6 +2,7 @@ import { FeralDruid_Rotation_FinishingMove as FinishingMove } from '/wotlk/core/
 import { RaidTarget } from '/wotlk/core/proto/common.js';
 import { NO_TARGET } from '/wotlk/core/proto_utils/utils.js';
 import { ActionId } from '/wotlk/core/proto_utils/action_id.js';
+import * as InputHelpers from '/wotlk/core/components/input_helpers.js';
 // Helper function for identifying whether 2pT6 is equipped, which impacts allowed rotation options
 function numThunderheartPieces(player) {
     const gear = player.getGear();
@@ -10,14 +11,12 @@ function numThunderheartPieces(player) {
 }
 // Configuration for spec-specific UI elements on the settings tab.
 // These don't need to be in a separate file but it keeps things cleaner.
-export const SelfInnervate = {
+export const SelfInnervate = InputHelpers.makeSpecOptionsBooleanIconInput({
+    fieldName: 'innervateTarget',
     id: ActionId.fromSpellId(29166),
-    states: 2,
     extraCssClasses: [
-        'self-innervate-picker',
         'within-raid-sim-hide',
     ],
-    changedEvent: (player) => player.specOptionsChangeEmitter,
     getValue: (player) => player.getSpecOptions().innervateTarget?.targetIndex != NO_TARGET,
     setValue: (eventID, player, newValue) => {
         const newOptions = player.getSpecOptions();
@@ -26,202 +25,71 @@ export const SelfInnervate = {
         });
         player.setSpecOptions(eventID, newOptions);
     },
-};
-export const LatencyMs = {
-    type: 'number',
-    getModObject: (simUI) => simUI.player,
-    config: {
-        extraCssClasses: [
-            'latency-ms-picker',
-        ],
-        label: 'Latency',
-        labelTooltip: 'Player latency, in milliseconds. Adds a delay to actions that cannot be spell queued.',
-        changedEvent: (player) => player.specOptionsChangeEmitter,
-        getValue: (player) => player.getSpecOptions().latencyMs,
-        setValue: (eventID, player, newValue) => {
-            const newOptions = player.getSpecOptions();
-            newOptions.latencyMs = newValue;
-            player.setSpecOptions(eventID, newOptions);
-        },
-    },
-};
+});
+export const LatencyMs = InputHelpers.makeSpecOptionsNumberInput({
+    fieldName: 'latencyMs',
+    label: 'Latency',
+    labelTooltip: 'Player latency, in milliseconds. Adds a delay to actions that cannot be spell queued.',
+});
 export const FeralDruidRotationConfig = {
     inputs: [
-        {
-            type: 'enum',
-            getModObject: (simUI) => simUI.player,
-            config: {
-                extraCssClasses: [
-                    'finishing-move-enum-picker',
-                ],
-                label: 'Finishing Move',
-                labelTooltip: 'Specify whether Rip or Ferocious Bite should be used as the primary finisher in the DPS rotation.',
-                values: [
-                    {
-                        name: 'Rip', value: FinishingMove.Rip,
-                    },
-                    {
-                        name: 'Ferocious Bite', value: FinishingMove.Bite,
-                    },
-                    {
-                        name: 'None', value: FinishingMove.None,
-                    },
-                ],
-                changedEvent: (player) => player.rotationChangeEmitter,
-                getValue: (player) => player.getRotation().finishingMove,
-                setValue: (eventID, player, newValue) => {
-                    const newRotation = player.getRotation();
-                    newRotation.finishingMove = newValue;
-                    player.setRotation(eventID, newRotation);
-                },
-            },
-        },
-        {
-            type: 'boolean',
-            getModObject: (simUI) => simUI.player,
-            config: {
-                extraCssClasses: [
-                    'biteweave-picker',
-                ],
-                label: 'Enable Bite-weaving',
-                labelTooltip: 'Spend Combo Points on Ferocious Bite when Rip is already applied on the target.',
-                changedEvent: (player) => player.rotationChangeEmitter,
-                getValue: (player) => player.getRotation().biteweave,
-                setValue: (eventID, player, newValue) => {
-                    const newRotation = player.getRotation();
-                    newRotation.biteweave = newValue;
-                    player.setRotation(eventID, newRotation);
-                },
-                enableWhen: (player) => player.getRotation().finishingMove == FinishingMove.Rip,
-            },
-        },
-        {
-            type: 'boolean',
-            getModObject: (simUI) => simUI.player,
-            config: {
-                extraCssClasses: [
-                    'ripweave-picker',
-                ],
-                label: 'Enable Rip-weaving',
-                labelTooltip: 'Spend Combo Points on Rip when at 52 Energy or above.',
-                changedEvent: (player) => player.rotationChangeEmitter,
-                getValue: (player) => player.getRotation().ripweave,
-                setValue: (eventID, player, newValue) => {
-                    const newRotation = player.getRotation();
-                    newRotation.ripweave = newValue;
-                    player.setRotation(eventID, newRotation);
-                },
-                enableWhen: (player) => player.getRotation().finishingMove == FinishingMove.Bite,
-            },
-        },
-        {
-            type: 'enum',
-            getModObject: (simUI) => simUI.player,
-            config: {
-                extraCssClasses: [
-                    'rip-cp-enum-picker',
-                ],
-                label: 'Rip CP Threshold',
-                labelTooltip: 'Minimum Combo Points to accumulate before casting Rip as a finisher.',
-                values: [
-                    {
-                        name: '4', value: 4,
-                    },
-                    {
-                        name: '5', value: 5,
-                    },
-                ],
-                changedEvent: (player) => player.rotationChangeEmitter,
-                getValue: (player) => player.getRotation().ripMinComboPoints,
-                setValue: (eventID, player, newValue) => {
-                    const newRotation = player.getRotation();
-                    newRotation.ripMinComboPoints = newValue;
-                    player.setRotation(eventID, newRotation);
-                },
-                enableWhen: (player) => (player.getRotation().finishingMove == FinishingMove.Rip) || (player.getRotation().ripweave && (player.getRotation().finishingMove != FinishingMove.None)),
-            },
-        },
-        {
-            type: 'enum',
-            getModObject: (simUI) => simUI.player,
-            config: {
-                extraCssClasses: [
-                    'bite-cp-enum-picker',
-                ],
-                label: 'Bite CP Threshold',
-                labelTooltip: 'Minimum Combo Points to accumulate before casting Ferocious Bite as a finisher.',
-                values: [
-                    {
-                        name: '4', value: 4,
-                    },
-                    {
-                        name: '5', value: 5,
-                    },
-                ],
-                changedEvent: (player) => player.rotationChangeEmitter,
-                getValue: (player) => player.getRotation().biteMinComboPoints,
-                setValue: (eventID, player, newValue) => {
-                    const newRotation = player.getRotation();
-                    newRotation.biteMinComboPoints = newValue;
-                    player.setRotation(eventID, newRotation);
-                },
-                enableWhen: (player) => (player.getRotation().finishingMove == FinishingMove.Bite) || (player.getRotation().biteweave && (player.getRotation().finishingMove != FinishingMove.None)),
-            },
-        },
-        {
-            type: 'boolean',
-            getModObject: (simUI) => simUI.player,
-            config: {
-                extraCssClasses: [
-                    'mangle-trick-picker',
-                ],
-                label: 'Use Mangle trick',
-                labelTooltip: 'Cast Mangle rather than Shred when between 50-56 Energy with 2pT6, or 60-61 Energy without 2pT6, and with less than 1 second remaining until the next Energy tick.',
-                changedEvent: (player) => player.rotationChangeEmitter,
-                getValue: (player) => player.getRotation().mangleTrick,
-                setValue: (eventID, player, newValue) => {
-                    const newRotation = player.getRotation();
-                    newRotation.mangleTrick = newValue;
-                    player.setRotation(eventID, newRotation);
-                },
-            },
-        },
-        {
-            type: 'boolean',
-            getModObject: (simUI) => simUI.player,
-            config: {
-                extraCssClasses: [
-                    'rake-trick-picker',
-                ],
-                label: 'Use Rake/Bite tricks',
-                labelTooltip: 'Cast Rake or Ferocious Bite rather than powershifting when between 35-39 Energy without 2pT6, and with more than 1 second remaining until the next Energy tick.',
-                changedEvent: (player) => player.changeEmitter,
-                getValue: (player) => player.getRotation().rakeTrick,
-                setValue: (eventID, player, newValue) => {
-                    const newRotation = player.getRotation();
-                    newRotation.rakeTrick = newValue;
-                    player.setRotation(eventID, newRotation);
-                },
-                enableWhen: (player) => numThunderheartPieces(player) < 2,
-            },
-        },
-        {
-            type: 'boolean',
-            getModObject: (simUI) => simUI.player,
-            config: {
-                extraCssClasses: [
-                    'maintain-faerie-fire-picker',
-                ],
-                label: 'Maintain Faerie Fire',
-                labelTooltip: 'Use Faerie Fire whenever it is not active on the target.',
-                changedEvent: (player) => player.rotationChangeEmitter,
-                getValue: (player) => player.getRotation().maintainFaerieFire,
-                setValue: (eventID, player, newValue) => {
-                    const newRotation = player.getRotation();
-                    newRotation.maintainFaerieFire = newValue;
-                    player.setRotation(eventID, newRotation);
-                },
-            },
-        },
+        InputHelpers.makeRotationEnumInput({
+            fieldName: 'finishingMove',
+            label: 'Finishing Move',
+            labelTooltip: 'Specify whether Rip or Ferocious Bite should be used as the primary finisher in the DPS rotation.',
+            values: [
+                { name: 'Rip', value: FinishingMove.Rip },
+                { name: 'Ferocious Bite', value: FinishingMove.Bite },
+                { name: 'None', value: FinishingMove.None },
+            ],
+        }),
+        InputHelpers.makeRotationBooleanInput({
+            fieldName: 'biteweave',
+            label: 'Enable Bite-weaving',
+            labelTooltip: 'Spend Combo Points on Ferocious Bite when Rip is already applied on the target.',
+            enableWhen: (player) => player.getRotation().finishingMove == FinishingMove.Rip,
+        }),
+        InputHelpers.makeRotationBooleanInput({
+            fieldName: 'ripweave',
+            label: 'Enable Rip-weaving',
+            labelTooltip: 'Spend Combo Points on Rip when at 52 Energy or above.',
+            enableWhen: (player) => player.getRotation().finishingMove == FinishingMove.Bite,
+        }),
+        InputHelpers.makeRotationEnumInput({
+            fieldName: 'ripMinComboPoints',
+            label: 'Rip CP Threshold',
+            labelTooltip: 'Minimum Combo Points to accumulate before casting Rip as a finisher.',
+            values: [
+                { name: '4', value: 4 },
+                { name: '5', value: 5 },
+            ],
+            enableWhen: (player) => (player.getRotation().finishingMove == FinishingMove.Rip) || (player.getRotation().ripweave && (player.getRotation().finishingMove != FinishingMove.None)),
+        }),
+        InputHelpers.makeRotationEnumInput({
+            fieldName: 'biteMinComboPoints',
+            label: 'Bite CP Threshold',
+            labelTooltip: 'Minimum Combo Points to accumulate before casting Ferocious Bite as a finisher.',
+            values: [
+                { name: '4', value: 4 },
+                { name: '5', value: 5 },
+            ],
+            enableWhen: (player) => (player.getRotation().finishingMove == FinishingMove.Bite) || (player.getRotation().biteweave && (player.getRotation().finishingMove != FinishingMove.None)),
+        }),
+        InputHelpers.makeRotationBooleanInput({
+            fieldName: 'mangleTrick',
+            label: 'Use Mangle trick',
+            labelTooltip: 'Cast Mangle rather than Shred when between 50-56 Energy with 2pT6, or 60-61 Energy without 2pT6, and with less than 1 second remaining until the next Energy tick.',
+        }),
+        InputHelpers.makeRotationBooleanInput({
+            fieldName: 'rakeTrick',
+            label: 'Use Rake/Bite tricks',
+            labelTooltip: 'Cast Rake or Ferocious Bite rather than powershifting when between 35-39 Energy without 2pT6, and with more than 1 second remaining until the next Energy tick.',
+            enableWhen: (player) => numThunderheartPieces(player) < 2,
+        }),
+        InputHelpers.makeRotationBooleanInput({
+            fieldName: 'maintainFaerieFire',
+            label: 'Maintain Faerie Fire',
+            labelTooltip: 'Use Faerie Fire whenever it is not active on the target.',
+        }),
     ],
 };

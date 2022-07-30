@@ -19,193 +19,345 @@ export interface MageTalents {
      */
     arcaneFocus: number;
     /**
-     * @generated from protobuf field: int32 wand_specialization = 3;
+     * @generated from protobuf field: int32 arcane_stability = 3;
      */
-    wandSpecialization: number;
+    arcaneStability: number;
     /**
-     * @generated from protobuf field: int32 magic_absorption = 48;
+     * @generated from protobuf field: int32 arcane_fortitude = 4;
+     */
+    arcaneFortitude: number;
+    /**
+     * @generated from protobuf field: int32 magic_absorption = 5;
      */
     magicAbsorption: number;
     /**
-     * @generated from protobuf field: int32 arcane_concentration = 4;
+     * @generated from protobuf field: int32 arcane_concentration = 6;
      */
     arcaneConcentration: number;
     /**
-     * @generated from protobuf field: int32 arcane_impact = 5;
+     * @generated from protobuf field: int32 magic_attunement = 7;
      */
-    arcaneImpact: number;
+    magicAttunement: number;
     /**
-     * @generated from protobuf field: int32 arcane_meditation = 6;
+     * @generated from protobuf field: int32 spell_impact = 8;
+     */
+    spellImpact: number;
+    /**
+     * @generated from protobuf field: int32 student_of_the_mind = 9;
+     */
+    studentOfTheMind: number;
+    /**
+     * @generated from protobuf field: bool focus_magic = 10;
+     */
+    focusMagic: boolean;
+    /**
+     * @generated from protobuf field: int32 arcane_shielding = 11;
+     */
+    arcaneShielding: number;
+    /**
+     * @generated from protobuf field: int32 improved_counterspell = 12;
+     */
+    improvedCounterspell: number;
+    /**
+     * @generated from protobuf field: int32 arcane_meditation = 13;
      */
     arcaneMeditation: number;
     /**
-     * @generated from protobuf field: bool presence_of_mind = 7;
+     * @generated from protobuf field: int32 torment_the_weak = 14;
+     */
+    tormentTheWeak: number;
+    /**
+     * @generated from protobuf field: int32 improved_blink = 15;
+     */
+    improvedBlink: number;
+    /**
+     * @generated from protobuf field: bool presence_of_mind = 16;
      */
     presenceOfMind: boolean;
     /**
-     * @generated from protobuf field: int32 arcane_mind = 8;
+     * @generated from protobuf field: int32 arcane_mind = 17;
      */
     arcaneMind: number;
     /**
-     * @generated from protobuf field: int32 arcane_instability = 9;
+     * @generated from protobuf field: int32 prismatic_cloak = 18;
+     */
+    prismaticCloak: number;
+    /**
+     * @generated from protobuf field: int32 arcane_instability = 19;
      */
     arcaneInstability: number;
     /**
-     * @generated from protobuf field: int32 arcane_potency = 10;
+     * @generated from protobuf field: int32 arcane_potency = 20;
      */
     arcanePotency: number;
     /**
-     * @generated from protobuf field: int32 empowered_arcane_missiles = 11;
+     * @generated from protobuf field: int32 arcane_empowerment = 21;
      */
-    empoweredArcaneMissiles: number;
+    arcaneEmpowerment: number;
     /**
-     * @generated from protobuf field: bool arcane_power = 12;
+     * @generated from protobuf field: bool arcane_power = 22;
      */
     arcanePower: boolean;
     /**
-     * @generated from protobuf field: int32 spell_power = 13;
+     * @generated from protobuf field: int32 incanters_absorption = 23;
      */
-    spellPower: number;
+    incantersAbsorption: number;
     /**
-     * @generated from protobuf field: int32 mind_mastery = 14;
+     * @generated from protobuf field: int32 arcane_flows = 24;
+     */
+    arcaneFlows: number;
+    /**
+     * @generated from protobuf field: int32 mind_mastery = 25;
      */
     mindMastery: number;
     /**
+     * @generated from protobuf field: bool slow = 26;
+     */
+    slow: boolean;
+    /**
+     * @generated from protobuf field: int32 missile_barrage = 27;
+     */
+    missileBarrage: number;
+    /**
+     * @generated from protobuf field: int32 netherwind_presence = 28;
+     */
+    netherwindPresence: number;
+    /**
+     * @generated from protobuf field: int32 spell_power = 29;
+     */
+    spellPower: number;
+    /**
+     * @generated from protobuf field: bool arcane_barrage = 30;
+     */
+    arcaneBarrage: boolean;
+    /**
      * Fire
      *
-     * @generated from protobuf field: int32 improved_fireball = 15;
-     */
-    improvedFireball: number;
-    /**
-     * @generated from protobuf field: int32 ignite = 16;
-     */
-    ignite: number;
-    /**
-     * @generated from protobuf field: int32 improved_fire_blast = 17;
+     * @generated from protobuf field: int32 improved_fire_blast = 31;
      */
     improvedFireBlast: number;
     /**
-     * @generated from protobuf field: int32 incineration = 18;
+     * @generated from protobuf field: int32 incineration = 32;
      */
     incineration: number;
     /**
-     * @generated from protobuf field: int32 improved_flamestrike = 19;
+     * @generated from protobuf field: int32 improved_fireball = 33;
      */
-    improvedFlamestrike: number;
+    improvedFireball: number;
     /**
-     * @generated from protobuf field: bool pyroblast = 20;
+     * @generated from protobuf field: int32 ignite = 34;
+     */
+    ignite: number;
+    /**
+     * @generated from protobuf field: int32 burning_determination = 35;
+     */
+    burningDetermination: number;
+    /**
+     * @generated from protobuf field: int32 world_in_flames = 36;
+     */
+    worldInFlames: number;
+    /**
+     * @generated from protobuf field: int32 flame_throwing = 37;
+     */
+    flameThrowing: number;
+    /**
+     * @generated from protobuf field: int32 impact = 38;
+     */
+    impact: number;
+    /**
+     * @generated from protobuf field: bool pyroblast = 39;
      */
     pyroblast: boolean;
     /**
-     * @generated from protobuf field: int32 burning_soul = 47;
+     * @generated from protobuf field: int32 burning_soul = 40;
      */
     burningSoul: number;
     /**
-     * @generated from protobuf field: int32 improved_scorch = 21;
+     * @generated from protobuf field: int32 improved_scorch = 41;
      */
     improvedScorch: number;
     /**
-     * @generated from protobuf field: int32 master_of_elements = 22;
+     * @generated from protobuf field: int32 molten_shields = 42;
+     */
+    moltenShields: number;
+    /**
+     * @generated from protobuf field: int32 master_of_elements = 43;
      */
     masterOfElements: number;
     /**
-     * @generated from protobuf field: int32 playing_with_fire = 23;
+     * @generated from protobuf field: int32 playing_with_fire = 44;
      */
     playingWithFire: number;
     /**
-     * @generated from protobuf field: int32 critical_mass = 24;
+     * @generated from protobuf field: int32 critical_mass = 45;
      */
     criticalMass: number;
     /**
-     * @generated from protobuf field: bool blast_wave = 25;
+     * @generated from protobuf field: bool blast_wave = 46;
      */
     blastWave: boolean;
     /**
-     * @generated from protobuf field: int32 fire_power = 26;
+     * @generated from protobuf field: int32 blazing_speed = 47;
+     */
+    blazingSpeed: number;
+    /**
+     * @generated from protobuf field: int32 fire_power = 48;
      */
     firePower: number;
     /**
-     * @generated from protobuf field: int32 pyromaniac = 27;
+     * @generated from protobuf field: int32 pyromaniac = 49;
      */
     pyromaniac: number;
     /**
-     * @generated from protobuf field: bool combustion = 28;
+     * @generated from protobuf field: bool combustion = 50;
      */
     combustion: boolean;
     /**
-     * @generated from protobuf field: int32 molten_fury = 29;
+     * @generated from protobuf field: int32 molten_fury = 51;
      */
     moltenFury: number;
     /**
-     * @generated from protobuf field: int32 empowered_fireball = 30;
+     * @generated from protobuf field: int32 fiery_payback = 52;
      */
-    empoweredFireball: number;
+    fieryPayback: number;
     /**
-     * @generated from protobuf field: bool dragons_breath = 31;
+     * @generated from protobuf field: int32 empowered_fire = 53;
+     */
+    empoweredFire: number;
+    /**
+     * @generated from protobuf field: int32 firestarter = 54;
+     */
+    firestarter: number;
+    /**
+     * @generated from protobuf field: bool dragons_breath = 55;
      */
     dragonsBreath: boolean;
     /**
+     * @generated from protobuf field: int32 hot_streak = 56;
+     */
+    hotStreak: number;
+    /**
+     * @generated from protobuf field: int32 burnout = 57;
+     */
+    burnout: number;
+    /**
+     * @generated from protobuf field: bool living_bomb = 58;
+     */
+    livingBomb: boolean;
+    /**
      * Frost
      *
-     * @generated from protobuf field: int32 improved_frostbolt = 32;
+     * @generated from protobuf field: int32 frostbite = 59;
+     */
+    frostbite: number;
+    /**
+     * @generated from protobuf field: int32 improved_frostbolt = 60;
      */
     improvedFrostbolt: number;
     /**
-     * @generated from protobuf field: int32 elemental_precision = 33;
-     */
-    elementalPrecision: number;
-    /**
-     * @generated from protobuf field: int32 ice_shards = 34;
-     */
-    iceShards: number;
-    /**
-     * @generated from protobuf field: int32 improved_frost_nova = 35;
-     */
-    improvedFrostNova: number;
-    /**
-     * @generated from protobuf field: int32 piercing_ice = 36;
-     */
-    piercingIce: number;
-    /**
-     * @generated from protobuf field: bool icy_veins = 37;
-     */
-    icyVeins: boolean;
-    /**
-     * @generated from protobuf field: int32 frost_channeling = 38;
-     */
-    frostChanneling: number;
-    /**
-     * @generated from protobuf field: int32 shatter = 39;
-     */
-    shatter: number;
-    /**
-     * @generated from protobuf field: bool cold_snap = 40;
-     */
-    coldSnap: boolean;
-    /**
-     * @generated from protobuf field: int32 improved_cone_of_cold = 41;
-     */
-    improvedConeOfCold: number;
-    /**
-     * @generated from protobuf field: int32 ice_floes = 42;
+     * @generated from protobuf field: int32 ice_floes = 61;
      */
     iceFloes: number;
     /**
-     * @generated from protobuf field: int32 winters_chill = 43;
+     * @generated from protobuf field: int32 ice_shards = 62;
+     */
+    iceShards: number;
+    /**
+     * @generated from protobuf field: int32 frost_warding = 63;
+     */
+    frostWarding: number;
+    /**
+     * @generated from protobuf field: int32 precision = 64;
+     */
+    precision: number;
+    /**
+     * @generated from protobuf field: int32 permafrost = 65;
+     */
+    permafrost: number;
+    /**
+     * @generated from protobuf field: int32 piercing_ice = 66;
+     */
+    piercingIce: number;
+    /**
+     * @generated from protobuf field: bool icy_veins = 67;
+     */
+    icyVeins: boolean;
+    /**
+     * @generated from protobuf field: int32 improved_blizzard = 68;
+     */
+    improvedBlizzard: number;
+    /**
+     * @generated from protobuf field: int32 arctic_reach = 69;
+     */
+    arcticReach: number;
+    /**
+     * @generated from protobuf field: int32 frost_channeling = 70;
+     */
+    frostChanneling: number;
+    /**
+     * @generated from protobuf field: int32 shatter = 71;
+     */
+    shatter: number;
+    /**
+     * @generated from protobuf field: bool cold_snap = 72;
+     */
+    coldSnap: boolean;
+    /**
+     * @generated from protobuf field: int32 improved_cone_of_cold = 73;
+     */
+    improvedConeOfCold: number;
+    /**
+     * @generated from protobuf field: int32 frozen_core = 74;
+     */
+    frozenCore: number;
+    /**
+     * @generated from protobuf field: int32 cold_as_ice = 75;
+     */
+    coldAsIce: number;
+    /**
+     * @generated from protobuf field: int32 winters_chill = 76;
      */
     wintersChill: number;
     /**
-     * @generated from protobuf field: int32 arctic_winds = 44;
+     * @generated from protobuf field: int32 shattered_barrier = 77;
+     */
+    shatteredBarrier: number;
+    /**
+     * @generated from protobuf field: bool ice_barrier = 78;
+     */
+    iceBarrier: boolean;
+    /**
+     * @generated from protobuf field: int32 arctic_winds = 79;
      */
     arcticWinds: number;
     /**
-     * @generated from protobuf field: int32 empowered_frostbolt = 45;
+     * @generated from protobuf field: int32 empowered_frostbolt = 80;
      */
     empoweredFrostbolt: number;
     /**
-     * @generated from protobuf field: bool summon_water_elemental = 46;
+     * @generated from protobuf field: int32 fingers_of_frost = 81;
+     */
+    fingersOfFrost: number;
+    /**
+     * @generated from protobuf field: int32 brain_freeze = 82;
+     */
+    brainFreeze: number;
+    /**
+     * @generated from protobuf field: bool summon_water_elemental = 83;
      */
     summonWaterElemental: boolean;
+    /**
+     * @generated from protobuf field: int32 enduring_winter = 84;
+     */
+    enduringWinter: number;
+    /**
+     * @generated from protobuf field: int32 chilled_to_the_bone = 85;
+     */
+    chilledToTheBone: number;
+    /**
+     * @generated from protobuf field: bool deep_freeze = 86;
+     */
+    deepFreeze: boolean;
 }
 /**
  * @generated from protobuf message proto.Mage

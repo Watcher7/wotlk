@@ -18,36 +18,29 @@ export class RetributionPaladinSimUI extends IndividualSimUI {
             cssClass: 'retribution-paladin-sim-ui',
             // List any known bugs / issues here and they'll be shown on the site.
             knownIssues: [
-                "<p>Rotation logic can be optimized to use Judgement of Blood more frequently.</p>\
-				<p>Including fillers in rotation sometimes causes seal twists to be prevented at high haste values.</p>\
-				<p>Seal of Command aura will log at expiring at a longer duration than 400ms when changing seals.\
-				However, the 400ms duration is correctly calculated internally for determining procs and damage.</p>"
+                "<p>Work in progress</p>"
             ],
             // All stats for which EP should be calculated.
             epStats: [
                 Stat.StatStrength,
                 Stat.StatAgility,
-                Stat.StatIntellect,
                 Stat.StatAttackPower,
                 Stat.StatMeleeHit,
                 Stat.StatMeleeCrit,
-                Stat.StatExpertise,
                 Stat.StatMeleeHaste,
+                Stat.StatExpertise,
                 Stat.StatArmorPenetration,
                 Stat.StatSpellPower,
                 Stat.StatSpellCrit,
                 Stat.StatSpellHit,
+                Stat.StatSpellHaste,
             ],
             // Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
             epReferenceStat: Stat.StatAttackPower,
             // Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
             displayStats: [
-                Stat.StatHealth,
-                Stat.StatStamina,
                 Stat.StatStrength,
                 Stat.StatAgility,
-                Stat.StatIntellect,
-                Stat.StatMP5,
                 Stat.StatAttackPower,
                 Stat.StatMeleeHit,
                 Stat.StatMeleeCrit,
@@ -55,16 +48,16 @@ export class RetributionPaladinSimUI extends IndividualSimUI {
                 Stat.StatExpertise,
                 Stat.StatArmorPenetration,
                 Stat.StatSpellPower,
-                Stat.StatHolySpellPower,
-                Stat.StatSpellHit,
                 Stat.StatSpellCrit,
-                Stat.StatSpellHaste,
+                Stat.StatSpellHit,
+                Stat.StatMana,
+                Stat.StatHealth,
             ],
             modifyDisplayStats: (player) => {
                 let stats = new Stats();
                 TypedEvent.freezeAllAndDo(() => {
                     if (player.getMajorGlyphs().includes(PaladinMajorGlyph.GlyphOfSealOfVengeance) && (player.getSpecOptions().seal == PaladinSeal.Vengeance)) {
-                        stats = stats.addStat(Stat.StatExpertise, 10 * Mechanics.EXPERTISE_RATING_PER_EXPERTISE);
+                        stats = stats.addStat(Stat.StatExpertise, 10 * Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION);
                     }
                 });
                 return {
@@ -124,26 +117,32 @@ export class RetributionPaladinSimUI extends IndividualSimUI {
                     curseOfWeakness: TristateEffect.TristateEffectRegular,
                 }),
             },
-            // IconInputs to include in the 'Self Buffs' section on the settings tab.
-            selfBuffInputs: [],
+            // IconInputs to include in the 'Player' section on the settings tab.
+            playerIconInputs: [],
             // Inputs to include in the 'Rotation' section on the settings tab.
-            rotationInputs: RetributionPaladinInputs.RetributionPaladinRotationConfig,
+            rotationInputs: {
+                inputs: [
+                    RetributionPaladinInputs.RetributionPaladinRotationDivinePleaPercentageConfig,
+                    RetributionPaladinInputs.RetributionPaladinRotationConsSlackConfig,
+                    RetributionPaladinInputs.RetributionPaladinRotationExoSlackConfig
+                ]
+            },
+            // Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
+            includeBuffDebuffInputs: [],
+            excludeBuffDebuffInputs: [],
             // Inputs to include in the 'Other' section on the settings tab.
             otherInputs: {
                 inputs: [
                     RetributionPaladinInputs.AuraSelection,
                     RetributionPaladinInputs.JudgementSelection,
+                    RetributionPaladinInputs.DivinePleaSelection,
                     RetributionPaladinInputs.StartingSealSelection,
-                    RetributionPaladinInputs.DamgeTakenPerSecond,
+                    RetributionPaladinInputs.DamageTakenPerSecond,
                     OtherInputs.TankAssignment,
                     OtherInputs.InFrontOfTarget,
                 ],
             },
             encounterPicker: {
-                // Target stats to show for 'Simple' encounters.
-                simpleTargetStats: [
-                    Stat.StatArmor,
-                ],
                 // Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
                 showExecuteProportion: false,
             },

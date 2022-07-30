@@ -893,19 +893,54 @@ export const RetributionPaladin = new RetributionPaladin$Type();
 // @generated message type with reflection information, may provide speed optimized methods
 class RetributionPaladin_Rotation$Type extends MessageType {
     constructor() {
-        super("proto.RetributionPaladin.Rotation", []);
+        super("proto.RetributionPaladin.Rotation", [
+            { no: 1, name: "exo_slack", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+            { no: 2, name: "cons_slack", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+            { no: 3, name: "divine_plea_percentage", kind: "scalar", T: 1 /*ScalarType.DOUBLE*/ }
+        ]);
     }
     create(value) {
-        const message = {};
+        const message = { exoSlack: 0, consSlack: 0, divinePleaPercentage: 0 };
         Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
         if (value !== undefined)
             reflectionMergePartial(this, message, value);
         return message;
     }
     internalBinaryRead(reader, length, options, target) {
-        return target ?? this.create();
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* int32 exo_slack */ 1:
+                    message.exoSlack = reader.int32();
+                    break;
+                case /* int32 cons_slack */ 2:
+                    message.consSlack = reader.int32();
+                    break;
+                case /* double divine_plea_percentage */ 3:
+                    message.divinePleaPercentage = reader.double();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
     }
     internalBinaryWrite(message, writer, options) {
+        /* int32 exo_slack = 1; */
+        if (message.exoSlack !== 0)
+            writer.tag(1, WireType.Varint).int32(message.exoSlack);
+        /* int32 cons_slack = 2; */
+        if (message.consSlack !== 0)
+            writer.tag(2, WireType.Varint).int32(message.consSlack);
+        /* double divine_plea_percentage = 3; */
+        if (message.divinePleaPercentage !== 0)
+            writer.tag(3, WireType.Bit64).double(message.divinePleaPercentage);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -924,11 +959,12 @@ class RetributionPaladin_Options$Type extends MessageType {
             { no: 2, name: "seal", kind: "enum", T: () => ["proto.PaladinSeal", PaladinSeal] },
             { no: 3, name: "aura", kind: "enum", T: () => ["proto.PaladinAura", PaladinAura] },
             { no: 4, name: "damage_taken_per_second", kind: "scalar", T: 1 /*ScalarType.DOUBLE*/ },
-            { no: 5, name: "use_avenging_wrath", kind: "scalar", T: 8 /*ScalarType.BOOL*/ }
+            { no: 5, name: "use_avenging_wrath", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 6, name: "use_divine_plea", kind: "scalar", T: 8 /*ScalarType.BOOL*/ }
         ]);
     }
     create(value) {
-        const message = { judgement: 0, seal: 0, aura: 0, damageTakenPerSecond: 0, useAvengingWrath: false };
+        const message = { judgement: 0, seal: 0, aura: 0, damageTakenPerSecond: 0, useAvengingWrath: false, useDivinePlea: false };
         Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
         if (value !== undefined)
             reflectionMergePartial(this, message, value);
@@ -953,6 +989,9 @@ class RetributionPaladin_Options$Type extends MessageType {
                     break;
                 case /* bool use_avenging_wrath */ 5:
                     message.useAvengingWrath = reader.bool();
+                    break;
+                case /* bool use_divine_plea */ 6:
+                    message.useDivinePlea = reader.bool();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -981,6 +1020,9 @@ class RetributionPaladin_Options$Type extends MessageType {
         /* bool use_avenging_wrath = 5; */
         if (message.useAvengingWrath !== false)
             writer.tag(5, WireType.Varint).bool(message.useAvengingWrath);
+        /* bool use_divine_plea = 6; */
+        if (message.useDivinePlea !== false)
+            writer.tag(6, WireType.Varint).bool(message.useDivinePlea);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);

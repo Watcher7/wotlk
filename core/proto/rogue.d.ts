@@ -4,6 +4,7 @@ import type { BinaryReadOptions } from "@protobuf-ts/runtime";
 import type { IBinaryReader } from "@protobuf-ts/runtime";
 import type { PartialMessage } from "@protobuf-ts/runtime";
 import { MessageType } from "@protobuf-ts/runtime";
+import { RaidTarget } from "./common";
 /**
  * @generated from protobuf message proto.RogueTalents
  */
@@ -428,6 +429,10 @@ export declare enum Rogue_Rotation_Builder {
  * @generated from protobuf message proto.Rogue.Options
  */
 export interface Rogue_Options {
+    /**
+     * @generated from protobuf field: proto.RaidTarget tricks_of_the_trade_target = 1;
+     */
+    tricksOfTheTradeTarget?: RaidTarget;
 }
 /**
  * @generated from protobuf enum proto.RogueMajorGlyph

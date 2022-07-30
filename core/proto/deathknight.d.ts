@@ -5,9 +5,9 @@ import type { IBinaryReader } from "@protobuf-ts/runtime";
 import type { PartialMessage } from "@protobuf-ts/runtime";
 import { MessageType } from "@protobuf-ts/runtime";
 /**
- * @generated from protobuf message proto.DeathKnightTalents
+ * @generated from protobuf message proto.DeathknightTalents
  */
-export interface DeathKnightTalents {
+export interface DeathknightTalents {
     /**
      * Blood
      *
@@ -368,39 +368,102 @@ export interface DeathKnightTalents {
     summonGargoyle: boolean;
 }
 /**
- * @generated from protobuf message proto.DeathKnight
+ * @generated from protobuf message proto.Deathknight
  */
-export interface DeathKnight {
+export interface Deathknight {
     /**
-     * @generated from protobuf field: proto.DeathKnight.Rotation rotation = 1;
+     * @generated from protobuf field: proto.Deathknight.Rotation rotation = 1;
      */
-    rotation?: DeathKnight_Rotation;
+    rotation?: Deathknight_Rotation;
     /**
-     * @generated from protobuf field: proto.DeathKnightTalents talents = 2;
+     * @generated from protobuf field: proto.DeathknightTalents talents = 2;
      */
-    talents?: DeathKnightTalents;
+    talents?: DeathknightTalents;
     /**
-     * @generated from protobuf field: proto.DeathKnight.Options options = 3;
+     * @generated from protobuf field: proto.Deathknight.Options options = 3;
      */
-    options?: DeathKnight_Options;
+    options?: Deathknight_Options;
 }
 /**
- * @generated from protobuf message proto.DeathKnight.Rotation
+ * @generated from protobuf message proto.Deathknight.Rotation
  */
-export interface DeathKnight_Rotation {
+export interface Deathknight_Rotation {
     /**
-     * @generated from protobuf field: bool use_death_and_decay = 1;
+     * @generated from protobuf field: proto.Deathknight.Rotation.ArmyOfTheDead army_of_the_dead = 1;
+     */
+    armyOfTheDead: Deathknight_Rotation_ArmyOfTheDead;
+    /**
+     * @generated from protobuf field: bool use_death_and_decay = 2;
      */
     useDeathAndDecay: boolean;
     /**
-     * @generated from protobuf field: bool unholy_presence_opener = 2;
+     * @generated from protobuf field: bool bt_ghoul_frenzy = 3;
      */
-    unholyPresenceOpener: boolean;
+    btGhoulFrenzy: boolean;
+    /**
+     * @generated from protobuf field: double disease_refresh_duration = 4;
+     */
+    diseaseRefreshDuration: number;
+    /**
+     * @generated from protobuf field: bool refresh_horn_of_winter = 5;
+     */
+    refreshHornOfWinter: boolean;
+    /**
+     * @generated from protobuf field: proto.Deathknight.Rotation.FirstDisease first_disease = 6;
+     */
+    firstDisease: Deathknight_Rotation_FirstDisease;
+    /**
+     * @generated from protobuf field: proto.Deathknight.Rotation.DeathAndDecayPrio death_and_decay_prio = 7;
+     */
+    deathAndDecayPrio: Deathknight_Rotation_DeathAndDecayPrio;
 }
 /**
- * @generated from protobuf message proto.DeathKnight.Options
+ * @generated from protobuf enum proto.Deathknight.Rotation.ArmyOfTheDead
  */
-export interface DeathKnight_Options {
+export declare enum Deathknight_Rotation_ArmyOfTheDead {
+    /**
+     * @generated from protobuf enum value: DoNotUse = 0;
+     */
+    DoNotUse = 0,
+    /**
+     * @generated from protobuf enum value: PreCast = 1;
+     */
+    PreCast = 1,
+    /**
+     * @generated from protobuf enum value: AsMajorCd = 2;
+     */
+    AsMajorCd = 2
+}
+/**
+ * @generated from protobuf enum proto.Deathknight.Rotation.DeathAndDecayPrio
+ */
+export declare enum Deathknight_Rotation_DeathAndDecayPrio {
+    /**
+     * @generated from protobuf enum value: MaxRuneDowntime = 0;
+     */
+    MaxRuneDowntime = 0,
+    /**
+     * @generated from protobuf enum value: MaxDndUptime = 1;
+     */
+    MaxDndUptime = 1
+}
+/**
+ * @generated from protobuf enum proto.Deathknight.Rotation.FirstDisease
+ */
+export declare enum Deathknight_Rotation_FirstDisease {
+    /**
+     * @generated from protobuf enum value: FrostFever = 0;
+     */
+    FrostFever = 0,
+    /**
+     * @generated from protobuf enum value: BloodPlague = 1;
+     */
+    BloodPlague = 1
+}
+/**
+ * @generated from protobuf message proto.Deathknight.Options
+ */
+export interface Deathknight_Options {
     /**
      * @generated from protobuf field: double starting_runic_power = 1;
      */
@@ -414,22 +477,49 @@ export interface DeathKnight_Options {
      */
     precastGhoulFrenzy: boolean;
     /**
-     * @generated from protobuf field: bool refresh_horn_of_winter = 4;
-     */
-    refreshHornOfWinter: boolean;
-    /**
-     * @generated from protobuf field: bool precast_horn_of_winter = 5;
+     * @generated from protobuf field: bool precast_horn_of_winter = 4;
      */
     precastHornOfWinter: boolean;
 }
 /**
- * @generated from protobuf enum proto.DeathKnightMajorGlyph
+ * @generated from protobuf message proto.TankDeathknight
  */
-export declare enum DeathKnightMajorGlyph {
+export interface TankDeathknight {
     /**
-     * @generated from protobuf enum value: DeathKnightMajorGlyphNone = 0;
+     * @generated from protobuf field: proto.TankDeathknight.Rotation rotation = 1;
      */
-    DeathKnightMajorGlyphNone = 0,
+    rotation?: TankDeathknight_Rotation;
+    /**
+     * @generated from protobuf field: proto.DeathknightTalents talents = 2;
+     */
+    talents?: DeathknightTalents;
+    /**
+     * @generated from protobuf field: proto.TankDeathknight.Options options = 3;
+     */
+    options?: TankDeathknight_Options;
+}
+/**
+ * @generated from protobuf message proto.TankDeathknight.Rotation
+ */
+export interface TankDeathknight_Rotation {
+}
+/**
+ * @generated from protobuf message proto.TankDeathknight.Options
+ */
+export interface TankDeathknight_Options {
+    /**
+     * @generated from protobuf field: double starting_runic_power = 1;
+     */
+    startingRunicPower: number;
+}
+/**
+ * @generated from protobuf enum proto.DeathknightMajorGlyph
+ */
+export declare enum DeathknightMajorGlyph {
+    /**
+     * @generated from protobuf enum value: DeathknightMajorGlyphNone = 0;
+     */
+    DeathknightMajorGlyphNone = 0,
     /**
      * @generated from protobuf enum value: GlyphOfAntiMagicShell = 43533;
      */
@@ -540,13 +630,13 @@ export declare enum DeathKnightMajorGlyph {
     GlyphOfVampiricBlood = 43554
 }
 /**
- * @generated from protobuf enum proto.DeathKnightMinorGlyph
+ * @generated from protobuf enum proto.DeathknightMinorGlyph
  */
-export declare enum DeathKnightMinorGlyph {
+export declare enum DeathknightMinorGlyph {
     /**
-     * @generated from protobuf enum value: DeathKnightMinorGlyphNone = 0;
+     * @generated from protobuf enum value: DeathknightMinorGlyphNone = 0;
      */
-    DeathKnightMinorGlyphNone = 0,
+    DeathknightMinorGlyphNone = 0,
     /**
      * @generated from protobuf enum value: GlyphOfBloodTap = 43535;
      */
@@ -572,44 +662,74 @@ export declare enum DeathKnightMinorGlyph {
      */
     GlyphOfRaiseDead = 43673
 }
-declare class DeathKnightTalents$Type extends MessageType<DeathKnightTalents> {
+declare class DeathknightTalents$Type extends MessageType<DeathknightTalents> {
     constructor();
-    create(value?: PartialMessage<DeathKnightTalents>): DeathKnightTalents;
-    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: DeathKnightTalents): DeathKnightTalents;
-    internalBinaryWrite(message: DeathKnightTalents, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter;
+    create(value?: PartialMessage<DeathknightTalents>): DeathknightTalents;
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: DeathknightTalents): DeathknightTalents;
+    internalBinaryWrite(message: DeathknightTalents, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter;
 }
 /**
- * @generated MessageType for protobuf message proto.DeathKnightTalents
+ * @generated MessageType for protobuf message proto.DeathknightTalents
  */
-export declare const DeathKnightTalents: DeathKnightTalents$Type;
-declare class DeathKnight$Type extends MessageType<DeathKnight> {
+export declare const DeathknightTalents: DeathknightTalents$Type;
+declare class Deathknight$Type extends MessageType<Deathknight> {
     constructor();
-    create(value?: PartialMessage<DeathKnight>): DeathKnight;
-    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: DeathKnight): DeathKnight;
-    internalBinaryWrite(message: DeathKnight, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter;
+    create(value?: PartialMessage<Deathknight>): Deathknight;
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: Deathknight): Deathknight;
+    internalBinaryWrite(message: Deathknight, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter;
 }
 /**
- * @generated MessageType for protobuf message proto.DeathKnight
+ * @generated MessageType for protobuf message proto.Deathknight
  */
-export declare const DeathKnight: DeathKnight$Type;
-declare class DeathKnight_Rotation$Type extends MessageType<DeathKnight_Rotation> {
+export declare const Deathknight: Deathknight$Type;
+declare class Deathknight_Rotation$Type extends MessageType<Deathknight_Rotation> {
     constructor();
-    create(value?: PartialMessage<DeathKnight_Rotation>): DeathKnight_Rotation;
-    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: DeathKnight_Rotation): DeathKnight_Rotation;
-    internalBinaryWrite(message: DeathKnight_Rotation, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter;
+    create(value?: PartialMessage<Deathknight_Rotation>): Deathknight_Rotation;
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: Deathknight_Rotation): Deathknight_Rotation;
+    internalBinaryWrite(message: Deathknight_Rotation, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter;
 }
 /**
- * @generated MessageType for protobuf message proto.DeathKnight.Rotation
+ * @generated MessageType for protobuf message proto.Deathknight.Rotation
  */
-export declare const DeathKnight_Rotation: DeathKnight_Rotation$Type;
-declare class DeathKnight_Options$Type extends MessageType<DeathKnight_Options> {
+export declare const Deathknight_Rotation: Deathknight_Rotation$Type;
+declare class Deathknight_Options$Type extends MessageType<Deathknight_Options> {
     constructor();
-    create(value?: PartialMessage<DeathKnight_Options>): DeathKnight_Options;
-    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: DeathKnight_Options): DeathKnight_Options;
-    internalBinaryWrite(message: DeathKnight_Options, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter;
+    create(value?: PartialMessage<Deathknight_Options>): Deathknight_Options;
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: Deathknight_Options): Deathknight_Options;
+    internalBinaryWrite(message: Deathknight_Options, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter;
 }
 /**
- * @generated MessageType for protobuf message proto.DeathKnight.Options
+ * @generated MessageType for protobuf message proto.Deathknight.Options
  */
-export declare const DeathKnight_Options: DeathKnight_Options$Type;
+export declare const Deathknight_Options: Deathknight_Options$Type;
+declare class TankDeathknight$Type extends MessageType<TankDeathknight> {
+    constructor();
+    create(value?: PartialMessage<TankDeathknight>): TankDeathknight;
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: TankDeathknight): TankDeathknight;
+    internalBinaryWrite(message: TankDeathknight, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter;
+}
+/**
+ * @generated MessageType for protobuf message proto.TankDeathknight
+ */
+export declare const TankDeathknight: TankDeathknight$Type;
+declare class TankDeathknight_Rotation$Type extends MessageType<TankDeathknight_Rotation> {
+    constructor();
+    create(value?: PartialMessage<TankDeathknight_Rotation>): TankDeathknight_Rotation;
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: TankDeathknight_Rotation): TankDeathknight_Rotation;
+    internalBinaryWrite(message: TankDeathknight_Rotation, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter;
+}
+/**
+ * @generated MessageType for protobuf message proto.TankDeathknight.Rotation
+ */
+export declare const TankDeathknight_Rotation: TankDeathknight_Rotation$Type;
+declare class TankDeathknight_Options$Type extends MessageType<TankDeathknight_Options> {
+    constructor();
+    create(value?: PartialMessage<TankDeathknight_Options>): TankDeathknight_Options;
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: TankDeathknight_Options): TankDeathknight_Options;
+    internalBinaryWrite(message: TankDeathknight_Options, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter;
+}
+/**
+ * @generated MessageType for protobuf message proto.TankDeathknight.Options
+ */
+export declare const TankDeathknight_Options: TankDeathknight_Options$Type;
 export {};

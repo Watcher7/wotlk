@@ -9,19 +9,20 @@ import { IndividualSimUI } from '/wotlk/core/individual_sim_ui.js';
 import * as OtherInputs from '/wotlk/core/components/other_inputs.js';
 import * as DeathKnightInputs from './inputs.js';
 import * as Presets from './presets.js';
-export class DeathKnightSimUI extends IndividualSimUI {
+export class DeathknightSimUI extends IndividualSimUI {
     constructor(parentElem, player) {
         super(parentElem, player, {
             cssClass: 'deathknight-sim-ui',
             // List any known bugs / issues here and they'll be shown on the site.
             knownIssues: [
                 "<p>Rotation logic is just hit things on CGD. It is not good don't take it as actual data.</p>\
-				<p>Dynamic % multipliers to stat buffs snapshot at aura gain and don't dynamically update for now.</p>\
-				<p>Damage multipliers are also likely to not be properly stacking until further beta testing.</p>"
+				<p>Damage multipliers are also likely to not be properly stacking until further beta testing.</p>\
+				<p>Pet scaling is likely to not be properly working until further beta testing.</p>"
             ],
             // All stats for which EP should be calculated.
             epStats: [
                 Stat.StatStrength,
+                Stat.StatArmor,
                 Stat.StatAgility,
                 Stat.StatAttackPower,
                 Stat.StatExpertise,
@@ -32,6 +33,7 @@ export class DeathKnightSimUI extends IndividualSimUI {
                 // TODO: Remove these when debuff categories support us
                 Stat.StatSpellPower,
                 Stat.StatSpellHit,
+                Stat.StatSpellCrit,
             ],
             // Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
             epReferenceStat: Stat.StatAttackPower,
@@ -41,33 +43,36 @@ export class DeathKnightSimUI extends IndividualSimUI {
                 Stat.StatArmor,
                 Stat.StatStrength,
                 Stat.StatAgility,
+                Stat.StatSpellHit,
+                Stat.StatSpellCrit,
                 Stat.StatAttackPower,
-                Stat.StatExpertise,
                 Stat.StatMeleeHit,
                 Stat.StatMeleeCrit,
                 Stat.StatMeleeHaste,
                 Stat.StatArmorPenetration,
+                Stat.StatExpertise,
             ],
             defaults: {
                 // Default equipped gear.
                 gear: Presets.P1_FROST_BIS_PRESET.gear,
                 // Default EP weights for sorting gear in the gear picker.
                 epWeights: Stats.fromMap({
-                    [Stat.StatStrength]: 2.17,
-                    [Stat.StatAgility]: 1.4,
+                    [Stat.StatStrength]: 2.61,
+                    [Stat.StatAgility]: 1.14,
+                    [Stat.StatArmor]: 0.027,
                     [Stat.StatAttackPower]: 1,
-                    [Stat.StatExpertise]: 3.29,
-                    [Stat.StatMeleeHit]: 0.41,
+                    [Stat.StatExpertise]: 1.73,
+                    [Stat.StatMeleeHaste]: 1.26,
+                    [Stat.StatMeleeHit]: 1.71,
                     [Stat.StatMeleeCrit]: 1.83,
-                    [Stat.StatMeleeHaste]: 2.07,
-                    [Stat.StatArmorPenetration]: 0.5,
+                    [Stat.StatArmorPenetration]: 1.425,
                 }),
                 // Default consumes settings.
                 consumes: Presets.DefaultConsumes,
                 // Default rotation settings.
                 rotation: Presets.DefaultRotation,
                 // Default talents.
-                talents: Presets.FrostUnholyTalents.data,
+                talents: Presets.FrostTalents.data,
                 // Default spec-specific settings.
                 specOptions: Presets.DefaultOptions,
                 // Default raid/party buffs settings.
@@ -79,7 +84,10 @@ export class DeathKnightSimUI extends IndividualSimUI {
                     abominationsMight: true,
                     leaderOfThePack: TristateEffect.TristateEffectRegular,
                     sanctifiedRetribution: true,
-                    bloodlust: true
+                    bloodlust: true,
+                    devotionAura: TristateEffect.TristateEffectImproved,
+                    stoneskinTotem: TristateEffect.TristateEffectImproved,
+                    moonkinAura: TristateEffect.TristateEffectRegular,
                 }),
                 partyBuffs: PartyBuffs.create({
                     heroicPresence: false,
@@ -90,25 +98,27 @@ export class DeathKnightSimUI extends IndividualSimUI {
                 }),
                 debuffs: Debuffs.create({
                     bloodFrenzy: true,
-                    faerieFire: TristateEffect.TristateEffectRegular,
+                    faerieFire: TristateEffect.TristateEffectImproved,
                     sunderArmor: true,
-                    misery: true,
                     ebonPlaguebringer: true,
                     mangle: true,
                     heartOfTheCrusader: true,
+                    shadowMastery: true,
                 }),
             },
-            // IconInputs to include in the 'Self Buffs' section on the settings tab.
-            selfBuffInputs: [],
+            // IconInputs to include in the 'Player' section on the settings tab.
+            playerIconInputs: [],
             // Inputs to include in the 'Rotation' section on the settings tab.
             rotationInputs: DeathKnightInputs.DeathKnightRotationConfig,
+            // Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
+            includeBuffDebuffInputs: [],
+            excludeBuffDebuffInputs: [],
             // Inputs to include in the 'Other' section on the settings tab.
             otherInputs: {
                 inputs: [
                     DeathKnightInputs.StartingRunicPower,
                     DeathKnightInputs.PetUptime,
                     DeathKnightInputs.PrecastGhoulFrenzy,
-                    DeathKnightInputs.RefreshHornOfWinter,
                     DeathKnightInputs.PrecastHornOfWinter,
                     OtherInputs.PrepopPotion,
                     OtherInputs.TankAssignment,
@@ -116,24 +126,21 @@ export class DeathKnightSimUI extends IndividualSimUI {
                 ],
             },
             encounterPicker: {
-                // Target stats to show for 'Simple' encounters.
-                simpleTargetStats: [
-                    Stat.StatArmor,
-                ],
                 // Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
                 showExecuteProportion: false,
             },
             presets: {
                 // Preset talents that the user can quickly select.
                 talents: [
-                    Presets.FrostUnholyTalents,
                     Presets.FrostTalents,
+                    Presets.FrostUnholyTalents,
                     Presets.UnholyDualWieldTalents,
                 ],
                 // Preset gear configurations that the user can quickly select.
                 gear: [
                     Presets.P1_FROST_PRE_BIS_PRESET,
                     Presets.P1_FROST_BIS_PRESET,
+                    Presets.P1_FROST_HITCAP_PRESET,
                     Presets.P1_UNHOLY_DW_BIS_PRESET,
                 ],
             },

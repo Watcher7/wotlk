@@ -1,134 +1,93 @@
+import { Deathknight_Rotation_ArmyOfTheDead as ArmyOfTheDead, Deathknight_Rotation_FirstDisease as FirstDisease, Deathknight_Rotation_DeathAndDecayPrio as DeathAndDecayPrio, } from '/wotlk/core/proto/deathknight.js';
+import * as InputHelpers from '/wotlk/core/components/input_helpers.js';
 // Configuration for spec-specific UI elements on the settings tab.
 // These don't need to be in a separate file but it keeps things cleaner.
-export const StartingRunicPower = {
-    type: 'number',
-    getModObject: (simUI) => simUI.player,
-    config: {
-        extraCssClasses: [
-            'starting-runic-power-picker',
-        ],
-        label: 'Starting Runic Power',
-        labelTooltip: 'Initial RP at the start of each iteration.',
-        changedEvent: (player) => player.specOptionsChangeEmitter,
-        getValue: (player) => player.getSpecOptions().startingRunicPower,
-        setValue: (eventID, player, newValue) => {
-            const newOptions = player.getSpecOptions();
-            newOptions.startingRunicPower = newValue;
-            player.setSpecOptions(eventID, newOptions);
-        },
-    },
-};
-export const PetUptime = {
-    type: 'number',
-    getModObject: (simUI) => simUI.player,
-    config: {
-        extraCssClasses: [
-            'ghoul-uptime-picker',
-        ],
-        label: 'Ghoul Uptime (%)',
-        labelTooltip: 'Percent of the fight duration for which your ghoul will be on target.',
-        changedEvent: (player) => player.specOptionsChangeEmitter,
-        getValue: (player) => player.getSpecOptions().petUptime * 100,
-        setValue: (eventID, player, newValue) => {
-            const newOptions = player.getSpecOptions();
-            newOptions.petUptime = newValue / 100;
-            player.setSpecOptions(eventID, newOptions);
-        },
-    },
-};
-export const PrecastGhoulFrenzy = {
-    type: 'boolean',
-    getModObject: (simUI) => simUI.player,
-    config: {
-        extraCssClasses: [
-            'precast-ghoul-frenzy-picker',
-        ],
-        label: 'Pre-Cast Ghoul Frenzy',
-        labelTooltip: 'Cast Ghoul Frenzy 10 seconds before combat starts.',
-        changedEvent: (player) => player.specOptionsChangeEmitter,
-        getValue: (player) => player.getSpecOptions().precastGhoulFrenzy,
-        setValue: (eventID, player, newValue) => {
-            const newOptions = player.getSpecOptions();
-            newOptions.precastGhoulFrenzy = newValue;
-            player.setSpecOptions(eventID, newOptions);
-        },
-    },
-};
-export const UseDeathAndDecay = {
-    type: 'boolean',
-    getModObject: (simUI) => simUI.player,
-    config: {
-        extraCssClasses: [
-            'use-death-and-decay-picker',
-        ],
-        label: 'Death and Decay',
-        labelTooltip: 'Use Death and Decay based rotation.',
-        changedEvent: (player) => player.specOptionsChangeEmitter,
-        getValue: (player) => player.getRotation().useDeathAndDecay,
-        setValue: (eventID, player, newValue) => {
-            const newRotation = player.getRotation();
-            newRotation.useDeathAndDecay = newValue;
-            player.setRotation(eventID, newRotation);
-        },
-    },
-};
-export const UnholyPresenceOpener = {
-    type: 'boolean',
-    getModObject: (simUI) => simUI.player,
-    config: {
-        extraCssClasses: [
-            'unholy-presence-opener-picker',
-        ],
-        label: 'Unholy Presence Opener',
-        labelTooltip: 'Start fight in unholy presence and change to blood after gargoyle.',
-        changedEvent: (player) => player.specOptionsChangeEmitter,
-        getValue: (player) => player.getRotation().unholyPresenceOpener,
-        setValue: (eventID, player, newValue) => {
-            const newRotation = player.getRotation();
-            newRotation.unholyPresenceOpener = newValue;
-            player.setRotation(eventID, newRotation);
-        },
-    },
-};
-export const RefreshHornOfWinter = {
-    type: 'boolean',
-    getModObject: (simUI) => simUI.player,
-    config: {
-        extraCssClasses: [
-            'refresh-horn-of-winter-picker',
-        ],
-        label: 'Refresh Horn of Winter',
-        labelTooltip: 'Refresh Horn of Winter on free GCDs.',
-        changedEvent: (player) => player.specOptionsChangeEmitter,
-        getValue: (player) => player.getSpecOptions().refreshHornOfWinter,
-        setValue: (eventID, player, newValue) => {
-            const newOptions = player.getSpecOptions();
-            newOptions.refreshHornOfWinter = newValue;
-            player.setSpecOptions(eventID, newOptions);
-        },
-    },
-};
-export const PrecastHornOfWinter = {
-    type: 'boolean',
-    getModObject: (simUI) => simUI.player,
-    config: {
-        extraCssClasses: [
-            'precast-horn-of-winter-picker',
-        ],
-        label: 'Pre-Cast Horn of Winter',
-        labelTooltip: 'Precast Horn of Winter for 10 extra runic power before fight.',
-        changedEvent: (player) => player.specOptionsChangeEmitter,
-        getValue: (player) => player.getSpecOptions().precastHornOfWinter,
-        setValue: (eventID, player, newValue) => {
-            const newOptions = player.getSpecOptions();
-            newOptions.precastHornOfWinter = newValue;
-            player.setSpecOptions(eventID, newOptions);
-        },
-    },
-};
+export const StartingRunicPower = InputHelpers.makeSpecOptionsNumberInput({
+    fieldName: 'startingRunicPower',
+    label: 'Starting Runic Power',
+    labelTooltip: 'Initial RP at the start of each iteration.',
+});
+export const PetUptime = InputHelpers.makeSpecOptionsNumberInput({
+    fieldName: 'petUptime',
+    label: 'Ghoul Uptime (%)',
+    labelTooltip: 'Percent of the fight duration for which your ghoul will be on target.',
+    percent: true,
+});
+export const PrecastGhoulFrenzy = InputHelpers.makeSpecOptionsBooleanInput({
+    fieldName: 'precastGhoulFrenzy',
+    label: 'Pre-Cast Ghoul Frenzy',
+    labelTooltip: 'Cast Ghoul Frenzy 10 seconds before combat starts.',
+});
+export const PrecastHornOfWinter = InputHelpers.makeSpecOptionsBooleanInput({
+    fieldName: 'precastHornOfWinter',
+    label: 'Pre-Cast Horn of Winter',
+    labelTooltip: 'Precast Horn of Winter for 10 extra runic power before fight.',
+});
+export const RefreshHornOfWinter = InputHelpers.makeRotationBooleanInput({
+    fieldName: 'refreshHornOfWinter',
+    label: 'Refresh Horn of Winter',
+    labelTooltip: 'Refresh Horn of Winter on free GCDs.',
+});
+export const DiseaseRefreshDuration = InputHelpers.makeRotationNumberInput({
+    fieldName: 'diseaseRefreshDuration',
+    label: 'Disease Refresh Duration',
+    labelTooltip: 'Minimum duration for refreshing a disease.',
+});
+export const UseDeathAndDecay = InputHelpers.makeRotationBooleanInput({
+    fieldName: 'useDeathAndDecay',
+    label: 'Death and Decay',
+    labelTooltip: 'Use Death and Decay based rotation.',
+    showWhen: (player) => player.getTalents().summonGargoyle,
+    changeEmitter: (player) => player.talentsChangeEmitter,
+});
+export const SetDeathAndDecayPrio = InputHelpers.makeRotationEnumInput({
+    fieldName: 'deathAndDecayPrio',
+    label: 'Death and Decay Prio',
+    labelTooltip: '<p>Chose how to prioritize death and decay usage:</p>\
+		<p><b>Max Rune Downtime</b>: Prioritizes spending runes over holding them for death and decay</p>\
+		<p><b>Max Dnd Uptime</b>: Prioritizes dnd uptime and can hold runes for longer then rune grace</p>',
+    values: [
+        { name: 'Max Rune Downtime', value: DeathAndDecayPrio.MaxRuneDowntime },
+        { name: 'Max Dnd Uptime', value: DeathAndDecayPrio.MaxDndUptime },
+    ],
+    showWhen: (player) => player.getTalents().summonGargoyle && player.getRotation().useDeathAndDecay,
+    changeEmitter: (player) => player.changeEmitter,
+});
+export const BloodTapGhoulFrenzy = InputHelpers.makeRotationBooleanInput({
+    fieldName: 'btGhoulFrenzy',
+    label: 'BT Ghoul Frenzy',
+    labelTooltip: 'Use Ghoul Frenzy only with Blood Tap.',
+    showWhen: (player) => player.getTalents().ghoulFrenzy,
+    changeEmitter: (player) => player.talentsChangeEmitter,
+    // TODO find out why changeEmitter breaks web with: TypedEvent.onAny([player.rotationChangeEmitter, player.talentsChangeEmitter])
+});
+export const SetFirstDisease = InputHelpers.makeRotationEnumInput({
+    fieldName: 'firstDisease',
+    label: 'First Disease',
+    labelTooltip: 'Chose which disease to apply first.',
+    values: [
+        { name: 'Frost Fever', value: FirstDisease.FrostFever },
+        { name: 'Blood Plague', value: FirstDisease.BloodPlague },
+    ],
+    showWhen: (player) => player.getTalents().summonGargoyle,
+    changeEmitter: (player) => player.talentsChangeEmitter,
+});
+export const UseArmyOfTheDead = InputHelpers.makeRotationEnumInput({
+    fieldName: 'armyOfTheDead',
+    label: 'Army of the Dead',
+    labelTooltip: 'Chose how to use Army of the Dead.',
+    values: [
+        { name: 'Do not use', value: ArmyOfTheDead.DoNotUse },
+        { name: 'Pre pull', value: ArmyOfTheDead.PreCast },
+        { name: 'As Major CD', value: ArmyOfTheDead.AsMajorCd },
+    ],
+});
 export const DeathKnightRotationConfig = {
     inputs: [
+        SetFirstDisease,
+        UseArmyOfTheDead,
         UseDeathAndDecay,
-        UnholyPresenceOpener,
+        SetDeathAndDecayPrio,
+        BloodTapGhoulFrenzy,
     ],
 };

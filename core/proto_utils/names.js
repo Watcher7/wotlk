@@ -39,7 +39,7 @@ export const classNames = {
     [Class.ClassShaman]: 'Shaman',
     [Class.ClassWarlock]: 'Warlock',
     [Class.ClassWarrior]: 'Warrior',
-    [Class.ClassDeathKnight]: 'Death Knight',
+    [Class.ClassDeathknight]: 'Death Knight',
 };
 export function nameToClass(name) {
     const lower = name.toLowerCase();
@@ -128,9 +128,9 @@ export const statNames = {
     [Stat.StatSpellHaste]: 'Spell Haste',
     [Stat.StatSpellPenetration]: 'Spell Pen',
     [Stat.StatAttackPower]: 'Attack Power',
-    [Stat.StatMeleeHit]: 'Hit',
-    [Stat.StatMeleeCrit]: 'Crit',
-    [Stat.StatMeleeHaste]: 'Haste',
+    [Stat.StatMeleeHit]: 'Melee Hit',
+    [Stat.StatMeleeCrit]: 'Melee Crit',
+    [Stat.StatMeleeHaste]: 'Melee Haste',
     [Stat.StatArmorPenetration]: 'Armor Pen',
     [Stat.StatExpertise]: 'Expertise',
     [Stat.StatMana]: 'Mana',

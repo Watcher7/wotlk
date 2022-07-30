@@ -418,7 +418,8 @@ class BuffBot$Type extends MessageType {
             { no: 1, name: "id", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 2, name: "raid_index", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
             { no: 3, name: "innervate_assignment", kind: "message", T: () => RaidTarget },
-            { no: 4, name: "power_infusion_assignment", kind: "message", T: () => RaidTarget }
+            { no: 4, name: "power_infusion_assignment", kind: "message", T: () => RaidTarget },
+            { no: 5, name: "tricks_of_the_trade_assignment", kind: "message", T: () => RaidTarget }
         ]);
     }
     create(value) {
@@ -445,6 +446,9 @@ class BuffBot$Type extends MessageType {
                 case /* proto.RaidTarget power_infusion_assignment */ 4:
                     message.powerInfusionAssignment = RaidTarget.internalBinaryRead(reader, reader.uint32(), options, message.powerInfusionAssignment);
                     break;
+                case /* proto.RaidTarget tricks_of_the_trade_assignment */ 5:
+                    message.tricksOfTheTradeAssignment = RaidTarget.internalBinaryRead(reader, reader.uint32(), options, message.tricksOfTheTradeAssignment);
+                    break;
                 default:
                     let u = options.readUnknownField;
                     if (u === "throw")
@@ -469,6 +473,9 @@ class BuffBot$Type extends MessageType {
         /* proto.RaidTarget power_infusion_assignment = 4; */
         if (message.powerInfusionAssignment)
             RaidTarget.internalBinaryWrite(message.powerInfusionAssignment, writer.tag(4, WireType.LengthDelimited).fork(), options).join();
+        /* proto.RaidTarget tricks_of_the_trade_assignment = 5; */
+        if (message.tricksOfTheTradeAssignment)
+            RaidTarget.internalBinaryWrite(message.tricksOfTheTradeAssignment, writer.tag(5, WireType.LengthDelimited).fork(), options).join();
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);

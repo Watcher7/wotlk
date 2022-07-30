@@ -29,7 +29,7 @@ export function newIndividualExporters(simUI) {
     };
     addMenuItem('Link', () => new IndividualLinkExporter(menuElem, simUI), false);
     addMenuItem('Json', () => new IndividualJsonExporter(menuElem, simUI), true);
-    addMenuItem('70U EP', () => new Individual70UEPExporter(menuElem, simUI), false);
+    addMenuItem('80U EP', () => new Individual80UEPExporter(menuElem, simUI), false);
     addMenuItem('Pawn EP', () => new IndividualPawnEPExporter(menuElem, simUI), false);
     return exportSettings;
 }
@@ -81,16 +81,7 @@ class IndividualLinkExporter extends Exporter {
         this.init();
     }
     getData() {
-        const proto = this.simUI.toProto();
-        // When sharing links, people generally don't intend to share settings/ep weights.
-        proto.settings = undefined;
-        proto.epWeights = [];
-        const protoBytes = IndividualSimSettings.toBinary(proto);
-        const deflated = pako.deflate(protoBytes, { to: 'string' });
-        const encoded = btoa(String.fromCharCode(...deflated));
-        const linkUrl = new URL(window.location.href);
-        linkUrl.hash = encoded;
-        return linkUrl.toString();
+        return this.simUI.toLink();
     }
 }
 class IndividualJsonExporter extends Exporter {
@@ -103,22 +94,22 @@ class IndividualJsonExporter extends Exporter {
         return JSON.stringify(IndividualSimSettings.toJson(this.simUI.toProto()), null, 2);
     }
 }
-class Individual70UEPExporter extends Exporter {
+class Individual80UEPExporter extends Exporter {
     constructor(parent, simUI) {
-        super(parent, '70Upgrades EP Export', true);
+        super(parent, '80Upgrades EP Export', true);
         this.simUI = simUI;
         this.init();
     }
     getData() {
         const epValues = this.simUI.player.getEpWeights();
         const allStats = getEnumValues(Stat).filter(stat => ![Stat.StatEnergy, Stat.StatRage].includes(stat));
-        return `https://seventyupgrades.com/ep/import?name=${encodeURIComponent('WoWSims Weights')}` +
+        return `https://eightyupgrades.com/ep/import?name=${encodeURIComponent('WoWSims Weights')}` +
             allStats
                 .filter(stat => epValues.getStat(stat) != 0)
-                .map(stat => `&${Individual70UEPExporter.linkNames[stat]}=${epValues.getStat(stat).toFixed(3)}`).join('');
+                .map(stat => `&${Individual80UEPExporter.linkNames[stat]}=${epValues.getStat(stat).toFixed(3)}`).join('');
     }
 }
-Individual70UEPExporter.linkNames = {
+Individual80UEPExporter.linkNames = {
     [Stat.StatStrength]: 'strength',
     [Stat.StatAgility]: 'agility',
     [Stat.StatStamina]: 'stamina',
