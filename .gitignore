@@ -4,6 +4,7 @@ node_modules
 # IDE folders
 .vscode
 .idea
+.task
 
 # binaries
 dist
