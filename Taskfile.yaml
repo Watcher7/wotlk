@@ -135,7 +135,6 @@ tasks:
     - proto-js
     - wasm
     cmds:
-    # $(OUT_DIR)/core/tsconfig.tsbuildinfo: $(call rwildcard,ui/core,*.ts) ui/core/proto/api.ts
     - npx tsc -p ui/core
     - exec {{.SED}} 's#@protobuf-ts/runtime#/wotlk/protobuf-ts/index#g' {{.OUT_DIR}}/core/proto/*.js
     - exec {{.SED}} "s/from \"(.*)\";/from '\1.js';/g" {{.OUT_DIR}}/core/proto/*.js
@@ -149,6 +148,11 @@ tasks:
     - "{{.GOROOT}}/misc/wasm/wasm_exec.js"
     - "ui/worker/net_worker.js"
     - "ui/index.html"
+    generates:
+    - "{{.OUT_DIR}}/core/proto/*.js"
+    - "{{.OUT_DIR}}/sim_worker.js"
+    - "{{.OUT_DIR}}/net_worker.js"
+    - "{{.OUT_DIR}}/index.html"
 
   generate-page:
     run: when_changed
@@ -338,3 +342,19 @@ tasks:
     - binary_dist
     cmds:
     - npx http-server {{.OUT_DIR}}/..
+
+
+  clean:
+    desc: cleans the workspace
+    run: once
+    cmds:
+    - |
+        rm -rf ui/core/proto/*.ts \
+	      sim/core/proto/*.pb.go \
+	      wowsimwotlk \
+	      wowsimwotlk-windows.exe \
+	      wowsimwotlk-amd64-darwin \
+	      wowsimwotlk-amd64-linux \
+	      dist \
+	      binary_dist
+	  - find . -name "*.results.tmp" -type f -delete
