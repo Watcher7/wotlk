@@ -8,9 +8,15 @@ vars:
     sh: echo '{{if eq OS "darwin"}}sed -i "" -E -e{{else}}sed -i -E -e{{end}}'
 
 tasks:
+  make-out_dir:
+    run: once
+    cmds:
+    - mkdir -p {{.OUT_DIR}}
+
   default:
     desc: builds all web components
     deps:
+    - make-out_dir
     - ui_shared
     - assets
 
@@ -61,6 +67,8 @@ tasks:
   assets:
     desc: clears {{.OUT_DIR}}/assets and copies asset files
     run: once
+    deps:
+    - make-out_dir
     cmds:
     - rm -rf {{.OUT_DIR}}/assets
     - cp -r assets {{.OUT_DIR}}
@@ -100,6 +108,7 @@ tasks:
     desc: generates lib.wasm
     run: once
     deps:
+    - make-out_dir
     - proto-go
     cmds:
     - GOOS=js GOARCH=wasm go build -o {{.OUT_DIR}}/lib.wasm ./sim/wasm/
@@ -113,6 +122,7 @@ tasks:
     desc: generates typescript protobufs
     run: once
     deps:
+    - make-out_dir
     - npm-ci
     cmds:
     - mkdir -p {{.OUT_DIR}}/protobuf-ts
@@ -132,6 +142,7 @@ tasks:
     desc: generates shared ui web components
     run: once
     deps:
+    - make-out_dir
     - proto-js
     - wasm
     cmds:
@@ -168,9 +179,10 @@ tasks:
         PAGE: "{{.PAGE}}"
 
   generate-js:
-    run: when_changed
     label: "{{.PAGE}}_js"
+    run: when_changed
     deps:
+    - make-out_dir
     - proto-js
     cmds:
     - npx tsc -p ui/{{.PAGE}}
@@ -184,6 +196,8 @@ tasks:
   generate-css:
     label: "{{.PAGE}}_css"
     run: when_changed
+    deps:
+    - make-out_dir
     cmds:
     - mkdir -p {{.OUT_DIR}}/{{.PAGE}}
     - npx sass ui/{{.PAGE}}/index.scss {{.OUT_DIR}}/{{.PAGE}}/index.css
@@ -195,6 +209,8 @@ tasks:
   generate-index:
     label: "{{.PAGE}}_index"
     run: when_changed
+    deps:
+    - make-out_dir
     cmds:
     - echo {{.TITLE}}
     - mkdir -p {{.OUT_DIR}}/{{.PAGE}}
@@ -210,6 +226,8 @@ tasks:
   # raid page is a special case that depends on other class pages
   generate-raid-page:
     run: when_changed
+    deps:
+    - make-out_dir
     cmds:
     - task: generate-raid-js
     - task: generate-css
@@ -223,6 +241,7 @@ tasks:
     run: when_changed
     label: "raid_js"
     deps:
+    - make-out_dir
     - proto-js
     cmds:
     - npx tsc -p ui/raid
@@ -350,11 +369,11 @@ tasks:
     cmds:
     - |
         rm -rf ui/core/proto/*.ts \
-	      sim/core/proto/*.pb.go \
-	      wowsimwotlk \
-	      wowsimwotlk-windows.exe \
-	      wowsimwotlk-amd64-darwin \
-	      wowsimwotlk-amd64-linux \
-	      dist \
-	      binary_dist
-	  - find . -name "*.results.tmp" -type f -delete
+        sim/core/proto/*.pb.go \
+        wowsimwotlk \
+        wowsimwotlk-windows.exe \
+        wowsimwotlk-amd64-darwin \
+        wowsimwotlk-amd64-linux \
+        dist \
+        binary_dist
+    - find . -name "*.results.tmp" -type f -delete
