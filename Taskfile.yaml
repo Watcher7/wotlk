@@ -1,0 +1,318 @@
+version: '3'
+
+vars:
+  GOROOT:
+    sh: go env GOROOT
+  OUT_DIR: '{{ .CLI_ARGS | default "dist/wotlk" }}'
+
+tasks:
+  default:
+    deps:
+    - ui_shared
+    - assets
+
+    cmds:
+    - task: generate-page
+      vars: { PAGE: 'detailed_results' }
+    - task: generate-class-pages
+    - task: generate-raid-page
+
+  generate-class-pages:
+    deps:
+    - task: generate-page
+      vars: { PAGE: 'balance_druid' }
+    - task: generate-page
+      vars: { PAGE: 'feral_druid' }
+    - task: generate-page
+      vars: { PAGE: 'feral_tank_druid' }
+    - task: generate-page
+      vars: { PAGE: 'elemental_shaman' }
+    - task: generate-page
+      vars: { PAGE: 'enhancement_shaman' }
+    - task: generate-page
+      vars: { PAGE: 'hunter' }
+    - task: generate-page
+      vars: { PAGE: 'mage' }
+    - task: generate-page
+      vars: { PAGE: 'rogue' }
+    - task: generate-page
+      vars: { PAGE: 'retribution_paladin' }
+    - task: generate-page
+      vars: { PAGE: 'protection_paladin' }
+    - task: generate-page
+      vars: { PAGE: 'shadow_priest' }
+    - task: generate-page
+      vars: { PAGE: 'smite_priest' }
+    - task: generate-page
+      vars: { PAGE: 'warlock' }
+    - task: generate-page
+      vars: { PAGE: 'warrior' }
+    - task: generate-page
+      vars: { PAGE: 'protection_warrior' }
+    - task: generate-page
+      vars: { PAGE: 'deathknight' }
+    - task: generate-page
+      vars: { PAGE: 'tank_deathknight' }
+
+  assets:
+    run: once
+    cmds:
+    - cp -r assets {{.OUT_DIR}}
+    sources:
+    - assets/**/*
+    generates:
+    - "{{.OUT_DIR}}/assets/**/*"
+
+  npm-ci:
+    run: once
+    cmds:
+    - npm ci
+    sources:
+    - package_lock.json
+    generates:
+    - node_modules/**/*
+
+  # sim/core/proto/api.pb.go: proto/*.proto
+  proto-go:
+    run: once
+    cmds:
+    - protoc -I=./proto --go_out=./sim/core ./proto/*.proto
+    sources:
+    - proto/*.proto
+    generates:
+    - sim/core/proto/*.pb.go
+
+  # $(OUT_DIR)/lib.wasm: sim/wasm/* sim/core/proto/api.pb.go $(filter-out sim/core/items/all_items.go, $(call rwildcard,sim,*.go))
+  wasm:
+    run: once
+    deps:
+    - proto-go
+    cmds:
+    - GOOS=js GOARCH=wasm go build -o {{.OUT_DIR}}/lib.wasm ./sim/wasm/
+    sources:
+    - sim/**/*.go
+    generates:
+    - "{{.OUT_DIR}}/lib.wasm"
+
+  # ui/core/proto/api.ts: proto/*.proto node_modules
+  proto-js:
+    run: once
+    deps:
+    - npm-ci
+    cmds:
+    - mkdir -p {{.OUT_DIR}}/protobuf-ts
+    - cp -r node_modules/@protobuf-ts/runtime/build/es2015/* {{.OUT_DIR}}/protobuf-ts
+    - sed -i -E -e "s/from '(.*)';/from '\\1.js';/g" {{.OUT_DIR}}/protobuf-ts/*.js
+    - sed -i -E -e "s/from \"(.*)\";/from '\\1.js';/g" {{.OUT_DIR}}/protobuf-ts/*.js
+    - npx protoc --ts_opt generate_dependencies --ts_out ui/core/proto --proto_path proto proto/api.proto
+    - npx protoc --ts_out ui/core/proto --proto_path proto proto/test.proto
+    - npx protoc --ts_out ui/core/proto --proto_path proto proto/ui.proto
+    sources:
+    - node_modules/**/*
+    - proto/*.proto
+    generates:
+    - ui/core/proto/*.ts
+
+  ui_shared:
+    run: once
+    deps:
+    - proto-js
+    - wasm
+    cmds:
+    # $(OUT_DIR)/core/tsconfig.tsbuildinfo: $(call rwildcard,ui/core,*.ts) ui/core/proto/api.ts
+    - npx tsc -p ui/core
+    - sed -i -E -e 's#@protobuf-ts/runtime#/wotlk/protobuf-ts/index#g' {{.OUT_DIR}}/core/proto/*.js
+    - sed -i -E -e "s/from \"(.*)\";/from '\1.js';/g" {{.OUT_DIR}}/core/proto/*.js
+
+
+    - cat {{.GOROOT}}/misc/wasm/wasm_exec.js > {{.OUT_DIR}}/sim_worker.js
+    - cat ui/worker/sim_worker.js >> {{.OUT_DIR}}/sim_worker.js
+    - cp ui/worker/net_worker.js {{.OUT_DIR}}
+    - cp ui/index.html {{.OUT_DIR}}
+    sources:
+    - "ui/core/**/*.ts"
+    - "{{.OUT_DIR}}/core/proto/*.js"
+    - "{{.GOROOT}}/misc/wasm/wasm_exec.js"
+    - "ui/worker/net_worker.js"
+    - "ui/index.html"
+
+  generate-page:
+    run: when_changed
+    cmds:
+    - task: generate-js
+      vars: 
+        PAGE: "{{.PAGE}}"
+    - task: generate-css
+      vars: 
+        PAGE: "{{.PAGE}}"
+    - task: generate-index
+      vars:
+        PAGE: "{{.PAGE}}"
+
+  # $(OUT_DIR)/%/index.js: ui/%/index.ts ui/%/*.ts $(OUT_DIR)/core/tsconfig.tsbuildinfo
+  generate-js:
+    run: when_changed
+    label: "{{.PAGE}}_js"
+    deps:
+    - proto-js
+    cmds:
+    - npx tsc -p ui/{{.PAGE}}
+    - touch {{.OUT_DIR}}/{{.PAGE}}/index.js
+    sources:
+    - ui/core/**/*.ts
+    - ui/{{.PAGE}}/*.ts
+    generates:
+    - "{{.OUT_DIR}}/{{.PAGE}}/*.js"
+
+  # $(OUT_DIR)/%/index.css: ui/%/index.scss ui/%/*.scss $(call rwildcard,ui/core,*.scss)
+  generate-css:
+    label: "{{.PAGE}}_css"
+    run: when_changed
+    cmds:
+    - mkdir -p {{.OUT_DIR}}/{{.PAGE}}
+    - npx sass ui/{{.PAGE}}/index.scss {{.OUT_DIR}}/{{.PAGE}}/index.css
+    sources:
+    - ui/{{.PAGE}}/*.scss
+    generates:
+    - "{{.OUT_DIR}}/{{.PAGE}}/index.css"
+
+  # $(OUT_DIR)/%/index.html: ui/index_template.html $(OUT_DIR)/assets
+  generate-index:
+    label: "{{.PAGE}}_index"
+    run: when_changed
+    cmds:
+    - echo {{.TITLE}}
+    - mkdir -p {{.OUT_DIR}}/{{.PAGE}}
+    - cat ui/index_template.html | sed 's/@@TITLE@@/WOTLK {{.TITLE}} Simulator/g' > {{.OUT_DIR}}/{{.PAGE}}/index.html
+    vars:
+      TITLE:
+        sh: echo {{.PAGE}} | sed -r 's/(^|_)([a-z])/\U \2/g' | cut -c 2-
+    sources:
+    - ui/index_template.html
+    generates:
+    - "{{.OUT_DIR}}/{{.PAGE}}/index.html"
+
+  # raid page is a special case that depends on other class pages
+  generate-raid-page:
+    run: when_changed
+    cmds:
+    - task: generate-raid-js
+    - task: generate-css
+      vars: 
+        PAGE: "raid"
+    - task: generate-index
+      vars:
+        PAGE: "raid"
+
+  generate-raid-js:
+    run: when_changed
+    label: "raid_js"
+    deps:
+    - proto-js
+    cmds:
+    - npx tsc -p ui/raid
+    - touch {{.OUT_DIR}}/raid/index.js
+    sources:
+    - ui/**/*.ts
+    generates:
+    - "{{.OUT_DIR}}/{{.PAGE}}/*.js"
+
+  binary_dist:
+    run: once
+    cmds:
+    - mkdir -p binary_dist/wotlk
+    - touch binary_dist/wotlk/embedded
+    - cp sim/web/dist.go.tmpl binary_dist/dist.go
+    sources:
+    - sim/web/dist.go.tmpl
+    generates:
+    - binary_dist/dist.go
+
+  binary_dist_copy:
+    run: once
+    cmds:
+    - mkdir -p binary_dist
+    - cp -r {{.OUT_DIR}} binary_dist/
+    - rm binary_dist/wotlk/lib.wasm
+    - rm -rf binary_dist/wotlk/assets/item_data
+    - mkdir -p binary_dist/wotlk/assets/item_data
+    - cp assets/item_data/all_items_db.json ./binary_dist/wotlk/assets/item_data/all_items_db.json
+    - rm -rf binary_dist/wotlk/assets/spell_data
+    - mkdir -p binary_dist/wotlk/assets/spell_data
+    - cp assets/spell_data/all_spells_db.json ./binary_dist/wotlk/assets/spell_data/all_spells_db.json
+
+  test:
+    run: once
+    deps:
+    - wasm
+    - binary_dist
+    cmds:
+    - task: test-classes
+
+  test-classes:
+    deps:
+    - task: test-class
+      vars: { CLASS: 'druid' }
+    - task: test-class
+      vars: { CLASS: 'shaman' }
+    - task: test-class
+      vars: { CLASS: 'hunter' }
+    - task: test-class
+      vars: { CLASS: 'mage' }
+    - task: test-class
+      vars: { CLASS: 'rogue' }
+    - task: test-class
+      vars: { CLASS: 'paladin' }
+    - task: test-class
+      vars: { CLASS: 'priest' }
+    - task: test-class
+      vars: { CLASS: 'warlock' }
+    - task: test-class
+      vars: { CLASS: 'warrior' }
+    - task: test-class
+      vars: { CLASS: 'deathknight' }
+
+  test-class:
+    run: when_changed
+    label: "{{.CLASS}}_test"
+    cmds:
+    - go test ./sim/{{.CLASS}}/...
+    sources:
+    - sim/common/**/*.go
+    - sim/core/**/*.go
+    - sim/{{.CLASS}}/**/*.go
+    generates:
+    - sim/{{.CLASS}}/**/*.results
+
+  test-all:
+    run: once
+    deps:
+    - wasm
+    - binary_dist
+    cmds:
+    - go test ./...
+
+  devserver:
+    run: once
+    deps:
+    - default
+    - binary_dist
+    cmds:
+    - go build -o wowsimwotlk ./sim/web/main.go
+
+  rundevserver:
+    run: once
+    deps:
+    - devserver
+    cmds:
+    - task: binary_dist_copy
+    - ./wowsimwotlk --usefs=true --launch=false
+    interactive: true
+
+  host:
+    run: once
+    deps:
+    - default
+    - binary_dist
+    cmds:
+    - npx http-server {{.OUT_DIR}}/..
