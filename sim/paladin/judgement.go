@@ -48,6 +48,8 @@ func (paladin *Paladin) registerJudgementOfWisdomSpell(cdTimer *core.Timer) {
 	})
 }
 
+// dummy change
+
 // Defines judgement refresh behavior from attacks
 // Returns extra mana if a different pally applied Judgement of Wisdom
 // func (paladin *Paladin) setupJudgementRefresh() {
