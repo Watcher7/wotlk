@@ -413,6 +413,14 @@ export interface ShadowPriest_Options {
      * @generated from protobuf field: proto.ShadowPriest.Options.Armor armor = 2;
      */
     armor: ShadowPriest_Options_Armor;
+    /**
+     * @generated from protobuf field: bool use_mind_blast = 4;
+     */
+    useMindBlast: boolean;
+    /**
+     * @generated from protobuf field: bool use_shadow_word_death = 5;
+     */
+    useShadowWordDeath: boolean;
 }
 /**
  * @generated from protobuf enum proto.ShadowPriest.Options.Armor

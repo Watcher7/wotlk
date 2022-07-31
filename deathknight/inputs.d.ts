@@ -13,5 +13,5 @@ export declare const BloodTapGhoulFrenzy: InputHelpers.TypedBooleanPickerConfig<
 export declare const SetFirstDisease: InputHelpers.TypedEnumPickerConfig<Player<Spec.SpecDeathknight>>;
 export declare const UseArmyOfTheDead: InputHelpers.TypedEnumPickerConfig<Player<Spec.SpecDeathknight>>;
 export declare const DeathKnightRotationConfig: {
-    inputs: (InputHelpers.TypedBooleanPickerConfig<Player<Spec.SpecDeathknight>> | InputHelpers.TypedEnumPickerConfig<Player<Spec.SpecDeathknight>>)[];
+    inputs: (InputHelpers.TypedEnumPickerConfig<Player<Spec.SpecDeathknight>> | InputHelpers.TypedBooleanPickerConfig<Player<Spec.SpecDeathknight>>)[];
 };

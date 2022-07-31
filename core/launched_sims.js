@@ -22,7 +22,7 @@ export const simLaunchStatuses = {
     [Spec.SpecRetributionPaladin]: LaunchStatus.Unlaunched,
     [Spec.SpecProtectionPaladin]: LaunchStatus.Unlaunched,
     [Spec.SpecShadowPriest]: LaunchStatus.Unlaunched,
-    [Spec.SpecWarlock]: LaunchStatus.Unlaunched,
+    [Spec.SpecWarlock]: LaunchStatus.Alpha,
     [Spec.SpecWarrior]: LaunchStatus.Unlaunched,
     [Spec.SpecProtectionWarrior]: LaunchStatus.Unlaunched,
     [Spec.SpecSmitePriest]: LaunchStatus.Unlaunched,

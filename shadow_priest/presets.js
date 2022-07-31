@@ -31,6 +31,8 @@ export const DefaultRotation = Rotation.create({
 });
 export const DefaultOptions = Options.create({
     useShadowfiend: true,
+    useMindBlast: true,
+    useShadowWordDeath: true,
 });
 export const DefaultConsumes = Consumes.create({
     flask: Flask.FlaskOfTheFrostWyrm,

@@ -11,8 +11,7 @@ export class WarlockSimUI extends IndividualSimUI {
             cssClass: 'warlock-sim-ui',
             // List any known bugs / issues here and they'll be shown on the site.
             knownIssues: [
-                "Some snapshotting mechanics needs to be fixed (mainly implementing rollover mechanic).",
-                "Some secondary spells need to be implemented.",
+                "Several secondary spells need to be implemented.",
                 "Rotations will be optimized.",
             ],
             // All stats for which EP should be calculated.
@@ -120,7 +119,9 @@ export class WarlockSimUI extends IndividualSimUI {
                     // Presets.Naked,
                     Presets.SWP_BIS,
                     Presets.P1_PreBiS,
+                    Presets.P1_PreBiS_14,
                     Presets.P1_BiS,
+                    Presets.P1_BiS_14,
                 ],
             },
         });

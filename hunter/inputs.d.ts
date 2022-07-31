@@ -8,5 +8,5 @@ export declare const PetTypeInput: InputHelpers.TypedIconEnumPickerConfig<Player
 export declare const PetUptime: InputHelpers.TypedNumberPickerConfig<Player<Spec.SpecHunter>>;
 export declare const SniperTrainingUptime: InputHelpers.TypedNumberPickerConfig<Player<Spec.SpecHunter>>;
 export declare const HunterRotationConfig: {
-    inputs: (InputHelpers.TypedNumberPickerConfig<Player<Spec.SpecHunter>> | InputHelpers.TypedEnumPickerConfig<Player<Spec.SpecHunter>>)[];
+    inputs: (InputHelpers.TypedEnumPickerConfig<Player<Spec.SpecHunter>> | InputHelpers.TypedNumberPickerConfig<Player<Spec.SpecHunter>>)[];
 };

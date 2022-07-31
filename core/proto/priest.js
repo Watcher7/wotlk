@@ -951,11 +951,13 @@ class ShadowPriest_Options$Type extends MessageType {
     constructor() {
         super("proto.ShadowPriest.Options", [
             { no: 1, name: "use_shadowfiend", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
-            { no: 2, name: "armor", kind: "enum", T: () => ["proto.ShadowPriest.Options.Armor", ShadowPriest_Options_Armor] }
+            { no: 2, name: "armor", kind: "enum", T: () => ["proto.ShadowPriest.Options.Armor", ShadowPriest_Options_Armor] },
+            { no: 4, name: "use_mind_blast", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 5, name: "use_shadow_word_death", kind: "scalar", T: 8 /*ScalarType.BOOL*/ }
         ]);
     }
     create(value) {
-        const message = { useShadowfiend: false, armor: 0 };
+        const message = { useShadowfiend: false, armor: 0, useMindBlast: false, useShadowWordDeath: false };
         Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
         if (value !== undefined)
             reflectionMergePartial(this, message, value);
@@ -971,6 +973,12 @@ class ShadowPriest_Options$Type extends MessageType {
                     break;
                 case /* proto.ShadowPriest.Options.Armor armor */ 2:
                     message.armor = reader.int32();
+                    break;
+                case /* bool use_mind_blast */ 4:
+                    message.useMindBlast = reader.bool();
+                    break;
+                case /* bool use_shadow_word_death */ 5:
+                    message.useShadowWordDeath = reader.bool();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -990,6 +998,12 @@ class ShadowPriest_Options$Type extends MessageType {
         /* proto.ShadowPriest.Options.Armor armor = 2; */
         if (message.armor !== 0)
             writer.tag(2, WireType.Varint).int32(message.armor);
+        /* bool use_mind_blast = 4; */
+        if (message.useMindBlast !== false)
+            writer.tag(4, WireType.Varint).bool(message.useMindBlast);
+        /* bool use_shadow_word_death = 5; */
+        if (message.useShadowWordDeath !== false)
+            writer.tag(5, WireType.Varint).bool(message.useShadowWordDeath);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);

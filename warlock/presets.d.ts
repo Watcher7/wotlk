@@ -35,7 +35,17 @@ export declare const P1_PreBiS: {
     tooltip: string;
     gear: EquipmentSpec;
 };
+export declare const P1_BiS_14: {
+    name: string;
+    tooltip: string;
+    gear: EquipmentSpec;
+};
 export declare const P1_BiS: {
+    name: string;
+    tooltip: string;
+    gear: EquipmentSpec;
+};
+export declare const P1_PreBiS_14: {
     name: string;
     tooltip: string;
     gear: EquipmentSpec;

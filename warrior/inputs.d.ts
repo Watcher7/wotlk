@@ -7,5 +7,5 @@ export declare const StartingRage: InputHelpers.TypedNumberPickerConfig<Player<S
 export declare const ShoutPicker: InputHelpers.TypedIconEnumPickerConfig<Player<Spec.SpecWarrior>, WarriorShout>;
 export declare const PrecastShout: InputHelpers.TypedBooleanPickerConfig<Player<Spec.SpecWarrior>>;
 export declare const WarriorRotationConfig: {
-    inputs: (InputHelpers.TypedNumberPickerConfig<Player<Spec.SpecWarrior>> | InputHelpers.TypedBooleanPickerConfig<Player<Spec.SpecWarrior>> | InputHelpers.TypedEnumPickerConfig<Player<Spec.SpecWarrior>>)[];
+    inputs: (InputHelpers.TypedBooleanPickerConfig<Player<Spec.SpecWarrior>> | InputHelpers.TypedNumberPickerConfig<Player<Spec.SpecWarrior>> | InputHelpers.TypedEnumPickerConfig<Player<Spec.SpecWarrior>>)[];
 };
