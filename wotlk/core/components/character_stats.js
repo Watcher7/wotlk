@@ -1,0 +1,161 @@
+import { Stat, Class } from '/wotlk/core/proto/common.js';
+import { TristateEffect } from '/wotlk/core/proto/common.js';
+import { statNames, statOrder } from '/wotlk/core/proto_utils/names.js';
+import { Stats } from '/wotlk/core/proto_utils/stats.js';
+import { TypedEvent } from '/wotlk/core/typed_event.js';
+import * as Mechanics from '/wotlk/core/constants/mechanics.js';
+import { Component } from './component.js';
+const spellPowerTypeStats = [
+    Stat.StatArcaneSpellPower,
+    Stat.StatFireSpellPower,
+    Stat.StatFrostSpellPower,
+    Stat.StatHolySpellPower,
+    Stat.StatNatureSpellPower,
+    Stat.StatShadowSpellPower,
+];
+export class CharacterStats extends Component {
+    constructor(parent, player, stats, modifyDisplayStats) {
+        super(parent, 'character-stats-root');
+        this.stats = statOrder.filter(stat => stats.includes(stat));
+        this.player = player;
+        this.modifyDisplayStats = modifyDisplayStats;
+        const table = document.createElement('table');
+        table.classList.add('character-stats-table');
+        this.rootElem.appendChild(table);
+        this.valueElems = [];
+        this.tooltipElems = [];
+        this.stats.forEach(stat => {
+            const row = document.createElement('tr');
+            row.classList.add('character-stats-table-row');
+            row.innerHTML = `
+				<td class="character-stats-table-label">
+					<span>${statNames[stat].toUpperCase()}<span>
+					<span class="character-stats-table-tooltip fas fa-search"></span>
+				</td>
+				<td class="character-stats-table-value"></td>
+			`;
+            table.appendChild(row);
+            const valueElem = row.getElementsByClassName('character-stats-table-value')[0];
+            this.valueElems.push(valueElem);
+            const tooltipElem = row.getElementsByClassName('character-stats-table-tooltip')[0];
+            this.tooltipElems.push(tooltipElem);
+        });
+        this.updateStats(player);
+        TypedEvent.onAny([player.currentStatsEmitter, player.sim.changeEmitter]).on(() => {
+            this.updateStats(player);
+        });
+    }
+    updateStats(player) {
+        const playerStats = player.getCurrentStats();
+        const statMods = this.modifyDisplayStats ? this.modifyDisplayStats(this.player) : {
+            talents: new Stats(),
+        };
+        const baseStats = new Stats(playerStats.baseStats);
+        const gearStats = new Stats(playerStats.gearStats);
+        const talentsStats = new Stats(playerStats.talentsStats);
+        const buffsStats = new Stats(playerStats.buffsStats);
+        const consumesStats = new Stats(playerStats.consumesStats);
+        const debuffStats = CharacterStats.getDebuffStats(player);
+        const finalStats = new Stats(playerStats.finalStats).add(statMods.talents).add(debuffStats);
+        const gearDelta = gearStats.subtract(baseStats);
+        const talentsDelta = talentsStats.subtract(gearStats).add(statMods.talents);
+        const buffsDelta = buffsStats.subtract(talentsStats);
+        const consumesDelta = consumesStats.subtract(buffsStats);
+        this.stats.forEach((stat, idx) => {
+            this.valueElems[idx].textContent = CharacterStats.statDisplayString(player, finalStats, stat);
+            tippy(this.tooltipElems[idx], {
+                'content': `
+					<div class="character-stats-tooltip-row">
+						<span>Base:</span>
+						<span>${CharacterStats.statDisplayString(player, baseStats, stat)}</span>
+					</div>
+					<div class="character-stats-tooltip-row">
+						<span>Gear:</span>
+						<span>${CharacterStats.statDisplayString(player, gearDelta, stat)}</span>
+					</div>
+					<div class="character-stats-tooltip-row">
+						<span>Talents:</span>
+						<span>${CharacterStats.statDisplayString(player, talentsDelta, stat)}</span>
+					</div>
+					<div class="character-stats-tooltip-row">
+						<span>Buffs:</span>
+						<span>${CharacterStats.statDisplayString(player, buffsDelta, stat)}</span>
+					</div>
+					<div class="character-stats-tooltip-row">
+						<span>Consumes:</span>
+						<span>${CharacterStats.statDisplayString(player, consumesDelta, stat)}</span>
+					</div>
+					${debuffStats.getStat(stat) == 0 ? '' : `
+					<div class="character-stats-tooltip-row">
+						<span>Debuffs:</span>
+						<span>${CharacterStats.statDisplayString(player, debuffStats, stat)}</span>
+					</div>
+					`}
+					<div class="character-stats-tooltip-row">
+						<span>Total:</span>
+						<span>${CharacterStats.statDisplayString(player, finalStats, stat)}</span>
+					</div>
+				`,
+                'allowHTML': true,
+            });
+        });
+    }
+    static statDisplayString(player, stats, stat) {
+        let rawValue = stats.getStat(stat);
+        if (spellPowerTypeStats.includes(stat)) {
+            rawValue = rawValue + stats.getStat(Stat.StatSpellPower);
+        }
+        let displayStr = String(Math.round(rawValue));
+        if (stat == Stat.StatMeleeHit) {
+            displayStr += ` (${(rawValue / Mechanics.MELEE_HIT_RATING_PER_HIT_CHANCE).toFixed(2)}%)`;
+        }
+        else if (stat == Stat.StatSpellHit) {
+            displayStr += ` (${(rawValue / Mechanics.SPELL_HIT_RATING_PER_HIT_CHANCE).toFixed(2)}%)`;
+        }
+        else if (stat == Stat.StatMeleeCrit || stat == Stat.StatSpellCrit) {
+            displayStr += ` (${(rawValue / Mechanics.SPELL_CRIT_RATING_PER_CRIT_CHANCE).toFixed(2)}%)`;
+        }
+        else if (stat == Stat.StatMeleeHaste) {
+            if ([Class.ClassDruid, Class.ClassShaman, Class.ClassPaladin, Class.ClassDeathknight].includes(player.getClass())) {
+                displayStr += ` (${(rawValue / Mechanics.SPECIAL_MELEE_HASTE_RATING_PER_HASTE_PERCENT).toFixed(2)}%)`;
+            }
+            else {
+                displayStr += ` (${(rawValue / Mechanics.HASTE_RATING_PER_HASTE_PERCENT).toFixed(2)}%)`;
+            }
+        }
+        else if (stat == Stat.StatSpellHaste) {
+            displayStr += ` (${(rawValue / Mechanics.HASTE_RATING_PER_HASTE_PERCENT).toFixed(2)}%)`;
+        }
+        else if (stat == Stat.StatExpertise) {
+            displayStr += ` (${(Math.floor(rawValue / Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION)).toFixed(0)})`;
+        }
+        else if (stat == Stat.StatDefense) {
+            displayStr += ` (${(Mechanics.CHARACTER_LEVEL * 5 + rawValue / Mechanics.DEFENSE_RATING_PER_DEFENSE).toFixed(1)})`;
+        }
+        else if (stat == Stat.StatBlock) {
+            displayStr += ` (${(rawValue / Mechanics.BLOCK_RATING_PER_BLOCK_CHANCE).toFixed(2)}%)`;
+        }
+        else if (stat == Stat.StatDodge) {
+            displayStr += ` (${(rawValue / Mechanics.DODGE_RATING_PER_DODGE_CHANCE).toFixed(2)}%)`;
+        }
+        else if (stat == Stat.StatParry) {
+            displayStr += ` (${(rawValue / Mechanics.PARRY_RATING_PER_PARRY_CHANCE).toFixed(2)}%)`;
+        }
+        return displayStr;
+    }
+    static getDebuffStats(player) {
+        let debuffStats = new Stats();
+        const debuffs = player.sim.raid.getDebuffs();
+        if (debuffs.faerieFire == TristateEffect.TristateEffectImproved) {
+            debuffStats = debuffStats.addStat(Stat.StatSpellHit, 3 * Mechanics.SPELL_HIT_RATING_PER_HIT_CHANCE);
+        }
+        if (debuffs.totemOfWrath || debuffs.heartOfTheCrusader || debuffs.masterPoisoner) {
+            debuffStats = debuffStats.addStat(Stat.StatSpellCrit, 3 * Mechanics.SPELL_CRIT_RATING_PER_CRIT_CHANCE);
+            debuffStats = debuffStats.addStat(Stat.StatMeleeCrit, 3 * Mechanics.MELEE_CRIT_RATING_PER_CRIT_CHANCE);
+        }
+        if (debuffs.improvedScorch || debuffs.wintersChill || debuffs.shadowMastery) {
+            debuffStats = debuffStats.addStat(Stat.StatSpellCrit, 5 * Mechanics.SPELL_CRIT_RATING_PER_CRIT_CHANCE);
+        }
+        return debuffStats;
+    }
+}
