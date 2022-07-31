@@ -4,6 +4,8 @@ vars:
   GOROOT:
     sh: go env GOROOT
   OUT_DIR: '{{ .CLI_ARGS | default "dist/wotlk" }}'
+  SED:
+    sh: echo '{{if eq OS "darwin"}}sed -i "" -E -e{{else}}sed -i -E -e{{end}}'
 
 tasks:
   default:
@@ -102,8 +104,8 @@ tasks:
     cmds:
     - mkdir -p {{.OUT_DIR}}/protobuf-ts
     - cp -r node_modules/@protobuf-ts/runtime/build/es2015/* {{.OUT_DIR}}/protobuf-ts
-    - sed -i -E -e "s/from '(.*)';/from '\\1.js';/g" {{.OUT_DIR}}/protobuf-ts/*.js
-    - sed -i -E -e "s/from \"(.*)\";/from '\\1.js';/g" {{.OUT_DIR}}/protobuf-ts/*.js
+    - exec {{.SED}} "s/from '(.*)';/from '\\1.js';/g" {{.OUT_DIR}}/protobuf-ts/*.js
+    - exec {{.SED}} "s/from \"(.*)\";/from '\\1.js';/g" {{.OUT_DIR}}/protobuf-ts/*.js
     - npx protoc --ts_opt generate_dependencies --ts_out ui/core/proto --proto_path proto proto/api.proto
     - npx protoc --ts_out ui/core/proto --proto_path proto proto/test.proto
     - npx protoc --ts_out ui/core/proto --proto_path proto proto/ui.proto
@@ -121,8 +123,8 @@ tasks:
     cmds:
     # $(OUT_DIR)/core/tsconfig.tsbuildinfo: $(call rwildcard,ui/core,*.ts) ui/core/proto/api.ts
     - npx tsc -p ui/core
-    - sed -i -E -e 's#@protobuf-ts/runtime#/wotlk/protobuf-ts/index#g' {{.OUT_DIR}}/core/proto/*.js
-    - sed -i -E -e "s/from \"(.*)\";/from '\1.js';/g" {{.OUT_DIR}}/core/proto/*.js
+    - exec {{.SED}} 's#@protobuf-ts/runtime#/wotlk/protobuf-ts/index#g' {{.OUT_DIR}}/core/proto/*.js
+    - exec {{.SED}} "s/from \"(.*)\";/from '\1.js';/g" {{.OUT_DIR}}/core/proto/*.js
 
 
     - cat {{.GOROOT}}/misc/wasm/wasm_exec.js > {{.OUT_DIR}}/sim_worker.js
@@ -250,7 +252,7 @@ tasks:
     - task: test-classes
 
   test-classes:
-    deps:
+    cmds:
     - task: test-class
       vars: { CLASS: 'druid' }
     - task: test-class
