@@ -283,6 +283,13 @@ tasks:
     - ./binary_dist/wotlk/assets/item_data/all_items_db.json
     - ./binary_dist/wotlk/assets/spell_data/all_spells_db.json
 
+  update-tests:
+    desc: replace old test files
+    run: once
+    cmds:
+    - find . -name "*.results" -type f -delete
+    - find . -name "*.results.tmp" -exec bash -c 'cp "$$1" "$${1%.results.tmp}".results' _ {} \;
+
   test:
     desc: tests all classes
     run: once
@@ -361,7 +368,6 @@ tasks:
     - binary_dist
     cmds:
     - npx http-server {{.OUT_DIR}}/..
-
 
   clean:
     desc: cleans the workspace
