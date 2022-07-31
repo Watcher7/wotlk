@@ -7,6 +7,7 @@ import { TristateEffect } from '/wotlk/core/proto/common.js';
 import { Stats } from '/wotlk/core/proto_utils/stats.js';
 import { IndividualSimUI } from '/wotlk/core/individual_sim_ui.js';
 import { TypedEvent } from '/wotlk/core/typed_event.js';
+import * as IconInputs from '/wotlk/core/components/icon_inputs.js';
 import * as OtherInputs from '/wotlk/core/components/other_inputs.js';
 import * as Mechanics from '/wotlk/core/constants/mechanics.js';
 import { PaladinMajorGlyph, PaladinSeal } from '/wotlk/core/proto/paladin.js';
@@ -128,7 +129,9 @@ export class RetributionPaladinSimUI extends IndividualSimUI {
                 ]
             },
             // Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
-            includeBuffDebuffInputs: [],
+            includeBuffDebuffInputs: [
+                IconInputs.ReplenishmentBuff,
+            ],
             excludeBuffDebuffInputs: [],
             // Inputs to include in the 'Other' section on the settings tab.
             otherInputs: {
