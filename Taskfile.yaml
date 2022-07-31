@@ -202,6 +202,7 @@ tasks:
     - mkdir -p {{.OUT_DIR}}/{{.PAGE}}
     - npx sass ui/{{.PAGE}}/index.scss {{.OUT_DIR}}/{{.PAGE}}/index.css
     sources:
+    - ui/core/*.scss
     - ui/{{.PAGE}}/*.scss
     generates:
     - "{{.OUT_DIR}}/{{.PAGE}}/index.css"
